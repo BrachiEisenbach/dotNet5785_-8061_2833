@@ -11,12 +11,15 @@ partial class Program
         Welcome2833();
         Console.ReadKey();
 
+
     }
     static partial void Welcome2833();
     private static void Welcome8061()
     {
         Console.Write("Enter your name: ");
         string name = Console.ReadLine();
+
+
 
         Console.WriteLine(name + ", welcome to my first console application");
     }
