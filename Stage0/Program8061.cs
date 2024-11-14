@@ -1,6 +1,6 @@
 ﻿
 using System;
-namespace Targil0 { 
+namespace Stage0 { 
 
 
 partial class Program
@@ -12,12 +12,14 @@ partial class Program
         Console.ReadKey();
 
 
+
     }
     static partial void Welcome2833();
     private static void Welcome8061()
     {
         Console.Write("Enter your name: ");
         string name = Console.ReadLine();
+
 
 
 
