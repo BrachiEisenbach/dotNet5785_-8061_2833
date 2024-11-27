@@ -1,0 +1,31 @@
+﻿
+namespace DO;
+
+public enum ROLE
+{
+    ADMIN,
+    VOLUNTEER
+}
+public enum TYPEOFDISTSANCE
+{
+    AERIALDISTANCE,
+    WALKINGDISTANCE,
+    DRIVINGDISTANCE
+}
+public enum TYPEOFCALL
+{
+        FLATTIRE,
+        CARBURGLARY,
+        REDRIVE,
+}
+public enum TYPEOFTREATMENT
+{
+    TREATE,
+    SELFCANCELLATION,
+    CANCALINGANADMINISTRATOR,
+    CANCELLATIONHASEXPIRED
+
+
+}
+
+
