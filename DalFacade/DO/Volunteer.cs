@@ -23,6 +23,7 @@ public record Volunteer
 
    
 
+
     int Id,
     string FullName,
     string Phone,
@@ -34,7 +35,7 @@ public record Volunteer
     ROLE Role=ROLE.VOLUNTEER,
     bool Active = false,
     double? MaxDistance = null,
-    TYPEOFDISTSANCE TypeOfDistance=TYPEOFDISTSANCE.WALKINGDISTANCE
+    TYPEOFDISTSANCE TypeOfDistance=TYPEOFDISTSANCE.AERIALDISTANCE
 
 
 );

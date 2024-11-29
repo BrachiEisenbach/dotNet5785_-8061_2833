@@ -4,6 +4,7 @@ namespace DO;
 public enum ROLE
 {
     ADMIN,
+    DISTRICTMANAGER,
     VOLUNTEER
 }
 public enum TYPEOFDISTSANCE
@@ -14,9 +15,9 @@ public enum TYPEOFDISTSANCE
 }
 public enum TYPEOFCALL
 {
-        FLATTIRE,
-        CARBURGLARY,
-        REDRIVE,
+    FLATTIRE,
+    CARBURGLARY,
+    REDRIVE,
 }
 public enum TYPEOFTREATMENT
 {
