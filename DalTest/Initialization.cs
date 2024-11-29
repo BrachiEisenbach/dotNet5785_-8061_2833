@@ -3,6 +3,7 @@ namespace DalTest;
 using DalApi;
 using DO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public static class Initialization
@@ -523,9 +524,28 @@ public static class Initialization
 
             s_dalAssignment!.Create(newA);
             i++;
-
         }
-       
+    }
+
+    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+    {
+        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");
+        Console.WriteLine("Reset Configuration values and List values...");
+
+        s_dalConfig.Reset();
+        s_dalVolunteer.DeleteAll();
+        s_dalCall.DeleteAll();
+        s_dalAssignment.DeleteAll();
+        
+        
+                                  
+        Console.WriteLine("Initializing Students list ...");
+        createVolunteer();
+        createCall();
+        createAssignment();
 
 
     }
