@@ -40,20 +40,10 @@ namespace DalTest
 
         }
 
-        private void ResetDataAndconfig()
-        {
-            throw new NotImplementedException();
-        }
 
-        private void ConfigMenu()
-        {
-            throw new NotImplementedException();
-        }
+      
 
-        private void DisplayData()
-        {
-            throw new NotImplementedException();
-        }
+     
 
         private void AssignmentMenu()
         {
