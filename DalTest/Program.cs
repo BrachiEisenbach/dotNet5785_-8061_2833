@@ -158,8 +158,6 @@ namespace DalTest
             Console.WriteLine(volunteer);
             return volunteer;
 
-
-            //throw new NotImplementedException(); 
         }
 
 
@@ -290,11 +288,6 @@ namespace DalTest
         {
             s_dalConfig.Reset();
         }
-
-
-
-
-
         private void resetDataAndConfig()
         {
             s_dalVolunteer.DeleteAll();
