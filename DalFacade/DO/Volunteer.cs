@@ -38,4 +38,14 @@ public record Volunteer
     TYPEOFDISTSANCE TypeOfDistance=TYPEOFDISTSANCE.AERIALDISTANCE
 
 
-);
+)
+{
+    public override string ToString()
+    {
+        return $"Id: {Id}, Full Name: {FullName}, Phone: {Phone}, Email: {Email}, " +
+               $"Password: {Password ?? "Not Set"}, Address: {FullAddress ?? "Not Set"}, " +
+               $"Latitude: {Latitude?.ToString() ?? "Not Set"}, Longitude: {Longitude?.ToString() ?? "Not Set"}, " +
+               $"Role: {Role}, Active: {Active}, Max Distance: {MaxDistance?.ToString() ?? "Not Set"}, " +
+               $"Type of Distance: {TypeOfDistance}";
+    }
+}

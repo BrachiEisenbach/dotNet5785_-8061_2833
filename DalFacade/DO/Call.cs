@@ -13,4 +13,13 @@ public record Call
     DateTime OpenTime=default(DateTime) ,
     DateTime? MaxTimeToFinish=null
 
-);
+)
+{
+    public override string ToString()
+    {
+        return $"Id: {Id}, Type of Call: {TypeOfCall}, " +
+               $"Verbal Description: {(string.IsNullOrEmpty(VerbalDescription) ? "Not Provided" : VerbalDescription)}, " +
+               $"Address: {FullAddress}, Latitude: {Latitude}, Longitude: {Longitude}, " +
+               $"Open Time: {OpenTime}, Max Time To Finish: {(MaxTimeToFinish.HasValue ? MaxTimeToFinish.Value.ToString() : "Not Set")}";
+    }
+}
