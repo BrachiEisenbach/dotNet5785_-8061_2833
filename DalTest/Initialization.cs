@@ -550,12 +550,126 @@ public static class Initialization
 
     }
 
+    //int Id,
+    //TYPEOFCALL TypeOfCall,
+    //string? VerbalDescription = null,
+    //string FullAddress = "",
+    //double Latitude = 0,
+    //double Longitude = 0,
+    //DateTime OpenTime=default(DateTime) ,
+    //DateTime? MaxTimeToFinish = null
 
-  
+    private Call newCall()
+    {
+        Console.WriteLine("type ID:");
+        int Id = int.Parse(Console.ReadLine());
+
+        // שאלה על סוג הקריאה מתוך הרשימה
+        Console.WriteLine("type of call (0: FLATTIRE, 1: CARBURGLARY, 2: REDRIVE):");
+        TYPEOFCALL TypeOfCall;
+        string typeOfCallStr = Console.ReadLine();
+        if (Enum.TryParse(typeOfCallStr, true, out TypeOfCall))
+        {
+            // אם ההמרה הצליחה, נשתמש ב- TypeOfCall
+        }
+        else
+        {
+            // אם המשתמש הכניס ערך לא חוקי, נזרוק חריגה
+            throw new Exception("Invalid Type of Call");
+        }
+
+        Console.WriteLine("verbal description (optional):");
+        string? VerbalDescription = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(VerbalDescription)) VerbalDescription = null;
+
+        Console.WriteLine("full address:");
+        string FullAddress = Console.ReadLine();
+
+        Console.WriteLine("latitude:");
+        string latitudeInput = Console.ReadLine();
+        double Latitude = string.IsNullOrWhiteSpace(latitudeInput) ? 0 : double.Parse(latitudeInput);
+
+        Console.WriteLine("longitude:");
+        string longitudeInput = Console.ReadLine();
+        double Longitude = string.IsNullOrWhiteSpace(longitudeInput) ? 0 : double.Parse(longitudeInput);
+
+        Console.WriteLine("open time (YYYY-MM-DD HH:MM:SS):");
+        string openTimeInput = Console.ReadLine();
+        DateTime OpenTime;
+        if (DateTime.TryParse(openTimeInput, out OpenTime) == false)
+        {
+            throw new Exception("Invalid Open Time format");
+        }
+
+        Console.WriteLine("max time to finish (optional, press Enter to skip):");
+        string maxTimeToFinishInput = Console.ReadLine();
+        DateTime? MaxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeToFinishInput) ? null : DateTime.Parse(maxTimeToFinishInput);
+
+        // יצירת אובייקט Call
+        Call call = new Call(Id, TypeOfCall, VerbalDescription, FullAddress, Latitude, Longitude, OpenTime, MaxTimeToFinish);
+
+        // הדפסת האובייקט
+        Console.WriteLine(call);
+        return call;
+    }
+    private Assignment newAssignment()
+    {
+        // קלט עבור Id של ההקצאה
+        Console.WriteLine("type ID:");
+        int Id = int.Parse(Console.ReadLine());
+
+        // קלט עבור CallId
+        Console.WriteLine("Call ID:");
+        int CallId = int.Parse(Console.ReadLine());
+
+        // קלט עבור VolunteerId
+        Console.WriteLine("Volunteer ID:");
+        int VolunteerId = int.Parse(Console.ReadLine());
+
+        // קלט עבור EntryTimeForTreatment
+        Console.WriteLine("Entry Time for Treatment (YYYY-MM-DD HH:MM:SS):");
+        string entryTimeInput = Console.ReadLine();
+        DateTime EntryTimeForTreatment;
+        if (DateTime.TryParse(entryTimeInput, out EntryTimeForTreatment) == false)
+        {
+            throw new Exception("Invalid Entry Time format");
+        }
+
+        // קלט עבור EndTimeOfTreatment (אופציונלי)
+        Console.WriteLine("End Time of Treatment (optional, press Enter to skip):");
+        string endTimeInput = Console.ReadLine();
+        DateTime? EndTimeOfTreatment = string.IsNullOrWhiteSpace(endTimeInput) ? null : DateTime.Parse(endTimeInput);
+
+        // קלט עבור TypeOfTreatment
+        Console.WriteLine("Type of Treatment (0: TREATE, 1: SELFCANCELLATION, 2: CANCALINGANADMINISTRATOR, 3: CANCELLATIONHASEXPIRED):");
+        TYPEOFTREATMENT TypeOfTreatment;
+        string typeOfTreatmentStr = Console.ReadLine();
+        if (Enum.TryParse(typeOfTreatmentStr, true, out TypeOfTreatment))
+        {
+            // אם ההמרה הצליחה, נשתמש ב- TypeOfTreatment
+        }
 
 
-  
-    
+        else
+        {
+            // אם הקלט לא תקין, נזרוק חריגה
+            throw new Exception("Invalid Type of Treatment");
+        }
+
+        // יצירת אובייקט Assignment
+        Assignment assignment = new Assignment(Id, CallId, VolunteerId, EntryTimeForTreatment, EndTimeOfTreatment, TypeOfTreatment);
+
+        // הדפסת האובייקט
+        Console.WriteLine(assignment);
+        return assignment;
+    }
+
+
+
+
+
+
+
 
 
 
