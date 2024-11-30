@@ -3,7 +3,7 @@ namespace DO;
 
 public enum ROLE
 {
-    ADMIN,
+    ADMIN=0,
     DISTRICTMANAGER,
     VOLUNTEER
 }
@@ -26,7 +26,18 @@ public enum TYPEOFTREATMENT
     CANCALINGANADMINISTRATOR,
     CANCELLATIONHASEXPIRED
 
-
 }
 
+public enum SUBMENU
+{
+    EXIT=0,
+    VOLUNTEER,
+    CALL,
+    ASSIGNMENT,
+    INITIALIZE,
+    DISPLAY,
+    CONFIIG,
+    REASET
+
+}
 
