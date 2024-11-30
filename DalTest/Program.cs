@@ -69,43 +69,10 @@ namespace DalTest
 
         }
 
-
-        private Volunteer newVolunteer()
+        private void ResetDataAndconfig()
         {
-            Console.WriteLine("type ID:");
-            int Id = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("full name:");
-            string FullName = Console.ReadLine();
-
-            Console.WriteLine("mobile phone:");
-            string Phone = Console.ReadLine();
-
-            Console.WriteLine("email:");
-            string Email = Console.ReadLine();
-
-            Console.WriteLine("password:");
-            string? Password = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(Password)) Password = null;
-
-
-            Console.WriteLine("current full address:");
-            string? FullAddress = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(FullAddress)) FullAddress = null;
-
-            Console.WriteLine("latitude:");
-            string latitudeInput = Console.ReadLine();
-            double? Latitude = string.IsNullOrWhiteSpace(latitudeInput) ? null : double.Parse(latitudeInput);
-
-            Console.WriteLine("longitude:");
-            string longitudeInput = Console.ReadLine();
-            double? Longitude = string.IsNullOrWhiteSpace(longitudeInput) ? null : double.Parse(longitudeInput);
-
-            Console.WriteLine("maximum distance for receiving readings (optional, press Enter to skip):");
-            string maxDistanceInput = Console.ReadLine();
-            //double? MaxDistance = string.IsNullOrWhiteSpace(maxDistanceInput) ? null : double.Parse(maxDistanceInput);
-            double? MaxDistance = double.Parse(maxDistanceInput);
-
+            throw new NotImplementedException();
+        }
 
             Console.WriteLine("role (0: ADMIN , 1: DISTRICTMANAGER, 2: VOLUNTEER):");
             ROLE Role;

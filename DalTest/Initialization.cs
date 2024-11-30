@@ -539,9 +539,9 @@ public static class Initialization
         s_dalVolunteer.DeleteAll();
         s_dalCall.DeleteAll();
         s_dalAssignment.DeleteAll();
-        
-        
-                                  
+
+
+
         Console.WriteLine("Initializing Students list ...");
         createVolunteer();
         createCall();
@@ -549,6 +549,180 @@ public static class Initialization
 
 
     }
+
+    //כל הקוד הירוק צריך לעבור לתכנית הראשית
+
+    //private void configMenu()
+    //{
+    //    Console.WriteLine("To exit press 0\r\nTo advance the clock by a minute, press 1\r\nTo advance the clock by the hour press 2\r\nTo advance in a few minutes - to be chosen by you, press 3\r\nTo promote in a number of hours - to be chosen by you, press 4\r\nTo display the current time press 5\r\nTo set a new value for one of the configuration entity variables press 6\r\nTo display a value of one of the configuration entity variables press 7\r\nTo reset the values ​​of all configuration variables press 8");
+    //    int option;
+    //    string option1 = (Console.ReadLine());
+    //    option = int.Parse(option1);
+    //    switch (option)
+    //    {
+    //        case 0: return;
+    //        case 1: addMinutes(1); break;
+    //        case 2: addHours(1); break;
+    //        case 3:
+    //            {
+    //                int t;
+    //                Console.WriteLine("Enter the number of minutes you want the clock to advance");
+    //                string t1 = (Console.ReadLine());
+    //                t = int.Parse(t1);
+    //                addMinutes(t);
+    //                break;
+    //            }
+    //        case 4:
+    //            {
+    //                int t;
+    //                Console.WriteLine("Enter the number of hours you want the clock to advance");
+    //                string t1 = (Console.ReadLine());
+    //                t = int.Parse(t1);
+    //                addHours(t);
+    //                break;
+    //            }
+
+    //        case 5: displayTheTime(); break;
+    //        case 6 aNewValueForSomeVariable() break;
+    //        case 7: displayValueOfSomeVariable(); break;
+    //        case 8: resetVariableOfConfig(); break;
+
+    //    }
+    //}
+
+    //private void displayTheTime()
+    //{
+    //    Console.WriteLine(s_dalConfig.Clock);
+    //}
+
+    //private void addHours(int t)
+    //{
+    //    s_dalConfig.Clock = s_dalConfig.Clock.AddHour(t);
+    //}
+
+    //private void addMinutes(int t)
+    //{
+    //    s_dalConfig.Clock = s_dalConfig.Clock.AddMinute(t);
+    //}
+    //private void aNewValueForSomeVariable()
+    //{
+    //    Console.WriteLine("To change the clock variable press 0\r\nTo change the RiskRange variable, press 1");
+    //    int option;
+    //    string option1 = (Console.ReadLine());
+    //    option = int.Parse(option1);
+    //    switch (option)
+    //    {
+    //        case 0:
+    //            {
+    //                DateTime dt;
+    //                Console.WriteLine("Enter a new value that will go into the Clock variable");
+
+    //                string input = Console.ReadLine();
+
+    //                if (DateTime.TryParse(input, out dt))
+    //                {
+
+    //                    s_dalConfig.Clock = dt;
+
+    //                }
+    //                else
+    //                {
+
+    //                    Console.WriteLine("Invalid input. Please try again.");
+    //                }
+    //            }
+    //            break;
+    //        case 1:
+    //            {
+    //                TimeSpan ts;
+    //                Console.WriteLine("Enter a new value that will go into the RiskRange variable");
+
+    //                string input = Console.ReadLine();
+
+    //                if (TimeSpan.TryParse(input, out ts))
+    //                {
+    //                    s_dalConfig.RiskRange = ts;
+
+    //                }
+    //                else
+    //                {
+    //                    Console.WriteLine("Invalid input. Please try again.");
+    //                }
+    //            }
+    //            break;
+    //    }
+    //}
+    //private void displayValueOfSomeVariable()
+    //{
+    //    Console.WriteLine("To display the clock variable press 0\r\nTo display the RiskRange variable, press 1");
+    //    int option;
+    //    string option1 = (Console.ReadLine());
+    //    option = int.Parse(option1);
+    //    switch (option)
+    //    {
+    //        case 0:
+    //            {
+    //                Console.WriteLine(s_dalConfig.Clock); 
+
+    //            }
+    //            break;
+    //        case 1:
+    //            {
+    //                Console.WriteLine(s_dalConfig.RiskRange);
+    //            }
+    //            break;
+    //    }
+
+    //}
+    //private void resetVariableOfConfig()
+    //{
+    //   s_dalConfig.Reset();
+    //}
+
+
+
+
+
+    //private void ResetDataAndConfig()
+    //{
+    //    s_dalVolunteer.DeleteAll();
+    //    s_dalCall.DeleteAll();
+    //    s_dalAssignment.DeleteAll();
+    //    s_dalConfig.Reset(); 
+
+    //}
+
+
+
+
+
+
+    //private void DisplayData()
+    //{
+    //    foreach (var volunteer in Volunteers)
+    //    {
+    //        Console.WriteLine(volunteer);
+    //    }
+    //    foreach (var call in Calls)
+    //    {
+    //        Console.WriteLine(call);
+    //    }
+
+    //    foreach (var assignment in Assignments)
+    //    {
+    //        Console.WriteLine(assignment);
+    //    }
+
+
+    //}
+
+  
+
+
+  
+    
+
+
 
 
 }
