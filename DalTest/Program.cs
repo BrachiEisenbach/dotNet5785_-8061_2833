@@ -15,6 +15,7 @@ namespace DalTest
         private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
 
         //11111111111111
+        //22222222222222
 
         private void SubMenu(string typeMenu)
         {
