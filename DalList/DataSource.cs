@@ -1,4 +1,5 @@
 ﻿
+
 namespace Dal;
 /// <summary>
 /// A static class that serves as the data source for the system's objects.

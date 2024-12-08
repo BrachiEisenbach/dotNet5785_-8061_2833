@@ -21,6 +21,10 @@ namespace DalTest
         /// </summary>
         /// <param name="typeMenu"></param>
 
+        /// <summary>
+        /// A general function for the sub-menus of the entities. Gets the name of the entity and points to the corresponding sub-menu.
+        /// </summary>
+        /// <param name="typeMenu">The name of the entity.</param>
         private void SubMenu(string typeMenu)
         {
             switch (typeMenu)
@@ -126,6 +130,10 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// A function to display the main menu and refer to the appropriate sub-menu.
+        /// </summary>
+        /// 11111111
         private void MainMenu()
         {
 
@@ -162,8 +170,12 @@ namespace DalTest
             
 
         }
-        //
 
+        /// <summary>
+        /// Function to add and update a new volunteer. If the input is empty, throws an error and does not initialize the object.
+        /// </summary>
+        /// <returns>Returns the newly created volunteer.</returns>
+        /// <exception cref="Exception">returns an error message empty details.</exception>
         private Volunteer newVolunteer()
         {
             Console.WriteLine("type ID:");
@@ -231,6 +243,10 @@ namespace DalTest
 
         }
 
+        /// <summary>
+        /// A function to receive an ID card from the user to map the volunteer from memory.
+        /// </summary>
+        /// <returns>Returns the ID entered by the user.</returns>
         private int readVol()
         {
             Console.WriteLine("enter volunteer's id");
@@ -238,14 +254,22 @@ namespace DalTest
             return id;
         }
 
+
+        /// <summary>
+        /// A function to receive an ID card from the user to map the assignment from memory.
+        /// </summary>
+        /// <returns>Returns the ID entered by the user.</returns>
         private int readAss()
         {
-            Console.WriteLine("enter volunteer's id");
+            Console.WriteLine("enter assignment's id");
             int id = int.Parse(Console.ReadLine());
             return id;
         }
 
-
+        /// <summary>
+        /// A function to receive an ID card from the user to map the call from the memory.
+        /// </summary>
+        /// <returns>Returns the ID entered by the user.</returns>
         private int readCall()
         {
             Console.WriteLine("enter call's id");
@@ -253,6 +277,10 @@ namespace DalTest
             return id;
         }
 
+        /// <summary>
+        /// A function to update an existing volunteer. Uses the add volunteer function.
+        /// </summary>
+        /// <returns>Returns the updated volunteer.</returns>
         private Volunteer updateVol()
         {
             int id = readVol();
@@ -262,6 +290,11 @@ namespace DalTest
             return upVol;
 
         }
+
+        /// <summary>
+        /// A function to update an existing assignment. Uses the add assignment function.
+        /// </summary>
+        /// <returns>Returns the updated assignment.</returns>
 
         private Assignment updateAss()
         {
@@ -274,6 +307,10 @@ namespace DalTest
         }
 
 
+        /// <summary>
+        /// A function to update an existing call. Uses the add call function.
+        /// </summary>
+        /// <returns>Returns the updated call.</returns>
 
         private Call updateCall()
         {
@@ -286,7 +323,9 @@ namespace DalTest
         }
 
 
-
+        /// <summary>
+        /// A function to represent a submenu for the configuration entity. Receives the user's choice and directs him to the appropriate method.
+        /// </summary>
         private void configMenu()
         {
             Console.WriteLine("To exit press 0\r\nTo advance the clock by a minute, press 1\r\nTo advance the clock by the hour press 2\r\nTo advance in a few minutes - to be chosen by you, press 3\r\nTo promote in a number of hours - to be chosen by you, press 4\r\nTo display the current time press 5\r\nTo set a new value for one of the configuration entity variables press 6\r\nTo display a value of one of the configuration entity variables press 7\r\nTo reset the values ​​of all configuration variables press 8");
@@ -325,6 +364,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Function to display the system clock.
+        /// </summary>
         private void displayTheTime()
         {
             Console.WriteLine(s_dalConfig.Clock);
@@ -425,7 +467,9 @@ namespace DalTest
 
 
 
-
+        /// <summary>
+        /// A function to display all the information from the memory to the user.
+        /// </summary>
 
         private void displayData()
         {
@@ -449,7 +493,11 @@ namespace DalTest
 
         }
 
-
+        /// <summary>
+        /// A function to create a new call. In the case of an empty input, an error is thrown.
+        /// </summary>
+        /// <returns>Returns the newly created call.</returns>
+        /// <exception cref="Exception">returns an error message empty details.</exception>
         private Call newCall()
         {
 
@@ -504,6 +552,12 @@ namespace DalTest
             return call;
         }
 
+        /// <summary>
+        /// A function to create a new assignment. In the case of an empty input, an error is thrown.
+        /// </summary>
+        /// <returns>Returns the newly created assignment.</returns>
+        /// <exception cref="Exception">returns an error message empty details.</exception>
+
         private Assignment newAssignment()
         {
             Console.WriteLine("type ID:");
@@ -550,7 +604,10 @@ namespace DalTest
         }
 
 
-
+        /// <summary>
+        /// The main function.
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             try

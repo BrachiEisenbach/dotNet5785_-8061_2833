@@ -577,7 +577,7 @@ public static class Initialization
         int i = 0;
         // Iterate through the list of call records to create new assignments
         foreach (var call in CallIds)
-            foreach (var call in CallIds)
+            
         {
                 // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
                 Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,

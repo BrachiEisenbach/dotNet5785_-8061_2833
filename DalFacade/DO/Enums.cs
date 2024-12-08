@@ -1,24 +1,38 @@
 ﻿
 namespace DO;
-
+/// <summary>
+/// Defining a role in the system
+/// </summary>
 public enum ROLE
 {
     ADMIN=0,
     DISTRICTMANAGER,
     VOLUNTEER
 }
+
+/// <summary>
+/// A distance type in generating a call
+/// </summary>
 public enum TYPEOFDISTSANCE
 {
     AERIALDISTANCE,
     WALKINGDISTANCE,
     DRIVINGDISTANCE
 }
+
+/// <summary>
+/// call type
+/// </summary>
 public enum TYPEOFCALL
 {
     FLATTIRE,
     CARBURGLARY,
     REDRIVE,
 }
+
+/// <summary>
+/// type of treatment
+/// </summary>
 public enum TYPEOFTREATMENT
 {
     TREATE,
@@ -28,6 +42,9 @@ public enum TYPEOFTREATMENT
 
 }
 
+/// <summary>
+/// Submenu for entities
+/// </summary>
 public enum SUBMENU
 {
     EXIT=0,
