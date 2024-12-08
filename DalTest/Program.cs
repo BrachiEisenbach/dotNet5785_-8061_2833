@@ -14,6 +14,13 @@ namespace DalTest
         private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
         private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
 
+        //11111111111111
+        //22222222222222
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeMenu"></param>
+
         /// <summary>
         /// A general function for the sub-menus of the entities. Gets the name of the entity and points to the corresponding sub-menu.
         /// </summary>
@@ -158,7 +165,7 @@ namespace DalTest
                  option = int.Parse(option1);
                  selectedOption = (SUBMENU)option;
 
-            } while (selectedOption != 0);
+            } while (selectedOption != SUBMENU.EXIT);
             
 
         }
@@ -611,7 +618,7 @@ namespace DalTest
                 s_dalCall.DeleteAll();
                 s_dalAssignment.DeleteAll();
 
-                
+                MainMenu();
 
 
 
