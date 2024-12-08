@@ -1,26 +1,60 @@
-﻿
+﻿/// <summary>
+/// The Initialization class is used to set up the initial data for volunteers in the system.
+/// It generates volunteer data, ensures unique IDs, and creates volunteer instances using predefined data.
+/// </summary>
+
 namespace DalTest;
 using DalApi;
 using DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+/// <summary>
+/// This class contains the logic for initializing the volunteer data.
+/// </summary>
 
 public static class Initialization
 {
+    /// <summary>
+    /// Private static field for storing the volunteer data access layer (DAL) interface.
+    /// </summary>
     private static IVolunteer? s_dalVolunteer;
+
+    /// <summary>
+    /// Private static field for storing the call data access layer (DAL) interface.
+    /// </summary>
     private static ICall? s_dalCall;
+
+    /// <summary>
+    /// Private static field for storing the assignment data access layer (DAL) interface.
+    /// </summary>
     private static IAssignment? s_dalAssignment;
+
+    /// <summary>
+    /// Private static field for storing the configuration data access layer (DAL) interface.
+    /// </summary>
     private static IConfig? s_dalConfig;
+
+    /// <summary>
+    /// Private static field for storing a list of volunteer objects.
+    /// </summary>
     private static List<Volunteer>? VolunteersArray;
+
+    /// <summary>
+    /// Random number generator for generating random data.
+    /// </summary>
     private static readonly Random s_rand = new();
 
+    /// <summary>
+    /// Method for creating volunteer instances and populating them with predefined data.
+    /// Ensures that the generated volunteer ID is unique.
+    /// </summary>
 
 
     private static void createVolunteer()
     {
         //the data was written by AI
-
+        // Array containing names of volunteers.
         string[] FullNamesVolunteers = { "John Doe", "Jane Smith", "Michael Johnson", "Emily Davis", "Chris Brown",
                        "Jessica Taylor", "David Wilson", "Sophia Moore", "Daniel Anderson", "Olivia Lee",
                        "Matthew Harris", "Lily Clark", "James Walker", "Chloe Hall", "Benjamin Young",
@@ -32,6 +66,7 @@ public static class Initialization
                        "Charlotte Walker", "Daniel Evans", "Ella Green", "Oliver Evans", "Harper Lewis",
                        "Benjamin Lee", "Victoria Allen", "James White", "Natalie Scott", "Evan Phillips",
                        "Zoe Stewart", "Dylan Johnson" };
+        // Array containing phone numbers of volunteers.
         string[] PhonesVolunteers = { "052-1234567", "053-2345678", "054-3456789", "055-4567890", "056-5678901",
                     "057-6789012", "058-7890123", "059-8901234", "050-9876543", "051-8765432",
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
@@ -42,6 +77,7 @@ public static class Initialization
                     "057-2109876", "058-1098765", "059-0987654", "050-9876543", "051-8765432",
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
                     "057-2109876", "058-1098765", "059-0987654" };
+        // Array containing email addresses of volunteers.
         string[] EmailsVolunteers = { "john.doe@example.com", "jane.smith@example.com", "michael.johnson@example.com",
                     "emily.davis@example.com", "chris.brown@example.com", "jessica.taylor@example.com",
                     "david.wilson@example.com", "sophia.moore@example.com", "daniel.anderson@example.com",
@@ -59,6 +95,7 @@ public static class Initialization
                     "ella.green@example.com", "oliver.evans@example.com", "harper.lewis@example.com",
                     "benjamin.lee@example.com", "victoria.allen@example.com", "james.white@example.com",
                     "natalie.scott@example.com", "evan.phillips@example.com", "zoe.stewart@example.com" };
+        // Array containing passwords for volunteers.
         string[] PasswordsVolunteers = { "password123", "abc123", "qwerty123", "letmein2024", "welcome1",
                        "1234abcd", "iloveyou99", "admin123", "secretpass", "letmein22",
                        "secure2023", "testpass1", "password2024", "mysecret123", "access123",
@@ -69,6 +106,7 @@ public static class Initialization
                        "newpassword2024", "password01@", "welcome@123", "1234password", "secret1234",
                        "tbot2023", "securechatgpt", "pass1234", "qwertz!234", "supersecurepass",
                        "access1234", "strong2024pass", "ilovechatgpt123", "admin1password", "testpass1234" };
+        // Array containing full addresses of volunteers.
         string[] FullAddressesVolunteers = {
     "Main Street 1, Tel Aviv", "Har 2, Jerusalem", "Independence 45, Haifa", "Galil 12, Petah Tikva",
     "Harbor 8, Ashdod", "Hadar 34, Ramat Gan", "Zamir 56, Netanya", "Yarkon 10, Holon",
@@ -84,6 +122,7 @@ public static class Initialization
     "Hok 11, Haifa", "Geshem 15, Safed", "Horef 2, Jerusalem", "Heder 30, Caesarea",
     "Binyan 7, Ashdod", "Derech 56, Tel Aviv", "Geshem 22, Rehovot", "Yaar 13, Jerusalem",
     "Ner 23, Yokneam", "Kibush 5, Petah Tikva", "Mavak 19, Tel Aviv", "Hazon 9, Kiryat Ono" };
+        // Array containing latitude coordinates for volunteer addresses.
         double[] LatitudeVolunteers = {
     -45.27, 32.41, -12.55, 57.80, 29.82, -20.94, 48.16, -38.69, 53.03, 24.91,
     -64.39, 71.12, -3.67, 33.56, 12.73, -51.30, -5.64, 40.58, 11.09, -72.96,
@@ -91,6 +130,7 @@ public static class Initialization
     50.87, -32.54, 65.72, 21.55, -16.90, 54.03, -55.43, 60.44, 19.92, -9.35,
     68.78, -14.47, 36.09, 56.47, -3.25, 45.62, -21.88, 11.68, 53.94, 23.77
 };
+        // Array containing longitude coordinates for volunteer addresses.
         double[] LongitudeVolunteers = {
     13.45, -118.65, 23.53, 89.45, -62.34, 31.22, -15.78, 78.64, -106.83, 45.99,
     -134.56, 72.88, -50.32, 12.96, -82.42, 10.15, 47.72, -68.09, 134.54, -23.11,
@@ -98,6 +138,7 @@ public static class Initialization
     51.61, -73.90, 137.32, -114.98, -120.60, 48.01, -59.37, 16.94, -80.23, 114.79,
     -160.50, 70.77, 53.20, -9.88, 34.06, -126.77, 96.23, 25.76, -110.89, 6.83
         };
+        // Array containing roles for volunteers.
         ROLE[] RolesVolunteers = { ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
@@ -109,34 +150,40 @@ public static class Initialization
     ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER};
         int i = 0;
 
+        // Iterate over the list of full names to create volunteer instances.
         foreach (var name in FullNamesVolunteers)
         {
             int id;
+            // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
             while (s_dalVolunteer!.Read(id) != null);
 
-
-
+            // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
             string? FullAddress = FullAddressesVolunteers[i];
             ROLE Role = (i == 0) ? ROLE.ADMIN : RolesVolunteers[i];
             bool Active = (id % 2) == 0 ? true : false;
             double? MaxDistance = s_rand.Next(0, 12500);
 
-
             Volunteer newV = new Volunteer(id, FullNamesVolunteers[i], PhonesVolunteers[i], EmailsVolunteers[i],
                 PasswordsVolunteers[i], FullAddressesVolunteers[i], LatitudeVolunteers[i], LongitudeVolunteers[i],
                 RolesVolunteers[i], Active, MaxDistance);
+
+            // Create the volunteer in the DAL.
             s_dalVolunteer!.Create(newV);
 
+            // Increment the index for the next iteration.
             i++;
-
         }
-
     }
+    /// <summary>
+    /// This method generates arrays representing the call type, call descriptions, full addresses, coordinates (latitude and longitude),
+    /// as well as timestamps for the creation and expected completion of each call.
+    /// The method sets up a list of calls that can be used for further processing or display in an application handling vehicle service calls.    /// </summary>
     private static void createCall()
     {
+        // Array of different call types
         TYPEOFCALL[] TypesOfCalls ={
     TYPEOFCALL.FLATTIRE, TYPEOFCALL.REDRIVE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.FLATTIRE, TYPEOFCALL.REDRIVE,
     TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY,
@@ -148,6 +195,7 @@ public static class Initialization
     TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY,
     TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.REDRIVE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.FLATTIRE,
     TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE};
+        // Array of call descriptions
         string[] callDescriptions =
 {
     "A man in his 40s is stuck at the side of the road with a serious flat tire due to a nail puncturing it.",
@@ -196,6 +244,7 @@ public static class Initialization
     "A woman in her 60s needs help starting her car after the battery died.",
     "A man in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car."
 };
+        // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
     "Rehov Ben Yehuda 15, Tel Aviv", "Rothschild Blvd 29, Tel Aviv", "Moshav Maor 14, Central District", "Ein Kerem 21, Jerusalem",
     "Kiryat Yovel 35, Jerusalem", "Ramat Eshkol 10, Jerusalem", "Hadar 12, Haifa", "Yigal Alon 56, Tel Aviv",
@@ -212,18 +261,21 @@ public static class Initialization
     "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon", "Rishonim 2, Haifa", "Netivot 19, Be'er Sheva",
     "Tzukim 7, Arad", "Giv'atayim 8, Tel Aviv", "Tamar 20, Dead Sea", "Acre 10, Northern District"
 };
+        // Array of latitude coordinates for each call
         double[] LatitudeOfCall ={
    -45.0, 32.0, -12.0, 58.0, 30.0, -21.0, 48.0, -39.0, 53.0, 25.0,
     -64.0, 71.0, -4.0, 34.0, 13.0, -51.0, -6.0, 41.0, 11.0, -73.0,
     35.0, -28.0, 61.0, 44.0, -45.0, 38.0, 27.0, -68.0, -1.0, 49.0,
     51.0, -33.0, 66.0, 22.0, -17.0, 54.0, -55.0, 60.0, 20.0, -9.0,
     69.0, -14.0, 36.0, 56.0, -3.0, 46.0, -22.0, 12.0, 54.0, 24.0 };
+        // Array of longitude coordinates for each call
         double[] LongitudeOfCall = {
     13.0, -119.0, 24.0, 89.0, -62.0, 31.0, -16.0, 79.0, -107.0, 46.0,
     -135.0, 73.0, -50.0, 13.0, -82.0, 10.0, 48.0, -68.0, 135.0, -23.0,
     40.0, -117.0, 107.0, -4.0, 64.0, 80.0, -131.0, -43.0, 141.0, 24.0,
     52.0, -74.0, 137.0, -115.0, -121.0, 48.0, -59.0, 17.0, -80.0, 115.0,
     -161.0, 71.0, 53.0, -10.0, 34.0, -127.0, 96.0, 26.0, -111.0, 7.0 };
+        // Array of timestamps representing the creation time of each call
         DateTime[] OpenTimeOfCalls =
 {
     new DateTime(2023, 12, 31, 23, 45, 12),
@@ -278,6 +330,7 @@ public static class Initialization
     new DateTime(2023, 12, 08, 17, 04, 23),
     new DateTime(2024, 01, 04, 22, 11, 45)
 };
+        // Array of timestamps representing the expected completion time of each call
         DateTime[] MaxTimeToFinishOfCalls ={
     new DateTime(2023, 12, 31, 04, 45, 12),  // +5 hours
     new DateTime(2023, 11, 22, 19, 35, 10),  // +5 hours
@@ -336,22 +389,29 @@ public static class Initialization
 
         foreach (var Description in callDescriptions)
         {
-
+            // Create a new Call object using the provided data from the arrays
             Call newC = new Call(0, TypesOfCalls[i], callDescriptions[i], FullAddressesOfCalls[i], LatitudeOfCall[i],
                 LongitudeOfCall[i], OpenTimeOfCalls[i], MaxTimeToFinishOfCalls[i]);
-
+            // Add the new call object to the data access layer
             s_dalCall!.Create(newC);
+            // Increment the index to move to the next set of data
             i++;
 
         }
 
 
     }
+    /// <summary>
+    /// This method reads all the call records and volunteer records from the data access layer.
+    /// It uses predefined arrays of treatment statuses, entry times, and end times to create `Assignment` objects.
+    /// Each assignment is created by pairing data from the call and volunteer lists at the same index and is then saved to the database.
+    /// </summary>
     private static void createAssignment()
     {
+        // Retrieve all call and volunteer records from the data access layer
         List<Call> CallIds = s_dalCall.ReadAll();
         List<Volunteer> VolunteerIds = s_dalVolunteer.ReadAll();
-
+        // Array of predefined treatment statuses for each assignment
         TYPEOFTREATMENT[] treatmentStatuses ={
     TYPEOFTREATMENT.SELFCANCELLATION,
     TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
@@ -404,6 +464,7 @@ public static class Initialization
     TYPEOFTREATMENT.SELFCANCELLATION,
     TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED};
+        // Array of entry times for treatment assignments
         DateTime[] ArrayOfEntryTimeForTreatment ={
     new DateTime(2023, 12, 31, 23, 55, 12),
     new DateTime(2023, 11, 22, 15, 05, 10),
@@ -457,6 +518,7 @@ public static class Initialization
     new DateTime(2023, 12, 08, 17, 50, 23),
     new DateTime(2024, 01, 04, 22, 35, 45)
 };
+        // Array of end times for treatment assignments
         DateTime[] ArrayOfEndTimeOfTreatment ={
     new DateTime(2024, 01, 01, 01, 55, 12),
     new DateTime(2023, 11, 22, 20, 25, 10),
@@ -513,20 +575,28 @@ public static class Initialization
 
 
         int i = 0;
-
+        // Iterate through the list of call records to create new assignments
         foreach (var call in CallIds)
+            foreach (var call in CallIds)
         {
-
-            Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
+                // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
+                Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
                 ArrayOfEntryTimeForTreatment[i], ArrayOfEndTimeOfTreatment[i],
                 treatmentStatuses[i]);
 
-
-            s_dalAssignment!.Create(newA);
+                // Save the new assignment to the data access layer
+                s_dalAssignment!.Create(newA);
             i++;
         }
     }
 
+
+    /// <summary>
+    /// This function accepts four data access layer (DAL) interfaces for volunteers, calls, assignments, and configuration.
+    /// It performs checks to ensure that the provided DAL objects are not null. If any of them are null, a `NullReferenceException` is thrown.
+    /// After that, the function resets the configuration values and deletes all records from the volunteer, call, and assignment lists.
+    /// Finally, it calls methods to create new lists of volunteers, calls, and assignments.
+    /// </summary>
     public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
     {
         s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");
@@ -542,6 +612,7 @@ public static class Initialization
 
 
 
+
         Console.WriteLine("Initializing Students list ...");
         createVolunteer();
         createCall();
@@ -549,22 +620,6 @@ public static class Initialization
 
 
     }
-
-    //int Id,
-    //TYPEOFCALL TypeOfCall,
-    //string? VerbalDescription = null,
-    //string FullAddress = "",
-    //double Latitude = 0,
-    //double Longitude = 0,
-    //DateTime OpenTime=default(DateTime) ,
-    //DateTime? MaxTimeToFinish = null
-
-
-
-
-
-
-
 
 
 
