@@ -35,6 +35,7 @@ public record Assignment
     /// A string containing the assignment's ID, related call ID, volunteer ID, 
     /// entry time, end time, and type of treatment.
     /// </returns>
+    
     public override string ToString()
     {
         return $"Assignment Id: {Id}, " +
