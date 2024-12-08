@@ -84,20 +84,20 @@ public static class Initialization
     "Hok 11, Haifa", "Geshem 15, Safed", "Horef 2, Jerusalem", "Heder 30, Caesarea",
     "Binyan 7, Ashdod", "Derech 56, Tel Aviv", "Geshem 22, Rehovot", "Yaar 13, Jerusalem",
     "Ner 23, Yokneam", "Kibush 5, Petah Tikva", "Mavak 19, Tel Aviv", "Hazon 9, Kiryat Ono" };
-        double[] LatitudeVolunteers = [
+        double[] LatitudeVolunteers = {
     -45.27, 32.41, -12.55, 57.80, 29.82, -20.94, 48.16, -38.69, 53.03, 24.91,
     -64.39, 71.12, -3.67, 33.56, 12.73, -51.30, -5.64, 40.58, 11.09, -72.96,
     34.88, -28.14, 61.29, 43.67, -44.51, 37.98, 27.16, -67.89, -1.34, 49.02,
     50.87, -32.54, 65.72, 21.55, -16.90, 54.03, -55.43, 60.44, 19.92, -9.35,
     68.78, -14.47, 36.09, 56.47, -3.25, 45.62, -21.88, 11.68, 53.94, 23.77
-];
-        double[] LongitudeVolunteers = [
+};
+        double[] LongitudeVolunteers = {
     13.45, -118.65, 23.53, 89.45, -62.34, 31.22, -15.78, 78.64, -106.83, 45.99,
     -134.56, 72.88, -50.32, 12.96, -82.42, 10.15, 47.72, -68.09, 134.54, -23.11,
     39.87, -116.97, 107.33, -3.77, 63.62, 80.11, -131.07, -42.55, 141.08, 24.39,
     51.61, -73.90, 137.32, -114.98, -120.60, 48.01, -59.37, 16.94, -80.23, 114.79,
     -160.50, 70.77, 53.20, -9.88, 34.06, -126.77, 96.23, 25.76, -110.89, 6.83
-];
+        };
         ROLE[] RolesVolunteers = { ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
@@ -212,18 +212,18 @@ public static class Initialization
     "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon", "Rishonim 2, Haifa", "Netivot 19, Be'er Sheva",
     "Tzukim 7, Arad", "Giv'atayim 8, Tel Aviv", "Tamar 20, Dead Sea", "Acre 10, Northern District"
 };
-        double[] LatitudeOfCall = [
+        double[] LatitudeOfCall ={
    -45.0, 32.0, -12.0, 58.0, 30.0, -21.0, 48.0, -39.0, 53.0, 25.0,
     -64.0, 71.0, -4.0, 34.0, 13.0, -51.0, -6.0, 41.0, 11.0, -73.0,
     35.0, -28.0, 61.0, 44.0, -45.0, 38.0, 27.0, -68.0, -1.0, 49.0,
     51.0, -33.0, 66.0, 22.0, -17.0, 54.0, -55.0, 60.0, 20.0, -9.0,
-    69.0, -14.0, 36.0, 56.0, -3.0, 46.0, -22.0, 12.0, 54.0, 24.0];
-        double[] LongitudeOfCall = [
+    69.0, -14.0, 36.0, 56.0, -3.0, 46.0, -22.0, 12.0, 54.0, 24.0 };
+        double[] LongitudeOfCall = {
     13.0, -119.0, 24.0, 89.0, -62.0, 31.0, -16.0, 79.0, -107.0, 46.0,
     -135.0, 73.0, -50.0, 13.0, -82.0, 10.0, 48.0, -68.0, 135.0, -23.0,
     40.0, -117.0, 107.0, -4.0, 64.0, 80.0, -131.0, -43.0, 141.0, 24.0,
     52.0, -74.0, 137.0, -115.0, -121.0, 48.0, -59.0, 17.0, -80.0, 115.0,
-    -161.0, 71.0, 53.0, -10.0, 34.0, -127.0, 96.0, 26.0, -111.0, 7.0];
+    -161.0, 71.0, 53.0, -10.0, 34.0, -127.0, 96.0, 26.0, -111.0, 7.0 };
         DateTime[] OpenTimeOfCalls =
 {
     new DateTime(2023, 12, 31, 23, 45, 12),

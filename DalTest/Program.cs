@@ -153,7 +153,7 @@ namespace DalTest
                  option = int.Parse(option1);
                  selectedOption = (SUBMENU)option;
 
-            } while (selectedOption != 0);
+            } while (selectedOption != SUBMENU.EXIT);
             
 
         }
@@ -557,7 +557,7 @@ namespace DalTest
                 s_dalCall.DeleteAll();
                 s_dalAssignment.DeleteAll();
 
-                
+                MainMenu();
 
 
 
