@@ -14,6 +14,7 @@ internal static class DataSource
     /// </summary>
     internal static List<DO.Call?> Calls { get; } = new();
     /// <summary>
+    /// 
     /// A list of assignments in the system. Each item in the list is an instance of Assignments or null.
     /// </summary>
     internal static List<DO.Assignment?> Assignments { get; } = new();
