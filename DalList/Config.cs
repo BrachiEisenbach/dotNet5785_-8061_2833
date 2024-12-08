@@ -12,7 +12,7 @@ internal static class Config
     /// </summary>
     internal const int StartCallId = 0;
     /// <summary>
-    /// The private static field that holds the current value for the call identifier.
+    /// The private static field that holds the next call ID and is initialized with the current call ID.
     /// </summary>
     private static int s_nextCallId = StartCallId;
     /// <summary>
@@ -22,11 +22,11 @@ internal static class Config
     internal static int S_NextCallId { get => s_nextCallId++; }
 
     /// <summary>
-    /// The starting value for the assignment identifier. This constant defines the smallest identifier for the assignment entity.
+    /// The starting value for the assignment identifier.
     /// </summary>
     internal const int StartAssignmentId = 0;
     /// <summary>
-    /// The private static field that holds the current value for the assignment identifier.
+    /// The private static field that holds the next assignment ID and is initialized with the current assignment ID.
     /// </summary>
     private static int s_nextAssignmentId = StartAssignmentId;
 

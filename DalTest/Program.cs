@@ -16,6 +16,10 @@ namespace DalTest
 
         //11111111111111
         //22222222222222
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeMenu"></param>
 
         private void SubMenu(string typeMenu)
         {
