@@ -59,7 +59,6 @@ public static class Initialization
     /// Ensures that the generated volunteer ID is unique.
     /// </summary>
 
-
     private static void createVolunteer()
     {
 
