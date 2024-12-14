@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// A class for implementing the volunteer's interface.
 /// </summary>
 
-public class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
     /// <summary>
     /// A function to add a newly created Volunteer to the Volunteer list.
@@ -36,7 +36,7 @@ public class VolunteerImplementation : IVolunteer
     {
         if (Read(id) == null)
         {
-            throw new Exception($" Volunteer with ID={id} does'nt exists");
+            throw new DalDoesNotExistException("Volunteer", $" Volunteer with ID={id} does'nt exists");
 
         }
         DataSource.Volunteers.RemoveAll(i => i.Id == id);
@@ -56,6 +56,8 @@ public class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">Volunteer ID.</param>
     /// <returns>Returns the requested assignment.</returns>
+    public Volunteer? Read(Func<Volunteer, bool> filter) =>
+    DataSource.Volunteers.FirstOrDefault(filter);
 
     public Volunteer? Read(int id)
     {
@@ -69,11 +71,16 @@ public class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <returns>Returns a list of data of the requested type.</returns>
 
-    public List<Volunteer> ReadAll()
-    {
-        List<Volunteer?> v_Volunteers = DataSource.Volunteers;
-        return new List<Volunteer?>(v_Volunteers);
-    }
+    //public List<Volunteer> ReadAll()
+    //{
+    //    List<Volunteer?> v_Volunteers = DataSource.Volunteers;
+    //    return new List<Volunteer?>(v_Volunteers);
+    //}
+
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
+   => filter == null
+        ? DataSource.Volunteers.Select(item => item)
+        : DataSource.Volunteers.Where(filter);
 
     /// <summary>
     /// A function to update an existing Volunteer by ID.
@@ -85,7 +92,7 @@ public class VolunteerImplementation : IVolunteer
     {
         if (Read(item.Id) == null)
         {
-            throw new Exception($" Volunteer with ID={item.Id} does'nt exists");
+            throw new DalDoesNotExistException("Volunteer", $" Volunteer with ID={item.Id} does'nt exists");
 
         }
         DataSource.Volunteers.RemoveAll(i => i.Id == item.Id);

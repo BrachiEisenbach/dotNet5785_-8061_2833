@@ -9,11 +9,11 @@ namespace DalTest
 {
     internal class Program
     {
-        private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
-        private static ICall? s_dalCall = new CallImplementation(); //stage 1
-        private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
-        private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
-
+        //private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
+        //private static ICall? s_dalCall = new CallImplementation(); //stage 1
+        //private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
+        //private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
+        static readonly IDal s_dal = new DalList(); //stage 2
         //11111111111111
         //22222222222222
         /// <summary>
@@ -41,11 +41,11 @@ namespace DalTest
                         switch (volChoise)
                         {
                             case 0: return;
-                            case 1: s_dalVolunteer.Create(newVolunteer()); break;
-                            case 2: Console.WriteLine (s_dalVolunteer.Read(readVol())); break;
+                            case 1: s_dal!.Volunteer.Create(newVolunteer()); break;
+                            case 2: Console.WriteLine (s_dal!.Volunteer.Read(readVol())); break;
                             case 3:
                                 {
-                                    List<Volunteer?> Volunteers = s_dalVolunteer.ReadAll();
+                                    List<Volunteer?> Volunteers = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
                                     foreach (var volunteer in Volunteers)
                                     {
                                         Console.WriteLine(volunteer);
@@ -53,9 +53,9 @@ namespace DalTest
 
                                 }
                                 break;
-                            case 4: s_dalVolunteer.Update(updateVol()); break;
-                            case 5: s_dalVolunteer.Delete(readVol()); break;
-                            case 6: s_dalVolunteer.DeleteAll(); break;
+                            case 4: s_dal!.Volunteer.Update(updateVol()); break;
+                            case 5: s_dal!.Volunteer.Delete(readVol()); break;
+                            case 6: s_dal!.Volunteer.DeleteAll(); break;
 
 
                         };
@@ -73,11 +73,11 @@ namespace DalTest
                         switch (callChoise)
                         {
                             case 0: return;
-                            case 1: s_dalCall.Create(newCall()); break;
-                            case 2: Console.WriteLine (s_dalCall.Read(readCall())); break;
+                            case 1: s_dal!.Call.Create(newCall()); break;
+                            case 2: Console.WriteLine (s_dal!.Call.Read(readCall())); break;
                             case 3:
                                 {
-                                    List<Call?> Calls = s_dalCall.ReadAll();
+                                    List<Call?> Calls = (List<Call?>)s_dal!.Call.ReadAll();
                                     foreach (var call in Calls)
                                     {
                                         Console.WriteLine(call);
@@ -85,9 +85,9 @@ namespace DalTest
 
                                 }
                                 break;
-                            case 4: s_dalCall.Update(updateCall()); break;
-                            case 5: s_dalCall.Delete(readCall()); break;
-                            case 6: s_dalCall.DeleteAll(); break;
+                            case 4: s_dal!.Call.Update(updateCall()); break;
+                            case 5: s_dal!.Call.Delete(readCall()); break;
+                            case 6: s_dal!.Call.DeleteAll(); break;
 
 
 
@@ -106,11 +106,11 @@ namespace DalTest
                         switch (assChoise)
                         {
                             case 0: return;
-                            case 1: s_dalAssignment.Create(newAssignment()); break;
-                            case 2: Console.WriteLine(s_dalAssignment.Read(readAss())); break;
+                            case 1: s_dal!.Assignment.Create(newAssignment()); break;
+                            case 2: Console.WriteLine(s_dal!.Assignment.Read(readAss())); break;
                             case 3:
                                 {
-                                    List<Assignment?> Assignments = s_dalAssignment.ReadAll();
+                                    List<Assignment?> Assignments = (List<Assignment?>)s_dal!.Assignment.ReadAll();
                                     foreach (var assignment in Assignments)
                                     {
                                         Console.WriteLine(assignment);
@@ -118,9 +118,9 @@ namespace DalTest
 
                                 }
                                 break;
-                            case 4: s_dalAssignment.Update(updateAss()); break;
-                            case 5: s_dalAssignment.Delete(readAss()); break;
-                            case 6: s_dalAssignment.DeleteAll(); break;
+                            case 4: s_dal!.Assignment.Update(updateAss()); break;
+                            case 5: s_dal!.Assignment.Delete(readAss()); break;
+                            case 6: s_dal!.Assignment.DeleteAll(); break;
 
 
                         };
@@ -134,7 +134,7 @@ namespace DalTest
         /// A function to display the main menu and refer to the appropriate sub-menu.
         /// </summary>
         /// 11111111
-        private void MainMenu()
+        private  void MainMenu()
         {
 
            
@@ -152,9 +152,34 @@ namespace DalTest
                     case SUBMENU.CALL: string c = "call"; SubMenu(c); break;
                     case SUBMENU.ASSIGNMENT: string a = "assignment"; SubMenu(a); break;
                     case SUBMENU.INITIALIZE:
-                        Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                        Initialization.Do(s_dal);
                         break;
-                    case SUBMENU.DISPLAY: displayData(); break;
+                    case SUBMENU.DISPLAY: //displayData();
+
+                        {
+                            Console.WriteLine("Displaying data...");
+                            List<Volunteer?> Volunteers = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
+                            List<Call?> Calls = (List<Call?>)s_dal!.Call.ReadAll();
+                            List<Assignment?> Assignments = (List<Assignment?>)s_dal!.Assignment.ReadAll();
+                            Console.WriteLine($"Number of Volunteers: {Volunteers.Count}");
+                            Console.WriteLine($"Number of Calls: {Calls.Count}");
+                            Console.WriteLine($"Number of Assignments: {Assignments.Count}");
+
+                            foreach (var volunteer in Volunteers)
+                            {
+                                Console.WriteLine(volunteer);
+                            }
+                            foreach (var call in Calls)
+                            {
+                                Console.WriteLine(call);
+                            }
+
+                            foreach (var assignment in Assignments)
+                            {
+                                Console.WriteLine(assignment);
+                            }
+                        }
+                                          break;
 
                     case SUBMENU.CONFIIG: configMenu(); break;
 
@@ -284,7 +309,7 @@ namespace DalTest
         private Volunteer updateVol()
         {
             int id = readVol();
-            Console.WriteLine(s_dalVolunteer.Read(id));
+            Console.WriteLine(s_dal!.Volunteer.Read(id));
             Console.WriteLine("enter new details");
             Volunteer upVol = newVolunteer();
             return upVol;
@@ -299,7 +324,7 @@ namespace DalTest
         private Assignment updateAss()
         {
             int id = readAss();
-            Console.WriteLine(s_dalAssignment.Read(id));
+            Console.WriteLine(s_dal!.Assignment.Read(id));
             Console.WriteLine("enter new details");
             Assignment upAss = newAssignment();
             return upAss;
@@ -315,7 +340,7 @@ namespace DalTest
         private Call updateCall()
         {
             int id = readCall();
-            Console.WriteLine(s_dalCall.Read(id));
+            Console.WriteLine(s_dal!.Call.Read(id));
             Console.WriteLine("enter new details");
             Call upCall = newCall();
             return upCall;
@@ -369,17 +394,17 @@ namespace DalTest
         /// </summary>
         private void displayTheTime()
         {
-            Console.WriteLine(s_dalConfig.Clock);
+            Console.WriteLine(s_dal!.Config.Clock);
         }
 
         private void addHours(int t)
         {
-            s_dalConfig.Clock = s_dalConfig.Clock.AddHours(t);
+            s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(t);
         }
 
         private void addMinutes(int t)
         {
-            s_dalConfig.Clock = s_dalConfig.Clock.AddMinutes(t);
+            s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(t);
         }
         private void aNewValueForSomeVariable()
         {
@@ -399,7 +424,7 @@ namespace DalTest
                         if (DateTime.TryParse(input, out dt))
                         {
 
-                            s_dalConfig.Clock = dt;
+                            s_dal!.Config.Clock = dt;
 
                         }
                         else
@@ -418,7 +443,7 @@ namespace DalTest
 
                         if (TimeSpan.TryParse(input, out ts))
                         {
-                            s_dalConfig.RiskRange = ts;
+                            s_dal!.Config.RiskRange = ts;
 
                         }
                         else
@@ -439,13 +464,13 @@ namespace DalTest
             {
                 case 0:
                     {
-                        Console.WriteLine(s_dalConfig.Clock);
+                        Console.WriteLine(s_dal!.Config.Clock);
 
                     }
                     break;
                 case 1:
                     {
-                        Console.WriteLine(s_dalConfig.RiskRange);
+                        Console.WriteLine(s_dal!.Config.RiskRange);
                     }
                     break;
             }
@@ -453,14 +478,14 @@ namespace DalTest
         }
         private void resetVariableOfConfig()
         {
-            s_dalConfig.Reset();
+            s_dal!.Config.Reset();
         }
         private void resetDataAndConfig()
         {
-            s_dalVolunteer.DeleteAll();
-            s_dalCall.DeleteAll();
-            s_dalAssignment.DeleteAll();
-            s_dalConfig.Reset();
+            s_dal!.Volunteer.DeleteAll();
+            s_dal!.Call.DeleteAll();
+            s_dal!.Assignment.DeleteAll();
+            s_dal!.Config.Reset();
 
         }
 
@@ -473,9 +498,9 @@ namespace DalTest
 
         private void displayData()
         {
-            List<Volunteer?> Volunteers = s_dalVolunteer.ReadAll();
-            List<Call?> Calls = s_dalCall.ReadAll();
-            List<Assignment?> Assignments = s_dalAssignment.ReadAll();
+            List<Volunteer?> Volunteers = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
+            List<Call?> Calls = (List<Call?>)s_dal!.Call.ReadAll();
+            List<Assignment?> Assignments = (List<Assignment?>) s_dal!.Assignment.ReadAll();
             foreach (var volunteer in Volunteers)
             {
                 Console.WriteLine(volunteer);
@@ -612,21 +637,23 @@ namespace DalTest
         {
             try
             {
-                Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
 
-                s_dalConfig.Reset();
-                s_dalVolunteer.DeleteAll();
-                s_dalCall.DeleteAll();
-                s_dalAssignment.DeleteAll();
+                Initialization.Do(s_dal);
+                //s_dal!.Volunteer.DeleteAll();
+                //s_dal!.Call.DeleteAll();
+                //s_dal!.Assignment.DeleteAll();
+                //s_dal!.Config.Reset();
 
-                MainMenu();
-
-
-
+                //s_dal.ResetDB();//stage 2
+                Program program = new Program();
+                program.MainMenu();
+                //MainMenu();
 
 
             }
-            catch (Exception ex) {  };
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            };
 
         }
     }

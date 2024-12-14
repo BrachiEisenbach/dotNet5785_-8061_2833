@@ -15,35 +15,44 @@ using System.Collections.Generic;
 
 public static class Initialization
 {
+
+    //stage 1:
     /// <summary>
     /// Private static field for storing the volunteer data access layer (DAL) interface.
     /// </summary>
-    private static IVolunteer? s_dalVolunteer;
+    //private static IVolunteer? s_dalVolunteer;
 
     /// <summary>
     /// Private static field for storing the call data access layer (DAL) interface.
     /// </summary>
-    private static ICall? s_dalCall;
+    //private static ICall? s_dalCall;
 
     /// <summary>
     /// Private static field for storing the assignment data access layer (DAL) interface.
     /// </summary>
-    private static IAssignment? s_dalAssignment;
+    //private static IAssignment? s_dalAssignment;
 
     /// <summary>
     /// Private static field for storing the configuration data access layer (DAL) interface.
     /// </summary>
-    private static IConfig? s_dalConfig;
+    //private static IConfig? s_dalConfig;
 
     /// <summary>
     /// Private static field for storing a list of volunteer objects.
     /// </summary>
-    private static List<Volunteer>? VolunteersArray;
+    //private static List<Volunteer>? VolunteersArray;
+
+    //stage 2:
 
     /// <summary>
     /// Random number generator for generating random data.
     /// </summary>
     private static readonly Random s_rand = new();
+
+
+    private static IDal? s_dal;
+
+
 
     /// <summary>
     /// Method for creating volunteer instances and populating them with predefined data.
@@ -53,6 +62,7 @@ public static class Initialization
 
     private static void createVolunteer()
     {
+
         //the data was written by AI
         // Array containing names of volunteers.
         string[] FullNamesVolunteers = { "John Doe", "Jane Smith", "Michael Johnson", "Emily Davis", "Chris Brown",
@@ -157,7 +167,7 @@ public static class Initialization
             // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
-            while (s_dalVolunteer!.Read(id) != null);
+            while (s_dal!.Volunteer!.Read(id) != null);
 
             // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
@@ -171,7 +181,7 @@ public static class Initialization
                 RolesVolunteers[i], Active, MaxDistance);
 
             // Create the volunteer in the DAL.
-            s_dalVolunteer!.Create(newV);
+            s_dal!.Volunteer!.Create(newV);
 
             // Increment the index for the next iteration.
             i++;
@@ -393,7 +403,7 @@ public static class Initialization
             Call newC = new Call(0, TypesOfCalls[i], callDescriptions[i], FullAddressesOfCalls[i], LatitudeOfCall[i],
                 LongitudeOfCall[i], OpenTimeOfCalls[i], MaxTimeToFinishOfCalls[i]);
             // Add the new call object to the data access layer
-            s_dalCall!.Create(newC);
+            s_dal!.Call!.Create(newC);
             // Increment the index to move to the next set of data
             i++;
 
@@ -409,8 +419,8 @@ public static class Initialization
     private static void createAssignment()
     {
         // Retrieve all call and volunteer records from the data access layer
-        List<Call> CallIds = s_dalCall.ReadAll();
-        List<Volunteer> VolunteerIds = s_dalVolunteer.ReadAll();
+        List<Call> CallIds = (List<Call?>)s_dal!.Call.ReadAll();
+        List<Volunteer> VolunteerIds = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
         // Array of predefined treatment statuses for each assignment
         TYPEOFTREATMENT[] treatmentStatuses ={
     TYPEOFTREATMENT.SELFCANCELLATION,
@@ -585,7 +595,7 @@ public static class Initialization
                 treatmentStatuses[i]);
 
                 // Save the new assignment to the data access layer
-                s_dalAssignment!.Create(newA);
+                s_dal!.Assignment!.Create(newA);
             i++;
         }
     }
@@ -597,29 +607,28 @@ public static class Initialization
     /// After that, the function resets the configuration values and deletes all records from the volunteer, call, and assignment lists.
     /// Finally, it calls methods to create new lists of volunteers, calls, and assignments.
     /// </summary>
-    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+    public static void Do(IDal dal)
     {
-        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");
+        //s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
+        //s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
+        //s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
+        //s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
         Console.WriteLine("Reset Configuration values and List values...");
 
-        s_dalConfig.Reset();
-        s_dalVolunteer.DeleteAll();
-        s_dalCall.DeleteAll();
-        s_dalAssignment.DeleteAll();
+        //s_dalConfig.Reset();//stage 1
+        //s_dalVolunteer.DeleteAll();//stage 1
+        //s_dalCall.DeleteAll();//stage 1
+        //s_dalAssignment.DeleteAll();//stage 1
 
-
-
-
-
+        //s_dal.ResetDB();//stage 2
 
         Console.WriteLine("Initializing Students list ...");
         createVolunteer();
+        Console.WriteLine("I am done vol");
         createCall();
         createAssignment();
-
+        Console.WriteLine("I am done");
 
     }
 

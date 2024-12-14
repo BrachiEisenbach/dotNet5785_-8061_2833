@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// A class for implementing the call's interface.
 /// </summary>
 
-public class CallImplementation : ICall
+internal class CallImplementation : ICall
 {
 
     /// <summary>
@@ -32,7 +32,7 @@ public class CallImplementation : ICall
     public void Delete(int id)
     {
         if (Read(id) == null) {
-            throw new Exception($" Call with this ID={id} not exists ");
+            throw new DalDoesNotExistException("Call", $" Call with this ID={id} not exists ");
 
         }
 
@@ -53,6 +53,8 @@ public class CallImplementation : ICall
     /// </summary>
     /// <param name="id">call ID.</param>
     /// <returns>Returns the requested call.</returns>
+    public Call? Read(Func<Call, bool> filter) =>
+    DataSource.Calls.FirstOrDefault(filter);
 
     public Call? Read(int id)
     {
@@ -65,12 +67,10 @@ public class CallImplementation : ICall
     /// </summary>
     /// <returns>Returns a list of data of the requested type.</returns>
 
-    public List<Call> ReadAll()
-    {
-        List<Call?> c_Calls = DataSource.Calls;
-        return new List<Call?>(c_Calls);
-    }
-
+    public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
+           => filter == null
+                ? DataSource.Calls.Select(item => item)
+                : DataSource.Calls.Where(filter);
     /// <summary>
     /// A function to update an existing call by ID.
     /// </summary>
@@ -81,7 +81,7 @@ public class CallImplementation : ICall
     {
         if (Read(item.Id) == null)
         {
-            throw new Exception($" Call with ID={item.Id} not exists");
+            throw new DalDoesNotExistException("Call", $" Call with ID={item.Id} not exists");
 
         }
         DataSource.Calls.RemoveAll(i => i.Id == item.Id);

@@ -19,7 +19,7 @@ using System;
 /// Resets the system's configuration to its default state, including resetting the clock and risk range.
 /// </param>
 
-public class ConfigImplementation:IConfig
+internal class ConfigImplementation:IConfig
 {
 
     /// <summary>

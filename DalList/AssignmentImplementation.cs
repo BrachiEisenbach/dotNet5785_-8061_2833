@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// <summary>
 /// A class for implementing the assignment's interface.
 /// </summary>
-public class AssignmentImplementation : IAssignment
+internal class AssignmentImplementation : IAssignment
 {
     /// <summary>
     /// A function to add a newly created assignment to the assignment list.
@@ -29,7 +29,7 @@ public class AssignmentImplementation : IAssignment
     {
         if (Read(id) == null)
         {
-            throw new Exception($" Call with this ID={id} not exists ");
+            throw new DalDoesNotExistException("Assignment", $" Call with this ID={id} not exists ");
 
         }
 
@@ -49,21 +49,37 @@ public class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">assignment ID.</param>
     /// <returns>Returns the requested assignment.</returns>
+    //public Assignment? Read(int id)
+    //{
+    //    return DataSource.Assignments.Find(item => item.Id == id);//stage 1
+
+    //}
+
+    public Assignment? Read(Func<Assignment, bool> filter)=>
+        DataSource.Assignments.FirstOrDefault(filter);
     public Assignment? Read(int id)
     {
-        return DataSource.Assignments.Find(item => item.Id == id);
+        return DataSource.Assignments.FirstOrDefault(item => item.Id == id); //stage 2
 
     }
+
+
 
     /// <summary>
     /// A function that returns a list of all assignment type data present in memory.
     /// </summary>
     /// <returns>Returns a list of data of the requested type.</returns>
-    public List<Assignment> ReadAll()
-    {
-        List<Assignment?> c_Assignments = DataSource.Assignments;
-        return new List<Assignment?>(c_Assignments);
-    }
+    //public List<Assignment> ReadAll()
+    //{
+    //    List<Assignment?> c_Assignments = DataSource.Assignments;
+    //    return new List<Assignment?>(c_Assignments);
+    //}
+
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
+       => filter == null
+            ? DataSource.Assignments.Select(item => item)
+            : DataSource.Assignments.Where(filter);
+
 
     /// <summary>
     /// A function to update an existing assignment by ID.
@@ -74,7 +90,7 @@ public class AssignmentImplementation : IAssignment
     {
         if (Read(item.Id) == null)
         {
-            throw new Exception($" Call with ID={item.Id} not exists");
+            throw new DalDoesNotExistException("Assignment", $" Call with ID={item.Id} not exists");
 
         }
         DataSource.Assignments.RemoveAll(i => i.Id == item.Id);
