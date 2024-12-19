@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+	<NextCallId>0</NextCallId>
+	<NextAssignment>0</NextAssignment>
+	<Clock>41</Clock>
+	<RiskRange>10</RiskRange>
+
 </config>

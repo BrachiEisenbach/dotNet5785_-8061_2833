@@ -490,8 +490,6 @@ namespace DalTest
         }
 
 
-
-
         /// <summary>
         /// A function to display all the information from the memory to the user.
         /// </summary>
