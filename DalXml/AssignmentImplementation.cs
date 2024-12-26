@@ -10,15 +10,17 @@ internal class AssignmentImplementation : IAssignment
 {
     static Assignment getAssignment(XElement s)
     {
-        return new DO.Assignment()
-        {
-            Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
-            CallId = s.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
-            VolunteerId = s.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
-            EntryTimeForTreatment = (DateTime)s.Element("EntryTimeForTreatment"),
-            EndTimeOfTreatment = (DateTime)s.Element("EndTimeOfTreatment"),
-            TypeOfTreatment = s.ToDateTimeNullable<EndTimeOfTreatment>("TypeOfTreatment") ?? EndTimeOfTreatment.
-        };
+        throw new NotImplementedException();
+
+        //return new DO.Assignment()
+        //{
+        //    Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
+        //    CallId = s.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
+        //    VolunteerId = s.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
+        //    EntryTimeForTreatment = (DateTime)s.Element("EntryTimeForTreatment"),
+        //    EndTimeOfTreatment = (DateTime)s.Element("EndTimeOfTreatment"),
+        //    TypeOfTreatment = TYPEOFTREATMENT.TREATE// s.ToDateTimeNullable<EndTimeOfTreatment>("TypeOfTreatment") ?? EndTimeOfTreatment.
+        //};
     }
 
     public void Create(Assignment item)

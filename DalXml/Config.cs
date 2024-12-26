@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//Test push from home
 namespace Dal
 {
     internal static class Config
@@ -35,6 +35,7 @@ namespace Dal
 
         internal static void Reset()
         {
+
             NextCallId = 0;
             NextAssignment = 0;
             Clock = DateTime.Now;
