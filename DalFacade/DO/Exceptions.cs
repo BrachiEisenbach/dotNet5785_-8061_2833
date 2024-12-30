@@ -9,7 +9,7 @@ public class DalDoesNotExistException(string name, string? massage) : Exception(
 }
 
 [Serializable]
-public class DalAlreadyExisisttException(string name, string? massage) : Exception(massage)
+public class DalAlreadyExistException(string name, string? massage) : Exception(massage)
 {
     public string EntityName { get; set; } = name;
 }

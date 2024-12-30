@@ -90,7 +90,7 @@ internal class AssignmentImplementation : IAssignment
     {
         if (Read(item.Id) == null)
         {
-            throw new DalDoesNotExistException("Assignment", $" Call with ID={item.Id} not exists");
+            throw new DalDoesNotExistException("Assignment", $" Assignment with ID={item.Id} not exists");
 
         }
         DataSource.Assignments.RemoveAll(i => i.Id == item.Id);
