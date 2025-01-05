@@ -38,8 +38,8 @@ namespace Dal
 
             NextCallId = 0;
             NextAssignmentId = 0;
-            Clock = DateTime.Now;
-          
+            Clock = default(DateTime);
+            RiskRange = default(TimeSpan);
         }
 
 

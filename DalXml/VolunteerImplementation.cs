@@ -38,8 +38,7 @@ internal class VolunteerImplementation : IVolunteer
     {
         List<Volunteer> volunteers = XMLTools.LoadListFromXMLSerializer<Volunteer>(Config.s_volunteers_xml);
 
-        return volunteers.Find(it => it.Id == id)
-               ?? throw new DalDoesNotExistException("Volunteer", $"Volunteer with ID={id} does not exist");
+        return volunteers.Find(it => it.Id == id);
     }
 
     public Volunteer? Read(Func<Volunteer, bool> filter)

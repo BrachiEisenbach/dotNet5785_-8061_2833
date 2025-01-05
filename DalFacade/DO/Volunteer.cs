@@ -39,7 +39,10 @@ public record Volunteer
 
 
 )
-{
+{ 
+        public Volunteer() : this(0, "", "", "", null, null, null, null, ROLE.VOLUNTEER, false, null, TYPEOFDISTSANCE.AERIALDISTANCE) { }
+
+
     public override string ToString()
     {
         return $"Id: {Id}, Full Name: {FullName}, Phone: {Phone}, Email: {Email}, " +

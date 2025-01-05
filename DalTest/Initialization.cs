@@ -73,8 +73,8 @@ public static class Initialization
                        "William Wright", "Megan Nelson", "Jack Brown", "Madison Roberts", "Jacob Carter",
                        "Sophia Brooks", "Jackson Scott", "Grace Turner", "Mason Miller", "Liam King",
                        "Charlotte Walker", "Daniel Evans", "Ella Green", "Oliver Evans", "Harper Lewis",
-                       "Benjamin Lee", "Victoria Allen", "James White", "Natalie Scott", "Evan Phillips",
-                       "Zoe Stewart", "Dylan Johnson" };
+                       "Benjamin Lee", "Victoria Allen", "James White", "Natalie Scott", "Evan Phillips"
+                       };
         // Array containing phone numbers of volunteers.
         string[] PhonesVolunteers = { "052-1234567", "053-2345678", "054-3456789", "055-4567890", "056-5678901",
                     "057-6789012", "058-7890123", "059-8901234", "050-9876543", "051-8765432",
@@ -85,7 +85,7 @@ public static class Initialization
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
                     "057-2109876", "058-1098765", "059-0987654", "050-9876543", "051-8765432",
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
-                    "057-2109876", "058-1098765", "059-0987654" };
+                    "057-2109876", "058-1098765", "059-0987654" ,"054-0988684","052-9989654"};
         // Array containing email addresses of volunteers.
         string[] EmailsVolunteers = { "john.doe@example.com", "jane.smith@example.com", "michael.johnson@example.com",
                     "emily.davis@example.com", "chris.brown@example.com", "jessica.taylor@example.com",
@@ -103,7 +103,7 @@ public static class Initialization
                     "liam.king@example.com", "charlotte.walker@example.com", "daniel.evans@example.com",
                     "ella.green@example.com", "oliver.evans@example.com", "harper.lewis@example.com",
                     "benjamin.lee@example.com", "victoria.allen@example.com", "james.white@example.com",
-                    "natalie.scott@example.com", "evan.phillips@example.com", "zoe.stewart@example.com" };
+                    "natalie.scott@example.com", "evan.phillips@example.com" };
         // Array containing passwords for volunteers.
         string[] PasswordsVolunteers = { "password123", "abc123", "qwerty123", "letmein2024", "welcome1",
                        "1234abcd", "iloveyou99", "admin123", "secretpass", "letmein22",
@@ -129,8 +129,7 @@ public static class Initialization
     "Boker 45, Eilat", "Masila 32, Modiin", "Yarden 3, Nahariya", "Ayin 50, Migdal HaEmek",
     "Dekel 99, Petah Tikva", "Kfar 8, Gedera", "Nof 3, Herzliya", "Geva 60, Ashkelon",
     "Hok 11, Haifa", "Geshem 15, Safed", "Horef 2, Jerusalem", "Heder 30, Caesarea",
-    "Binyan 7, Ashdod", "Derech 56, Tel Aviv", "Geshem 22, Rehovot", "Yaar 13, Jerusalem",
-    "Ner 23, Yokneam", "Kibush 5, Petah Tikva", "Mavak 19, Tel Aviv", "Hazon 9, Kiryat Ono" };
+    "Binyan 7, Ashdod", "Derech 56, Tel Aviv" };
         // Array containing latitude coordinates for volunteer addresses.
         double[] LatitudeVolunteers = {
     -45.27, 32.41, -12.55, 57.80, 29.82, -20.94, 48.16, -38.69, 53.03, 24.91,
@@ -156,6 +155,7 @@ public static class Initialization
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
+    ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER};
         int i = 0;
 
@@ -166,7 +166,7 @@ public static class Initialization
             // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
-            while (s_dal!.Volunteer!.Read(id) != null);
+            while (s_dal!.Volunteer.Read(id) != null);
 
             // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
@@ -180,7 +180,7 @@ public static class Initialization
                 RolesVolunteers[i], Active, MaxDistance);
 
             // Create the volunteer in the DAL.
-            s_dal!.Volunteer!.Create(newV);
+            s_dal!.Volunteer.Create(newV);
 
             // Increment the index for the next iteration.
             i++;
@@ -393,6 +393,14 @@ public static class Initialization
     new DateTime(2023, 12, 08, 22, 04, 23),  // +5 hours
     new DateTime(2024, 01, 04, 03, 11, 45)   // +5 hours
 };
+        Console.WriteLine(TypesOfCalls.Length);
+        Console.WriteLine(callDescriptions.Length);
+        Console.WriteLine(FullAddressesOfCalls.Length);
+        Console.WriteLine(LatitudeOfCall.Length);
+        Console.WriteLine(LongitudeOfCall.Length);
+        Console.WriteLine(OpenTimeOfCalls.Length);
+        Console.WriteLine(MaxTimeToFinishOfCalls.Length);
+  
 
         int i = 0;
 
@@ -402,7 +410,7 @@ public static class Initialization
             Call newC = new Call(0, TypesOfCalls[i], callDescriptions[i], FullAddressesOfCalls[i], LatitudeOfCall[i],
                 LongitudeOfCall[i], OpenTimeOfCalls[i], MaxTimeToFinishOfCalls[i]);
             // Add the new call object to the data access layer
-            s_dal!.Call!.Create(newC);
+            s_dal!.Call.Create(newC);
             // Increment the index to move to the next set of data
             i++;
 
@@ -594,7 +602,7 @@ public static class Initialization
                 treatmentStatuses[i]);
 
                 // Save the new assignment to the data access layer
-                s_dal!.Assignment!.Create(newA);
+                s_dal!.Assignment.Create(newA);
             i++;
         }
     }
