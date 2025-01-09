@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Channels;
 
@@ -16,7 +17,7 @@ namespace DalTest
         
         //static readonly IDal s_dal = new DalList(); //stage 2
         static readonly IDal s_dal = new DalXml(); //stage 3
-        
+       
         /// <summary>
         /// 
         /// </summary>
@@ -111,7 +112,7 @@ namespace DalTest
                             case 2: Console.WriteLine(s_dal!.Assignment.Read(readAss())); break;
                             case 3:
                                 {
-                                    List<Assignment?> Assignments = (List<Assignment?>)s_dal!.Assignment.ReadAll();
+                                    List<Assignment> Assignments = s_dal!.Assignment.ReadAll().ToList();
                                     foreach (var assignment in Assignments)
                                     {
                                         Console.WriteLine(assignment);
@@ -155,13 +156,13 @@ namespace DalTest
                     case SUBMENU.INITIALIZE:
                         Initialization.Do(s_dal);
                         break;
-                    case SUBMENU.DISPLAY: //displayData();
+                    case SUBMENU.DISPLAY: 
 
                         {
                             Console.WriteLine("Displaying data...");
                             List<Volunteer?> Volunteers = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
                             List<Call?> Calls = (List<Call?>)s_dal!.Call.ReadAll();
-                            List<Assignment?> Assignments = (List<Assignment?>)s_dal!.Assignment.ReadAll();
+                            List<Assignment?> Assignments = s_dal!.Assignment.ReadAll().ToList();
                             Console.WriteLine($"Number of Volunteers: {Volunteers.Count}");
                             Console.WriteLine($"Number of Calls: {Calls.Count}");
                             Console.WriteLine($"Number of Assignments: {Assignments.Count}");
@@ -514,7 +515,7 @@ namespace DalTest
                 Console.WriteLine(assignment);
             }
 
-
+           
         }
 
         /// <summary>
@@ -527,10 +528,10 @@ namespace DalTest
 
 
 
-            Console.WriteLine("type ID:");
-            string idCR = (Console.ReadLine());
-            if (idCR == "") { throw new Exception(" empty dateil"); }
-            int Id = int.Parse(idCR);
+            //Console.WriteLine("type ID:");
+            //string idCR = (Console.ReadLine());
+            //if (idCR == "") { throw new Exception(" empty dateil"); }
+            //int Id = int.Parse(idCR);
 
             Console.WriteLine("type of call (0: FLATTIRE, 1: CARBURGLARY, 2: REDRIVE):");
             TYPEOFCALL TypeOfCall;
@@ -570,7 +571,7 @@ namespace DalTest
             string maxTimeToFinishInput = Console.ReadLine();
             DateTime? MaxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeToFinishInput) ? null : DateTime.Parse(maxTimeToFinishInput);
 
-            Call call = new Call(Id, TypeOfCall, VerbalDescription, FullAddress, Latitude, Longitude, OpenTime, MaxTimeToFinish);
+            Call call = new Call(0, TypeOfCall, VerbalDescription, FullAddress, Latitude, Longitude, OpenTime, MaxTimeToFinish);
 
             Console.WriteLine(call);
             return call;
@@ -637,7 +638,7 @@ namespace DalTest
             try
             {
 
-                Initialization.Do(s_dal);
+                //Initialization.Do(s_dal);
                 //s_dal!.Volunteer.DeleteAll();
                 //s_dal!.Call.DeleteAll();
                 //s_dal!.Assignment.DeleteAll();
