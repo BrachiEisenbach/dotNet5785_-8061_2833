@@ -8,22 +8,24 @@ using System.Threading.Tasks;
 namespace Dal;
 using DalApi;
 
-    sealed public class DalList : IDal
+sealed internal class DalList : IDal
+{
+    public static IDal Instance { get; } = new DalList();
+    private DalList() { }
+    public IVolunteer Volunteer => new VolunteerImplementation();
+
+    public ICall Call => new CallImplementation();
+
+    public IAssignment Assignment => new AssignmentImplementation();
+
+    public IConfig Config => new ConfigImplementation();
+
+    public void ResetDB()
     {
-        public IVolunteer Volunteer =>  new VolunteerImplementation();
-
-        public ICall Call => new CallImplementation();
-
-        public IAssignment Assignment => new AssignmentImplementation();
-
-        public IConfig Config => new ConfigImplementation();
-
-        public void ResetDB()
-        {
-            Config.Reset();
-            Volunteer.DeleteAll();
-            Call.DeleteAll();
-            Assignment.DeleteAll();
-        }
+        Config.Reset();
+        Volunteer.DeleteAll();
+        Call.DeleteAll();
+        Assignment.DeleteAll();
     }
+}
 

@@ -16,8 +16,9 @@ namespace DalTest
         //private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
         
         //static readonly IDal s_dal = new DalList(); //stage 2
-        static readonly IDal s_dal = new DalXml(); //stage 3
-       
+        //static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
+
         /// <summary>
         /// 
         /// </summary>
@@ -154,7 +155,9 @@ namespace DalTest
                     case SUBMENU.CALL: string c = "call"; SubMenu(c); break;
                     case SUBMENU.ASSIGNMENT: string a = "assignment"; SubMenu(a); break;
                     case SUBMENU.INITIALIZE:
-                        Initialization.Do(s_dal);
+                        //Initialization.Do(s_dal);//stage 2
+                        Initialization.Do();
+
                         break;
                     case SUBMENU.DISPLAY: 
 

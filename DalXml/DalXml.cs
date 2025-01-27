@@ -1,4 +1,5 @@
 ﻿using DalApi;
+using System.Diagnostics;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -7,8 +8,12 @@
 
 namespace Dal
 {
-    sealed public class DalXml : IDal
+    sealed internal class DalXml : IDal
     {
+        public static IDal Instance { get; } = new DalXml();
+        private DalXml() { }
+
+
         public IVolunteer Volunteer => new VolunteerImplementation();
 
         public ICall Call => new CallImplementation();
