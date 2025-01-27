@@ -157,6 +157,7 @@ public static class Initialization
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER};
+
         int i = 0;
 
         // Iterate over the list of full names to create volunteer instances.
@@ -166,8 +167,7 @@ public static class Initialization
             // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
-            while (s_dal!.Volunteer.Read(id) != null);
-
+            while (s_dal!.Volunteer.Read(id) != null) ;
             // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
             string? FullAddress = FullAddressesVolunteers[i];
@@ -203,7 +203,7 @@ public static class Initialization
     TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE,
     TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY,
     TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.REDRIVE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.FLATTIRE,
-    TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE};
+    TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE,TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE};
         // Array of call descriptions
         string[] callDescriptions =
 {
@@ -251,7 +251,13 @@ public static class Initialization
     "A young man in his 20s calls for help because his car's clutch system is malfunctioning. He needs urgent assistance.",
     "A man in his 50s calls for help after his car won't start due to an issue with the electrical system.",
     "A woman in her 60s needs help starting her car after the battery died.",
-    "A man in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car."
+    "A man in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car.",
+    "A woman in his 40s reports that his car won't start due to an issue with the ignition system. He's stuck on the side of the road.",
+    "A old man in his 20s calls for help because his car's clutch system is malfunctioning. He needs urgent assistance.",
+    "A old woman in his 50s calls for help after his car won't start due to an issue with the electrical system.",
+    "A woman with her husband in her 60s needs help starting her car after the battery died.",
+    "A child in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car."
+
 };
         // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
@@ -267,8 +273,7 @@ public static class Initialization
     "Sharon 30, Kfar Saba", "Hagolan 12, Ashdod", "Oded 45, Petah Tikva", "Tchernichovsky 30, Tel Aviv",
     "Lev Ha'ir 19, Tel Aviv", "Zohar 14, Herzliya", "Herzliya Pituach 6, Herzliya", "Negev 24, Be'er Sheva",
     "Rehovot 11, Rehovot", "Zanvil 3, Petah Tikva", "Jabotinsky 45, Ramat Gan", "Sderot 12, Kiryat Gat",
-    "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon", "Rishonim 2, Haifa", "Netivot 19, Be'er Sheva",
-    "Tzukim 7, Arad", "Giv'atayim 8, Tel Aviv", "Tamar 20, Dead Sea", "Acre 10, Northern District"
+    "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon"
 };
         // Array of latitude coordinates for each call
         double[] LatitudeOfCall ={
@@ -336,8 +341,7 @@ public static class Initialization
     new DateTime(2023, 08, 30, 21, 49, 18),
     new DateTime(2024, 03, 07, 17, 56, 28),
     new DateTime(2023, 07, 05, 12, 12, 12),
-    new DateTime(2023, 12, 08, 17, 04, 23),
-    new DateTime(2024, 01, 04, 22, 11, 45)
+    new DateTime(2023, 12, 08, 17, 04, 23)
 };
         // Array of timestamps representing the expected completion time of each call
         DateTime[] MaxTimeToFinishOfCalls ={
@@ -390,17 +394,9 @@ public static class Initialization
     new DateTime(2023, 08, 30, 02, 49, 18),  // +5 hours
     new DateTime(2024, 03, 07, 22, 56, 28),  // +5 hours
     new DateTime(2023, 07, 05, 17, 12, 12),  // +5 hours
-    new DateTime(2023, 12, 08, 22, 04, 23),  // +5 hours
-    new DateTime(2024, 01, 04, 03, 11, 45)   // +5 hours
-};
-        Console.WriteLine(TypesOfCalls.Length);
-        Console.WriteLine(callDescriptions.Length);
-        Console.WriteLine(FullAddressesOfCalls.Length);
-        Console.WriteLine(LatitudeOfCall.Length);
-        Console.WriteLine(LongitudeOfCall.Length);
-        Console.WriteLine(OpenTimeOfCalls.Length);
-        Console.WriteLine(MaxTimeToFinishOfCalls.Length);
+    new DateTime(2023, 12, 08, 22, 04, 23) // +5 hours
   
+};
 
         int i = 0;
 
@@ -479,8 +475,7 @@ public static class Initialization
     TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
-    TYPEOFTREATMENT.CANCELLATIONHASEXPIRED};
+    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR};
         // Array of entry times for treatment assignments
         DateTime[] ArrayOfEntryTimeForTreatment ={
     new DateTime(2023, 12, 31, 23, 55, 12),
@@ -532,8 +527,7 @@ public static class Initialization
     new DateTime(2023, 08, 30, 21, 25, 18),
     new DateTime(2024, 03, 07, 18, 15, 28),
     new DateTime(2023, 07, 05, 12, 47, 12),
-    new DateTime(2023, 12, 08, 17, 50, 23),
-    new DateTime(2024, 01, 04, 22, 35, 45)
+    new DateTime(2023, 12, 08, 17, 50, 23)
 };
         // Array of end times for treatment assignments
         DateTime[] ArrayOfEndTimeOfTreatment ={
@@ -586,23 +580,20 @@ public static class Initialization
     new DateTime(2023, 08, 30, 02, 55, 18),
     new DateTime(2024, 03, 07, 23, 00, 28),
     new DateTime(2023, 07, 05, 17, 32, 12),
-    new DateTime(2023, 12, 08, 22, 50, 23),
-    new DateTime(2024, 01, 04, 03, 45, 45)};
-
-
+    new DateTime(2023, 12, 08, 22, 50, 23) };
 
         int i = 0;
         // Iterate through the list of call records to create new assignments
         foreach (var call in CallIds)
-            
-        {
-                // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
-                Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
-                ArrayOfEntryTimeForTreatment[i], ArrayOfEndTimeOfTreatment[i],
-                treatmentStatuses[i]);
 
-                // Save the new assignment to the data access layer
-                s_dal!.Assignment.Create(newA);
+        {
+            // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
+            Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
+            ArrayOfEntryTimeForTreatment[i], ArrayOfEndTimeOfTreatment[i],
+            treatmentStatuses[i]);
+
+            // Save the new assignment to the data access layer
+            s_dal!.Assignment.Create(newA);
             i++;
         }
     }
@@ -634,6 +625,7 @@ public static class Initialization
         createVolunteer();
         Console.WriteLine("I am done vol");
         createCall();
+        Console.WriteLine("I am done call");
         createAssignment();
         Console.WriteLine("I am done");
 
