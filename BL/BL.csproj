@@ -23,7 +23,10 @@
   <ItemGroup>
     <Folder Include="BlApi\" />
     <Folder Include="BlImplementation\" />
-    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
