@@ -21,12 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BlApi\" />
     <Folder Include="BlImplementation\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
