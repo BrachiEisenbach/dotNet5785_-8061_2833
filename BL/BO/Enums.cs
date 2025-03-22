@@ -48,4 +48,22 @@ namespace BO
         CANCELLATIONHASEXPIRED
 
     }
+
+    public enum VOLUNTEERFILEDSORT
+    {
+        FULLNAME,
+        SUMTREATED,
+        SUMCANCELED,
+        SUMEXPIRED
+    }
+
+    public enum TIMEUNIT
+    {
+        MINUTE,
+        HOUR,
+        DAY,
+        MONTH,
+        YEAR
+    }
+
 }
