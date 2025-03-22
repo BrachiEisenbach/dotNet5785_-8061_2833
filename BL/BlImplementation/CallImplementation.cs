@@ -30,7 +30,7 @@ namespace BlImplementation
 
         public int[] GetCallCountsByStatus()
         {
-            throw new NotImplementedException();
+         var calls =    
         }
 
         public Call GetCallDetails(int callId)

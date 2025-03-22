@@ -34,7 +34,11 @@ namespace BO
     public enum STATUS
     {
         InTreatment,
-        DangerZone
+        InTreatmentDangerZone,
+        Open,
+        Closed,
+        Expired,
+        OpenDangerZone
 
     }
     /// <summary>
