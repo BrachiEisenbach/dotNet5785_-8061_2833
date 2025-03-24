@@ -13,11 +13,13 @@ namespace BO
         public TYPEOFCALL TypeOfCall { get; init; }
         public string? VerbalDescription { get; init; }
         public string FullAddress { get; init; }
-        public double? Latitutde { get; set; }
+        public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public DateTime OpenTime { get; init; }
         public DateTime? MaxTimeToFinish { get; init; }
         public STATUS Status { get; set; }
+        //public BO.STATUS Status { get; set; }
+
         public List<BO.CallAssignInList>? listOfCallAssign { get; set; }
     }
 }

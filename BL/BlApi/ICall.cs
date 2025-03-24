@@ -13,7 +13,7 @@ namespace BlApi
     {
         public int[] GetCallCountsByStatus();
         public void UpdateCallStatus();
-        public BO.CallInList GetCallList(Enum? STATUS, object? valFilter, Enum? TYPEOFCALL);
+        public IEnumerable<BO.CallInList> GetCallList(Enum? STATUS, object? valFilter, Enum? TYPEOFCALL);
         public BO.Call GetCallDetails(int callId);
         public void UpdateCallDetails(BO.Call call);
         public void DeleteCall(int callId);
@@ -21,7 +21,7 @@ namespace BlApi
         public IEnumerable<BO.ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall);
         public IEnumerable<BO.OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.TYPEOFCALL? tOfCall2);
         public void updateFinishTreat(int volId, int callId);
-        public void cancelTreat(int volId, int callId);
+        public void cancelTreat(int volId, int assiId);
         public void chooseCall(int volId, int callId);
     }
 }
