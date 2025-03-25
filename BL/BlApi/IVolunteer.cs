@@ -9,7 +9,7 @@ namespace BlApi
     public interface IVolunteer
     {
         public BO.ROLE GetUserRole(string userName);//אפשר להוסיף קבלת סיסמא
-        public IEnumerable<BO.VolunteerInList> GetVolunteerInList(bool? active, BO.ROLE? ROLE);
+        public IEnumerable<BO.VolunteerInList> GetVolunteerInList(bool? active, BO.VOLUNTEERFILEDSORT? ROLE);
         public BO.Volunteer GetVolunteerDetails(int id);
         public void UpdateVolunteerDetails(int id, BO.Volunteer boVolunteer);
         public void DeleteVolunteerDetails(int id);

@@ -52,3 +52,9 @@ public class BlUnauthorizedException : Exception
                 : base(message, innerException) { }
 }
 
+public class BlVolunteerInProgressException : Exception
+{
+    public BlVolunteerInProgressException(string? message) : base(message) { }
+    public BlVolunteerInProgressException(string message, Exception innerException)
+                : base(message, innerException) { }
+}
