@@ -11,31 +11,41 @@ namespace BlImplementation
     {
         private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-        public IEnumerable<BO.CallInList> GetCallList(Enum? STATUS, object? valFilter, Enum? TYPEOFCALL)
+        // done כמעט. צריך לעבור לבדוק את הלוגיקה.
+        public IEnumerable<BO.CallInList> GetCallList(Enum? statusFilter, object? valFilter, Enum? typeOfCallSort)
         {
-            //      var calls = _dal.Call.ReadAll();
-            //      //  שלב 1: סינון לפי הפרמטר הראשון (אם הועבר)
-            //      if (STATUS != null && valFilter != null)
-            //      {
-            //          calls = calls.Where(call =>
-            //    STATUS.GetType() == typeof(BO.STATUS) && valFilter is BO.STATUS status && call.Status == status ||
-            //    STATUS.GetType() == typeof(BO.TYPEOFCALL) && valFilter is BO.TYPEOFCALL type && call.TypeOfCall == type
-            //);
-            //      }
-            //      //  שלב 2: השארת ההקצאה האחרונה של כל קריאה
-            //      calls = calls.GroupBy(call => call.CallId)
-            //                   .Select(group => group.OrderByDescending(c => c.OpenTime).First());
+            var calls = _dal.Call.ReadAll().ToList();
+            var riskRange = _dal.Config.RiskRange;
 
-            //      //  שלב 3: מיון לפי הפרמטר השלישי (אם הועבר)
-            //      calls = TYPEOFCALL switch
-            //      {
-            //          BO.STATUS => calls.OrderBy(call => call.Status),
-            //          BO.TYPEOFCALL => calls.OrderBy(call => call.TypeOfCall),
-            //          _ => calls.OrderBy(call => call.CallId) // ברירת מחדל: לפי מספר קריאה
-            //      };
+            if (statusFilter is BO.STATUS status && valFilter is BO.STATUS)
+            {
+                calls = calls.Where(call => CallManager.CalculateStatus(call, riskRange) == status).ToList();
+            }
 
-            //      return calls;
+            if (statusFilter is BO.TYPEOFCALL type && valFilter is BO.TYPEOFCALL)
+            {
+                calls = calls.Where(call => CallManager.ConvertToBOType( call.TypeOfCall) == type).ToList();
+            }
 
+            calls = calls.GroupBy(call => call.Id)
+                .Select(group => group.OrderByDescending(c => c.OpenTime).First())
+                .ToList();
+
+            calls = typeOfCallSort switch
+            {
+                BO.STATUS => calls.OrderBy(call => CallManager.CalculateStatus(call, riskRange)).ToList(),
+                BO.TYPEOFCALL => calls.OrderBy(call => call.TypeOfCall).ToList(),
+                _ => calls.OrderBy(call => call.Id).ToList() // ברירת מחדל: לפי מספר קריאה
+            };
+
+            return calls.Select(call => new BO.CallInList
+            {
+                //Id = call.Id,
+                CallId = call.Id,
+                TypeOfCall = (BO.TYPEOFCALL)call.TypeOfCall,
+                Status = CallManager.CalculateStatus(call, riskRange),
+                OpenTime = call.OpenTime
+            });
 
         }
 
@@ -58,6 +68,9 @@ namespace BlImplementation
                               EndTimeOfTreatment = assign.EndTimeOfTreatment,
                               TypeOfTreatment = (BO.FINISHTYPE?)assign.TypeOfTreatment                           // הוסף עוד שדות לפי הצורך
                           }).ToList();
+
+            var riskRange = _dal.Config.RiskRange;
+
             return new BO.Call
             {
                 Id = callDO.Id,
@@ -70,7 +83,7 @@ namespace BlImplementation
                 OpenTime = callDO.OpenTime,
                 MaxTimeToFinish = callDO.MaxTimeToFinish,
                 //בעיה לא ברורה עם הסטטוס
-                //Status = (BO.STATUS)callDO.Status,
+                Status = CallManager.CalculateStatus (callDO, riskRange),
                 listOfCallAssign = callAssignments // שמירת רשימת ההקצאות
             };
 
@@ -218,9 +231,27 @@ namespace BlImplementation
             }
         }
 
+        // done
         public void DeleteCall(int callId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //  שליפת הקריאה מהמאגר
+                var call = GetCallDetails(callId);
+                if (call.Status != STATUS.Open)
+                    throw new BlInvalidOperationException("לא ניתן למחוק קריאה שאינה בסטטוס פתוח.");
+
+                //  בדיקה שלא קיימות הקצאות לקריאה זו
+                var assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
+                if (assignments.Any())
+                    throw new BlInvalidOperationException("לא ניתן למחוק קריאה שהוקצתה בעבר למתנדבים.");
+
+                _dal.Call.Delete(callId);
+            }
+            catch (Exception ex)
+            {
+                throw new BlInvalidOperationException("שגיאה במחיקת הקריאה", ex);
+            }
         }
 
         // done
@@ -235,7 +266,6 @@ namespace BlImplementation
         }
 
 
-
         public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall)
         {
             throw new NotImplementedException();
@@ -245,7 +275,7 @@ namespace BlImplementation
         {
             throw new NotImplementedException();
         }
-
+        
         public void UpdateCallDetails(BO.Call call)
         {
 

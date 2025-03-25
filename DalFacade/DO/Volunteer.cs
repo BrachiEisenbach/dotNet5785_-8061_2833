@@ -20,10 +20,6 @@ namespace DO;
 
 public record Volunteer
 (
-
-   
-
-
     int Id,
     string FullName,
     string Phone,

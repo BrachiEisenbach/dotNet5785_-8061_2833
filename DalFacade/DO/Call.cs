@@ -31,6 +31,7 @@ public record Call
 {
     public Call() : this(0, TYPEOFCALL.REDRIVE, null,"", 0,0, default(DateTime), null) { }
 
+
     /// <summary>
     /// Returns a string representation of the call, including its details.
     /// </summary>
