@@ -18,12 +18,5 @@ namespace BO
         public DateTime EntryTimeForTreatment { get; init; }
         public DateTime? EndTimeOfTreatment { get; init; }
         public FINISHTYPE? TypeOfTreatment { get; init; }
-
-
-       
-   
-
-
-
     }
 }

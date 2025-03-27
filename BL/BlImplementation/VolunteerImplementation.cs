@@ -93,7 +93,7 @@ namespace BlImplementation
             // בדיקה אם המבקש הוא מנהל או שהוא עצמו
             var requester = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"Requester with ID={id} does not exist");
-            if (requester.Role != (DO.ROLE)BO.ROLE.Admin && requester.Id != boVolunteer.Id)
+            if (requester.Role != (DO.ROLE)BO.ROLE.ADMIN && requester.Id != boVolunteer.Id)
             {
                 throw new BO.BlUnauthorizedException("Only an admin or the volunteer themselves can update the details.");
             }
@@ -109,7 +109,7 @@ namespace BlImplementation
             boVolunteer.Longitude = longitude;
 
             // בדיקה אילו שדות השתנו ואילו מותרים לשינוי
-            if (requester.Role.ToString() != BO.ROLE.Admin.ToString() && vol.Role.ToString() != boVolunteer.Role.ToString())
+            if (requester.Role.ToString() != BO.ROLE.ADMIN.ToString() && vol.Role.ToString() != boVolunteer.Role.ToString())
             {
                 throw new BO.BlUnauthorizedException("Only an admin can update the volunteer role.");
             }
@@ -180,7 +180,7 @@ namespace BlImplementation
             //שליפת מתנדב
             var vol = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"The Volunteer with ID={id} does not exist");
-
+            
         }
         //public BO.Volunteer? Read(int id)
         //{

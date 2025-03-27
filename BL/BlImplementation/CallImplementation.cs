@@ -24,7 +24,7 @@ namespace BlImplementation
 
             if (statusFilter is BO.TYPEOFCALL type && valFilter is BO.TYPEOFCALL)
             {
-                calls = calls.Where(call => CallManager.ConvertToBOType( call.TypeOfCall) == type).ToList();
+                calls = calls.Where(call => CallManager.ConvertToBOType(call.TypeOfCall) == type).ToList();
             }
 
             calls = calls.GroupBy(call => call.Id)
@@ -83,7 +83,7 @@ namespace BlImplementation
                 OpenTime = callDO.OpenTime,
                 MaxTimeToFinish = callDO.MaxTimeToFinish,
                 //בעיה לא ברורה עם הסטטוס
-                Status = CallManager.CalculateStatus (callDO, riskRange),
+                Status = CallManager.CalculateStatus(callDO, riskRange),
                 listOfCallAssign = callAssignments // שמירת רשימת ההקצאות
             };
 
@@ -210,7 +210,7 @@ namespace BlImplementation
                 // 5. יצירת הקצאה חדשה
                 var newAssignment = new DO.Assignment(
                     Id: 0, //?????????????? מה צריך להכניס פה?
-                    //Id: GenerateNewAssignmentId(),  // פונקציה שתייצר מזהה חדש להקצאה
+                           //Id: GenerateNewAssignmentId(),  // פונקציה שתייצר מזהה חדש להקצאה
                     CallId: callId,
                     VolunteerId: volId,
                     EntryTimeForTreatment: ClockManager.Now,
@@ -265,30 +265,130 @@ namespace BlImplementation
                         .ToArray(); // ממיר למערך
         }
 
-
-        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall)
+        // done...
+        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.ClosedCallInListField? sortBy)
         {
-            throw new NotImplementedException();
+            var closedCalls = _dal.Assignment.ReadAll()
+                .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
+                .Select(a =>
+                    {
+                        var call = GetCallDetails(a.CallId); // שליפת הקריאה המתאימה
+                        if (call == null) return null;
+                        //}
+                        return new BO.ClosedCallInList
+                        {
+                            Id = call.Id,
+                            TypeOfCall = (BO.TYPEOFCALL)(int)call.TypeOfCall, // המרת ENUM
+                            FullAddress = call.FullAddress,
+                            OpenTime = call.OpenTime,
+                            EntryTimeForTreatment = a.EntryTimeForTreatment,
+                            EndTimeOfTreatment = a.EndTimeOfTreatment,
+                            TypeOfTreatment = CallManager.ConvertToBOFinishType(a.TypeOfTreatment)
+                        };
+                    })
+                .Where(c => c != null) // סינון קריאות ריקות
+                .ToList();
+
+            // סינון לפי סוג קריאה אם הועבר ערך
+            if (tOfCall.HasValue)
+            {
+                closedCalls = closedCalls.Where(c => c.TypeOfCall == tOfCall.Value).ToList();
+            }
+
+            // מיון לפי הפרמטר שנבחר, ברירת מחדל לפי מספר קריאה
+            closedCalls = sortBy switch
+            {
+                BO.ClosedCallInListField.OpenTime => closedCalls.OrderBy(c => c.OpenTime).ToList(),
+                BO.ClosedCallInListField.EntryTimeForTreatment => closedCalls.OrderBy(c => c.EntryTimeForTreatment).ToList(),
+                BO.ClosedCallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
+                _ => closedCalls.OrderBy(c => c.Id).ToList() // ברירת מחדל: לפי מזהה קריאה
+            };
+
+            return closedCalls;
         }
 
-        public IEnumerable<OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.TYPEOFCALL? tOfCall2)
+
+        // done...
+        public IEnumerable<OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInList? sortBy)
         {
-            throw new NotImplementedException();
+            //var calls = GetCallList();
+            var riskRange = _dal.Config.RiskRange;
+            //var volunteer = GetVolunteerDetails(volId) ?? throw new BlDoesNotExistException($"מתנדב עם מזהה {volId} לא נמצא.");
+            var volunteer = _dal.Volunteer.Read(volId) ?? throw new BlDoesNotExistException($"מתנדב עם מזהה {volId} לא נמצא.");
+
+            var openCalls = _dal.Call.ReadAll()
+                    .Where(call =>
+                    {
+                        var status = CallManager.CalculateStatus(call, riskRange);
+                        return status == BO.STATUS.Open || status == BO.STATUS.OpenDangerZone;
+                    })
+                    .Where(call => !tOfCall.HasValue || CallManager.ConvertToBOType(call.TypeOfCall) == tOfCall.Value); // סינון לפי סוג הקריאה (אם נדרש)
+            var openCallsList =
+                from call in openCalls
+                    //let distance = CalculateDistance(volunteer.Location, call.Location) // חישוב מרחק (let)
+                group call by call.TypeOfCall into callGroups // קיבוץ לפי סוג קריאה
+                from call in callGroups // ביטול הקיבוץ כדי שנוכל להמשיך עם הנתונים
+                select new BO.OpenCallInList // select new
+                {
+                    Id = call.Id,
+                    TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                    VerbalDescription = call.VerbalDescription,
+                    FullAddress = call.FullAddress,
+                    OpenTime = call.OpenTime,
+                    MaxTimeToFinish = call.MaxTimeToFinish,
+                    //Distance = distance
+                };
+
+            openCallsList = sortBy switch
+            {
+                BO.OpenCallInList list when list.TypeOfCall != default => openCallsList.OrderBy(c => c.TypeOfCall),
+                BO.OpenCallInList list when list.OpenTime != default => openCallsList.OrderBy(c => c.OpenTime),
+                BO.OpenCallInList list when list.Distance != default => openCallsList.OrderBy(c => c.Distance),
+                _ => openCallsList.OrderBy(c => c.Id) // ברירת מחדל: מיון לפי מזהה קריאה
+            };
+
+            return openCallsList;
+
         }
-        
+
         public void UpdateCallDetails(BO.Call call)
         {
 
         }
 
-        public void UpdateCallStatus()
-        {
-            throw new NotImplementedException();
-        }
+        //public void UpdateCallStatus()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void updateFinishTreat(int volId, int callId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // שלב 1: שליפת ההקצאה המתאימה משכבת הנתונים
+                var assignment = _dal.Assignment.Read(callId)
+                    ?? throw new BO.BlDoesNotExistException("לא נמצאה הקצאה עם המזהה הנתון.");
+
+                // שלב 2: בדיקה שהמתנדב אכן מוקצה לקריאה זו
+                if (assignment.VolunteerId != volId)
+                    throw new BO.BlUnauthorizedException("אין לך הרשאה לסיים טיפול בקריאה זו.");
+
+                // שלב 3: בדיקה שהקריאה עדיין פתוחה (לא טופלה, לא בוטלה, לא פג תוקפה)
+                if (assignment.EndTimeOfTreatment != null)
+                    throw new BO.BlInvalidOperationException("לא ניתן לסיים טיפול בקריאה שכבר נסגרה.");
+
+                // שלב 4: עדכון הנתונים
+                assignment.EndTimeOfTreatment = ClockManager.Now;
+                assignment.TypeOfTreatment = DO.TYPEOFTREATMENT.Handled; // עדכון סוג הסיום
+
+                // שלב 5: ניסיון עדכון בשכבת הנתונים
+                _dal.Assignment.Update(assignment);
+            }
+            catch (DO.DOException ex)
+            {
+                // אם שכבת הנתונים זרקה חריגה, נעטוף ונשלח חריגה ברמת ה-BO
+                throw new BO.BOException("שגיאה בעת סיום הטיפול: " + ex.Message, ex);
+            }
         }
     }
 }

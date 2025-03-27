@@ -9,7 +9,7 @@ namespace Helpers
 {
     internal static class CallManager
     {
-        private static IDal s_dal = Factory.Get; //stage 4
+        internal static IDal s_dal = Factory.Get; //stage 4
 
         //המרת סוג ה ENUM מ BO לDO
         public static DO.TYPEOFCALL ConvertToDOType(BO.TYPEOFCALL boType)
@@ -18,13 +18,13 @@ namespace Helpers
         }
 
         //המרת סוג ה ENUM מ DO ל BO
-        public static BO.TYPEOFCALL ConvertToBOType(DO.TYPEOFCALL boType)
+        internal static BO.TYPEOFCALL ConvertToBOType(DO.TYPEOFCALL boType)
         {
             return (BO.TYPEOFCALL)Enum.Parse(typeof(DO.TYPEOFCALL), boType.ToString());
         }
 
 
-        public static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
+        internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
         {
 
             DateTime currentTime = DateTime.Now;
@@ -57,5 +57,24 @@ namespace Helpers
 
             return BO.STATUS.InTreatment;
         }
+
+        internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
+        {
+            return typeOfTreatment switch
+            {
+                DO.TYPEOFTREATMENT.SELFCANCELLATION => BO.FINISHTYPE.SELFCANCELLATION,
+                DO.TYPEOFTREATMENT.CANCALINGANADMINISTRATOR => BO.FINISHTYPE.CANCALINGANADMINISTRATOR,
+                DO.TYPEOFTREATMENT.TREATE => BO.FINISHTYPE.TREATE,
+                _ => null  // במקרה של ערך לא מוכר, מחזירים null
+            };
+        }
+
+        //private double CalculateDistance(DO.Location volunteerLoc, DO.Location callLoc)
+        //{
+        //    double deltaX = volunteerLoc.X - callLoc.X;
+        //    double deltaY = volunteerLoc.Y - callLoc.Y;
+        //    return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+        //}
+
     }
 }
