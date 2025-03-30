@@ -12,7 +12,7 @@ namespace BlImplementation
     {
         private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-        // done  needs to ask about the new function
+        // done  needs to ask about the  function GetCoordinatesFromAddress
         public void AddVolunteer(BO.Volunteer boVolunteer)
         {
             if (boVolunteer == null) throw new ArgumentNullException("No volunteer entered.");
