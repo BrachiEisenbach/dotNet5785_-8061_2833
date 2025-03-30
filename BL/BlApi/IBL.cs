@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
-    public interface IBL
+    public interface IBl
     {
         IVolunteer Volunteer { get; }
         ICall Call { get; }

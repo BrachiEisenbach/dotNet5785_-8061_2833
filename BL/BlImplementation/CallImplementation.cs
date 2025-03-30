@@ -5,6 +5,7 @@ using DalApi;
 using DO;
 using Helpers;
 
+
 namespace BlImplementation
 {
     internal class CallImplementation : ICall
@@ -14,6 +15,7 @@ namespace BlImplementation
         // done כמעט. צריך לעבור לבדוק את הלוגיקה.
         public IEnumerable<BO.CallInList> GetCallList(Enum? statusFilter, object? valFilter, Enum? typeOfCallSort)
         {
+            try { 
             var calls = _dal.Call.ReadAll().ToList();
             var riskRange = _dal.Config.RiskRange;
 
@@ -46,6 +48,8 @@ namespace BlImplementation
                 Status = CallManager.CalculateStatus(call, riskRange),
                 OpenTime = call.OpenTime
             });
+            }
+            catch (Exception ex) { throw new BlException("שגיאה בעת קבלת הקריאות ברשימה"); };
 
         }
 
@@ -53,6 +57,7 @@ namespace BlImplementation
         // done כמעט
         public BO.Call GetCallDetails(int callId)
         {
+            try { 
             var callDO = _dal.Call.Read(callId);
             if (callDO == null)
             {
@@ -66,7 +71,7 @@ namespace BlImplementation
                               VolunteerName = _dal.Volunteer.Read(assign.VolunteerId)?.FullName,
                               EntryTimeForTreatment = assign.EntryTimeForTreatment,
                               EndTimeOfTreatment = assign.EndTimeOfTreatment,
-                              TypeOfTreatment = (BO.FINISHTYPE?)assign.TypeOfTreatment                           // הוסף עוד שדות לפי הצורך
+                              TypeOfTreatment = (BO.FINISHTYPE?)assign.TypeOfTreatment                      
                           }).ToList();
 
             var riskRange = _dal.Config.RiskRange;
@@ -86,7 +91,15 @@ namespace BlImplementation
                 Status = CallManager.CalculateStatus(callDO, riskRange),
                 listOfCallAssign = callAssignments // שמירת רשימת ההקצאות
             };
-
+            }
+            catch (BlDoesNotExistException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new BlException("שגיאה בעת קבלת פרטי הודעה.");
+            }
         }
 
         // done
