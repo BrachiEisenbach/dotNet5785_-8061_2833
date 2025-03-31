@@ -8,7 +8,7 @@ using Helpers;
 
 namespace BlImplementation
 {
-    internal class CallImplementation : ICall
+    internal class CallImplementation : BlApi.ICall
     {
         private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
@@ -402,6 +402,16 @@ namespace BlImplementation
                 // אם שכבת הנתונים זרקה חריגה, נעטוף ונשלח חריגה ברמת ה-BO
                 throw new BO.BOException("שגיאה בעת סיום הטיפול: " + ex.Message, ex);
             }
+        }
+
+        public void UpdateCallStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, FINISHTYPE? finishType)
+        {
+            throw new NotImplementedException();
         }
     }
 }
