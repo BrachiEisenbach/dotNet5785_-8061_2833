@@ -79,7 +79,7 @@ namespace BlImplementation
 
                 var riskRange = _dal.Config.RiskRange;
 
-                return MappingProfile.ConvertToBO(callDO);
+                return MappingProfile.ConvertToBO(callDO, riskRange);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
@@ -280,17 +280,28 @@ namespace BlImplementation
         {
             try
             {
+                var riskRange = _dal.Config.RiskRange;
                 var closedCalls = _dal.Assignment.ReadAll()
-                    .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
-                    .Select(a =>
-                        {
-                            var call = GetCallDetails(a.CallId); // שליפת הקריאה המתאימה
-                            if (call == null) return null;
-                            //}
-                            return MappingProfile.ConvertToBO(call);
-                        })
-                    .Where(c => c != null) // סינון קריאות ריקות
-                    .ToList();
+                            .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
+                            .Select(a =>
+                            {
+                                var call = GetCallDetails(a.CallId); // שליפת הקריאה המתאימה
+                                if (call == null) return null;
+
+                                // המרת DO.Call ל-BO.ClosedCallInList
+                                return new BO.ClosedCallInList
+                                {
+                                    Id = call.Id,
+                                    TypeOfCall = (BO.TYPEOFCALL)(int)call.TypeOfCall,
+                                    FullAddress = call.FullAddress,
+                                    OpenTime = call.OpenTime,
+                                    EntryTimeForTreatment = a.EntryTimeForTreatment,
+                                    EndTimeOfTreatment = a.EndTimeOfTreatment,
+                                    TypeOfTreatment = CallManager.ConvertToBOFinishType(a.TypeOfTreatment)
+                                };
+                            })
+                            .Where(c => c != null) // סינון קריאות ריקות
+                            .ToList();
 
                 // סינון לפי סוג קריאה אם הועבר ערך
                 if (tOfCall.HasValue)
@@ -306,12 +317,10 @@ namespace BlImplementation
                     BO.ClosedCallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
                     _ => closedCalls.OrderBy(c => c.Id).ToList() // ברירת מחדל: לפי מזהה קריאה
                 };
-
                 return closedCalls;
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
-                // תרגום חריגת DAL לחריגה של BL
                 throw new BlDoesNotExistException("לא קיימות הקצאות.", dalDoesNotExistException);
             }
             catch (Exception ex)
@@ -405,7 +414,9 @@ namespace BlImplementation
                     throw new BlException($"לא נמצאה קריאה עם מזהה {call.Id}");
 
                 // 4️⃣ המרת אובייקט BO לקריאה ב-DO
-                var updatedCall = MappingProfile.ConvertToDO(call);                // 5️⃣ עדכון הקריאה במסד הנתונים
+                var riskRange = _dal.Config.RiskRange;
+
+                var updatedCall = MappingProfile.ConvertToDO(call);
                 _dal.Call.Update(updatedCall);
             }
             catch (Exception ex)

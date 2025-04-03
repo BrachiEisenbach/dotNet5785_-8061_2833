@@ -12,7 +12,6 @@ namespace BlImplementation
     {
         private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-        // done  needs to ask about the  function GetCoordinatesFromAddress
         public void AddVolunteer(BO.Volunteer boVolunteer)
         {
             if (boVolunteer == null) throw new ArgumentNullException("No volunteer entered.");
@@ -21,7 +20,7 @@ namespace BlImplementation
 
 
 
-            (double latitude, double longitude) = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
+            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(boVolunteer.FullAddress);
 
             boVolunteer.Latitude = latitude;
             boVolunteer.Longitude = longitude;
@@ -52,7 +51,7 @@ namespace BlImplementation
             catch (DO.DalDoesNotExistException ex)
             {
                 throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} does not exist", ex);
-            }
+            }catch(Exception ex) { throw new BlException("שגיאה בעת הוספת מתנדב"); };
 
 
 
@@ -83,7 +82,6 @@ namespace BlImplementation
             throw new NotImplementedException();
         }
 
-        //almost done there are errors...admin...
         public void UpdateVolunteerDetails(int id, BO.Volunteer boVolunteer)
         {
             //שליפת מתנדב
@@ -103,7 +101,7 @@ namespace BlImplementation
 
 
 
-            (double latitude, double longitude) = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
+            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(boVolunteer.FullAddress);
 
             boVolunteer.Latitude = latitude;
             boVolunteer.Longitude = longitude;
@@ -138,6 +136,8 @@ namespace BlImplementation
             catch (DO.DalDoesNotExistException ex)
             {
                 throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} does not exist", ex);
+            }catch(Exception ex) {
+                throw new BlException("שגיאה בעת עדכון מתנדב");
             }
 
 
@@ -181,12 +181,15 @@ namespace BlImplementation
             var vol = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"The Volunteer with ID={id} does not exist");
 
+
         }
 
         public IEnumerable<VolunteerInList> GetVolunteerInList(bool? active, VOLUNTEERFILEDSORT? ROLE)
         {
             throw new NotImplementedException();
         }
+
+
         //public BO.Volunteer? Read(int id)
         //{
         //    var doVolunteer = _dal.Volunteer.Read(id) ??

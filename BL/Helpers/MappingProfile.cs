@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 
 public static class MappingProfile
 {
@@ -8,25 +9,29 @@ public static class MappingProfile
     {
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<BO.Call, DO.Call>()
-                .ForMember(dest => dest.TypeOfCall, opt => opt.MapFrom(src => (DO.TYPEOFCALL)src.TypeOfCall));
-
             cfg.CreateMap<DO.Call, BO.Call>()
-                .ForMember(dest => dest.TypeOfCall, opt => opt.MapFrom(src => (BO.TYPEOFCALL)src.TypeOfCall))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => CalculateStatus(src))); // חישוב סטטוס
+                .ForMember(dest => dest.TypeOfCall, opt => opt.MapFrom(src => CallManager.ConvertToBOType(src.TypeOfCall)))
+                .ForMember(dest => dest.Status, opt => opt.Ignore()); // נוותר על הסטטוס כאן
+            cfg.CreateMap<BO.Call, DO.Call>()
+                .ForMember(dest => dest.TypeOfCall, opt => opt.MapFrom(src => CallManager.ConvertToDOType(src.TypeOfCall)));
         });
 
         _mapper = config.CreateMapper();
     }
 
-    public static BO.Call ConvertToBO(DO.Call doCall) => _mapper.Map<BO.Call>(doCall);
-
-    public static DO.Call ConvertToDO(BO.Call boCall) => _mapper.Map<DO.Call>(boCall);
-
-    private static BO.STATUS CalculateStatus(DO.Call doCall)
+    // פונקציה להמיר DO ל-BO ולקבל riskRange כפרמטר
+    public static BO.Call ConvertToBO(DO.Call call, TimeSpan riskRange)
     {
-        if (doCall.MaxTimeToFinish.HasValue && doCall.MaxTimeToFinish.Value < DateTime.Now)
-            return BO.STATUS.Expired;
-        return BO.STATUS.Open;
+        var boCall = _mapper.Map<BO.Call>(call); // המפה את יתר השדות
+
+        // חישוב הסטטוס בנפרד
+        boCall.Status = CallManager.CalculateStatus(call, riskRange); // חישוב סטטוס מחוץ למיפוי
+
+        return boCall;
+    }
+
+    public static DO.Call ConvertToDO(BO.Call call)
+    {
+        return _mapper.Map<DO.Call>(call);
     }
 }
