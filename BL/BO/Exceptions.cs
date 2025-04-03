@@ -52,9 +52,21 @@ public class BlUnauthorizedException : Exception
                 : base(message, innerException) { }
 }
 
+[Serializable]
+
 public class BlVolunteerInProgressException : Exception
 {
     public BlVolunteerInProgressException(string? message) : base(message) { }
     public BlVolunteerInProgressException(string message, Exception innerException)
+                : base(message, innerException) { }
+}
+
+
+[Serializable]
+
+public class BlAlreadyExistException : Exception
+{
+    public BlAlreadyExistException(string? message) : base(message) { }
+    public BlAlreadyExistException(string message, Exception innerException)
                 : base(message, innerException) { }
 }

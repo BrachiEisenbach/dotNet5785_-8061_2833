@@ -20,3 +20,4 @@ public class DalXMLFileLoadCreateException( string? massage) : Exception(massage
     //public string EntityName { get; set; } = name;
 }
 
+

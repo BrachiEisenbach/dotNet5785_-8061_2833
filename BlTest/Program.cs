@@ -1,12 +1,18 @@
-﻿namespace BlTest
+﻿
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace BlTest
 {
+
     internal class Program
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var services = new ServiceCollection();
+            services.AddAutoMapper(typeof(MappingProfile));
         }
     }
 }
