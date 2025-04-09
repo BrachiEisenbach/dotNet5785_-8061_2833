@@ -15,7 +15,7 @@ namespace Helpers
     {
         public static BO.Call GetCallFromDO(DO.Call doCall)
         {
-            return MappingProfile.ConvertToBO(doCall);
+            return MappingProfile.ConvertToBO(doCall);   //error because there was'nt send riskRange
         }
 
         public static DO.Call GetCallFromBO(BO.Call boCall)
@@ -32,7 +32,7 @@ namespace Helpers
         }
 
         //המרת סוג ה ENUM מ DO ל BO
-        internal static BO.TYPEOFCALL ConvertToBOType(DO.TYPEOFCALL boType)
+        public static BO.TYPEOFCALL ConvertToBOType(DO.TYPEOFCALL boType)
         {
             return (BO.TYPEOFCALL)Enum.Parse(typeof(DO.TYPEOFCALL), boType.ToString());
         }
@@ -85,80 +85,11 @@ namespace Helpers
 
 
 
-        //private double CalculateDistance(DO.Location volunteerLoc, DO.Location callLoc)
-        //{
-        //    double deltaX = volunteerLoc.X - callLoc.X;
-        //    double deltaY = volunteerLoc.Y - callLoc.Y;
-        //    return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-        //}
 
 
         private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
         private static readonly HttpClient Client = new HttpClient();
-
-        /// <summary>
-        /// מקבלת כתובת ומחזירה את הקואורדינטות (קו רוחב וקו אורך) שלה באמצעות API.
-        /// </summary>
-        /// <param name="address">כתובת לחיפוש</param>
-        /// <returns>זוג ערכים: קו רוחב וקו אורך</returns>
-        internal static (double Latitude, double Longitude) FetchCoordinates(string address)
-        {
-            if (string.IsNullOrWhiteSpace(address))
-                throw new BlArgumentException("הכתובת שסופקה אינה תקינה.");
-
-            // יצירת כתובת ה-URL לשליפת הנתונים
-            string requestUrl = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key={ApiKey}";
-
-            try
-            {
-                // שליחת בקשה וקבלת תשובה
-                var responseTask = Client.GetAsync(requestUrl);
-                HttpResponseMessage response = responseTask.Result;
-                response.EnsureSuccessStatusCode();
-
-                // קריאת תוכן התגובה
-                string jsonResult = response.Content.ReadAsStringAsync().Result;
-
-                // המרת ה-JSON לאובייקטים
-                var locationData = JsonSerializer.Deserialize<GeoResponse[]>(jsonResult, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                if (locationData == null || locationData.Length == 0)
-                    throw new BlException("לא נמצאו נתוני מיקום לכתובת זו.");
-
-                if (!double.TryParse(locationData[0].Lat, out double lat) ||
-                    !double.TryParse(locationData[0].Lon, out double lon))
-                {
-                    throw new BlException("שגיאה בהמרת הנתונים המספריים.");
-                }
-
-                return (lat, lon);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                throw new BlException("שגיאה בהתחברות לשרת המפות: " + httpEx.Message);
-            }
-            catch (JsonException jsonEx)
-            {
-                throw new BlException("שגיאה בעיבוד הנתונים: " + jsonEx.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new BlException("שגיאה כללית בעת שליפת המיקום: " + ex.Message);
-            }
-        }
-
-        // מחלקת עזר לפענוח התשובה מה-API
-        private class GeoResponse
-        {
-            [JsonPropertyName("lat")]
-            public string Lat { get; set; }
-
-            [JsonPropertyName("lon")]
-            public string Lon { get; set; }
-        }
+       
 
 
 
@@ -205,7 +136,7 @@ namespace Helpers
         /// </summary>
         /// <param name="degrees">הזווית במעלות</param>
         /// <returns>הזווית ברדיאנים</returns>
-        private static double DegreesToRadians(double degrees)
+        internal static double DegreesToRadians(double degrees)
         {
             return degrees * (Math.PI / 180);
         }

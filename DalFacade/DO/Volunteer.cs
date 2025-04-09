@@ -31,12 +31,12 @@ public record Volunteer
     ROLE Role=ROLE.VOLUNTEER,
     bool Active = false,
     double? MaxDistance = null,
-    TYPEOFDISTSANCE TypeOfDistance=TYPEOFDISTSANCE.AERIALDISTANCE
+    TYPEOFDISTANCE TypeOfDistance=TYPEOFDISTANCE.AERIALDISTANCE
 
 
 )
 { 
-        public Volunteer() : this(0, "", "", "", null, null, null, null, ROLE.VOLUNTEER, false, null, TYPEOFDISTSANCE.AERIALDISTANCE) { }
+        public Volunteer() : this(0, "", "", "", null, null, null, null, ROLE.VOLUNTEER, false, null, TYPEOFDISTANCE.AERIALDISTANCE) { }
 
 
     public override string ToString()

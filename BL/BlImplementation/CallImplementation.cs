@@ -83,11 +83,11 @@ namespace BlImplementation
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
-                throw new BlDoesNotExistException("לא קיימות קריאות ו/או טווח זמן סיכון", dalDoesNotExistException);
+                throw new BlDoesNotExistException("There are no readings and/or risk time frame.", dalDoesNotExistException);
             }
             catch (Exception ex)
             {
-                throw new BlException("שגיאה בעת קבלת פרטי הודעה.");
+                throw new BlException("Error while getting message details.");
             }
         }
 
@@ -106,7 +106,7 @@ namespace BlImplementation
 
             if (call.MaxTimeToFinish is not null && call.MaxTimeToFinish <= call.OpenTime)
                 throw new BlArgumentException("זמן סיום מקסימלי חייב להיות מאוחר מזמן פתיחת הקריאה");
-            var (latitude, longitude) = CallManager.FetchCoordinates(call.FullAddress);
+            var (latitude, longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
 
             DO.Call newCall = new DO.Call(
                 Id: call.Id,  
@@ -401,7 +401,7 @@ namespace BlImplementation
                     throw new ArgumentException("כתובת אינה תקינה או ריקה");
                 try
                 {
-                    var (latitude, longitude) = CallManager.FetchCoordinates(call.FullAddress);
+                    var (latitude, longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
                     call.Latitude = latitude;
                     call.Longitude = longitude;
                 }

@@ -19,7 +19,7 @@ namespace BO
         public ROLE Role { get; set; }
         public bool Active { get; set; }
         public double? MaxDistance { get; set; }
-        public TYPEOFDISTSANCE TypeOfDistance { get; set; }
+        public TYPEOFDISTANCE TypeOfDistance { get; set; }
         public int AllCallsThatTreated { get; init; }
         public int AllCallsThatCanceled { get; init; }
         public int AllCallsThatHaveExpired { get; init; }
