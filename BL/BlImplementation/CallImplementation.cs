@@ -52,8 +52,8 @@ namespace BlImplementation
                     OpenTime = call.OpenTime
                 });
             }
-            catch (DalDoesNotExistException dalDoesNotExistException) { throw new BlDoesNotExistException("לא קיימות קריאות ", dalDoesNotExistException); }
-            catch (Exception ex) { throw new BlException("שגיאה בעת קבלת הקריאות ברשימה"); };
+            catch (DalDoesNotExistException dalDoesNotExistException) { throw new BlDoesNotExistException("There are no readings.", dalDoesNotExistException); }
+            catch (Exception ex) { throw new BlException("Error while getting the readings in the list"); };
         }
 
         // done !!!!!!!

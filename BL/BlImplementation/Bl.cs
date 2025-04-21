@@ -9,8 +9,9 @@ namespace BlImplementation
 {
     internal class Bl : IBl
     {
-        public IVolunteer volunteer { get; } = new VolunteerImplementation();
-        public ICall call { get; } = new CallImplementation();
-        public IAdmin admin { get; } = new AdminImplementation();
+        public IVolunteer Volunteer { get; } = new VolunteerImplementation();
+        public ICall Call { get; } = new CallImplementation();
+        public IAdmin Admin { get; } = new AdminImplementation();
     }
+
 }

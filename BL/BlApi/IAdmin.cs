@@ -14,7 +14,7 @@ namespace BlApi
         public int GetRiskRange();//?????
         public void SetRiskRange(TimeSpan riskRange);
         public void ResetDB();
-        public void initializDB();
+        public void initializeDB();
 
     }
 }

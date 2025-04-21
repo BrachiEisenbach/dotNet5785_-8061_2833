@@ -48,7 +48,7 @@ namespace BlImplementation
         }
 
         // to do:!!!
-        public void initializDB()
+        public void initializeDB()
         {
             
         }

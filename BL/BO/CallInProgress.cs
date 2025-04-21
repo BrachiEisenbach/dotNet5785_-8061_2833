@@ -20,7 +20,22 @@ namespace BO
         public double Distance { get; init; }
         public STATUS Status { get; init; }
 
-        
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Call In Progress ID: {Id}");
+            sb.AppendLine($"Original Call ID: {CallId}");
+            sb.AppendLine($"Type of Call: {TypeOfCall}");
+            sb.AppendLine($"Description: {VerbalDescription ?? "N/A"}");
+            sb.AppendLine($"Address: {FullAddress ?? "N/A"}");
+            sb.AppendLine($"Opened At: {OpenTime}");
+            sb.AppendLine($"Entered At: {EnterTime}");
+            sb.AppendLine($"Max Time to Finish: {(MaxTimeToFinish.HasValue ? MaxTimeToFinish.ToString() : "N/A")}");
+            sb.AppendLine($"Distance: {Distance} km");
+            sb.AppendLine($"Status: {Status}");
+            return sb.ToString();
+        }
+
 
     }
 }

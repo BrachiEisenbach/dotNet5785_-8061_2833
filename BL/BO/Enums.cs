@@ -53,7 +53,7 @@ namespace BO
 
     }
 
-    public enum VOLUNTEERFILEDSORT
+    public enum VOLUNTEERFIELDSORT
     {
         FULLNAME,
         SUMTREATED,
