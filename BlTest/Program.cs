@@ -612,43 +612,43 @@ namespace BlTest
             }
         }
 
-        private static void SetClock()
-        {
-            Console.Write("Enter the time unit (MINUTE,HOUR, DAY, MONTH,YEAR): ");
-            string timeUnitStr = Console.ReadLine();
-            if (Enum.TryParse<BO.TIMEUNIT>(timeUnitStr, out BO.TIMEUNIT timeUnit))
-            {
-                Console.Write("Enter the amount to forward the clock: ");
-                if (int.TryParse(Console.ReadLine(), out int amount))
-                {
-                    for (int i = 0; i < amount; i++)
-                    {
-                        s_bl.Admin.ClockPromotion(timeUnit);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Invalid amount. Please try again.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid time unit. Please try again.");
-            }
-        }
+        //private static void SetClock()
+        //{
+        //    Console.Write("Enter the time unit (MINUTE,HOUR, DAY, MONTH,YEAR): ");
+        //    string timeUnitStr = Console.ReadLine();
+        //    if (Enum.TryParse<BO.TIMEUNIT>(timeUnitStr, out BO.TIMEUNIT timeUnit))
+        //    {
+        //        Console.Write("Enter the amount to forward the clock: ");
+        //        if (int.TryParse(Console.ReadLine(), out int amount))
+        //        {
+        //            for (int i = 0; i < amount; i++)
+        //            {
+        //                s_bl.Admin.ClockPromotion(timeUnit);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Invalid amount. Please try again.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Invalid time unit. Please try again.");
+        //    }
+        //}
 
-        private static void SetRiskRange()
-        {
-            Console.Write("Enter the new maximum risk range (in hours): ");
-            if (int.TryParse(Console.ReadLine(), out int maxRange))
-            {
-                s_bl.Admin.SetRiskRange(TimeSpan.FromHours(maxRange));
-            }
-            else
-            {
-                Console.WriteLine("Invalid maximum risk range. Please try again.");
-            }
-        }
+        //private static void SetRiskRange()
+        //{
+        //    Console.Write("Enter the new maximum risk range (in hours): ");
+        //    if (int.TryParse(Console.ReadLine(), out int maxRange))
+        //    {
+        //        s_bl.Admin.SetRiskRange(TimeSpan.FromHours(maxRange));
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Invalid maximum risk range. Please try again.");
+        //    }
+        //}
 
         static void Main(string[] args)
         {
