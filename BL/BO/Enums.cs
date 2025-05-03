@@ -61,7 +61,7 @@ namespace BO
         SUMEXPIRED
     }
 
-    public enum ClosedCallInListField
+    public enum CallInListField
     {
         OpenTime,             // זמן פתיחת הקריאה
         EntryTimeForTreatment, // זמן כניסה לטיפול

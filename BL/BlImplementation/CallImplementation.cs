@@ -322,7 +322,7 @@ namespace BlImplementation
         /// <param name="tOfCall">The type of call to filter by (optional).</param>
         /// <param name="sortBy">The field to sort the results by (optional).</param>
 
-        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.ClosedCallInListField? sortBy)
+        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.CallInListField? sortBy)
         {
             try
             {
@@ -384,7 +384,7 @@ namespace BlImplementation
         /// <param name="tOfCall">The type of call to filter by (optional).</param>
         /// <param name="sortBy">The field to sort the results by (optional).</param>
 
-        public IEnumerable<OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInList? sortBy)
+        public IEnumerable<OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.CallInListField? sortBy)
         {
             try
             {
