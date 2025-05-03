@@ -423,11 +423,6 @@ namespace BlTest
                             Console.WriteLine($"Error: {ex.Message}");
                         }
 
-
-                        foreach (var call in s_bl.Call.ReadAll())
-                        {
-                            Console.WriteLine(call);
-                        }
                         break;
                     case "3":
                         Console.Write("Enter the call ID: ");
@@ -511,6 +506,7 @@ namespace BlTest
 
                             // נמשוך את הקואורדינטות מחדש לפי הכתובת
                             var (latitude1, longitude1) = BO.VolunteerManager.FetchCoordinates(fullAddress);
+
 
                             // יצירת ישות BO מעודכנת
                             BO.Call updatedCall = new BO.Call
