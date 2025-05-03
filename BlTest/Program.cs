@@ -315,18 +315,6 @@ namespace BlTest
                 }
             }
         }
-        //public int[] GetCallCountsByStatus();
-        ////public void UpdateCallStatus();
-        //public IEnumerable<BO.CallInList> GetCallList(Enum? STATUS, object? valFilter, Enum? TYPEOFCALL);
-        //public BO.Call GetCallDetails(int callId);
-        //public void UpdateCallDetails(BO.Call call);
-        //public void DeleteCall(int callId);
-        //public void AddCall(BO.Call call);
-        //public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.ClosedCallInListField? sortBy);
-        //public IEnumerable<BO.OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInList? sortBy);
-        //public void updateFinishTreat(int volId, int callId);
-        //public void cancelTreat(int volId, int assiId);
-        //public void chooseCall(int volId, int callId);
         private static void CallsMenu()
         {
             while (true)
@@ -488,7 +476,7 @@ namespace BlTest
                         try
                         {
                             Console.Write("Enter call ID to update: ");
-                            if (!int.TryParse(Console.ReadLine(), out int callId))
+                            if (!int.TryParse(Console.ReadLine(), out int callId1))
                             {
                                 Console.WriteLine("Invalid call ID.");
                                 break;
@@ -522,20 +510,20 @@ namespace BlTest
                                 : DateTime.Parse(maxFinishStr);
 
                             // נמשוך את הקואורדינטות מחדש לפי הכתובת
-                            var (latitude, longitude) = BO.VolunteerManager.FetchCoordinates(fullAddress);
+                            var (latitude1, longitude1) = BO.VolunteerManager.FetchCoordinates(fullAddress);
 
                             // יצירת ישות BO מעודכנת
                             BO.Call updatedCall = new BO.Call
                             {
-                                Id = callId,
+                                Id = callId1,
                                 TypeOfCall = typeOfCall,
                                 VerbalDescription = verbalDescription,
                                 FullAddress = fullAddress,
-                                Latitude = latitude,
-                                Longitude = longitude,
+                                Latitude = latitude1,
+                                Longitude = longitude1,
                                 OpenTime = openTime,
                                 MaxTimeToFinish = maxTimeToFinish,
-                                Status = BO.STATUS.OPEN 
+                                Status = BO.STATUS.Open
                             };
 
                             s_bl.Call.UpdateCallDetails(updatedCall); 
@@ -556,7 +544,7 @@ namespace BlTest
                         try
                         {
                             Console.Write("Enter call ID: ");
-                            int callId = int.Parse(Console.ReadLine());
+                            int callId2 = int.Parse(Console.ReadLine());
 
                             Console.Write("Enter type of call (FLATTIRE, CARBURGLARY, REDRIVE): ");
                             string typeOfCallStr = Console.ReadLine();
@@ -584,12 +572,12 @@ namespace BlTest
                             DateTime? maxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeStr) ? null : DateTime.Parse(maxTimeStr);
 
                             // קבלת קואורדינטות מהכתובת
-                            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(fullAddress);
+                            (double latitude, double longitude) = BO.VolunteerManager.FetchCoordinates(fullAddress);
 
                             // יצירת אובייקט BO.Call
                             BO.Call newCall = new BO.Call
                             {
-                                Id = callId,
+                                Id = callId2,
                                 TypeOfCall = typeOfCall,
                                 VerbalDescription = string.IsNullOrWhiteSpace(verbalDescription) ? null : verbalDescription,
                                 FullAddress = fullAddress,
@@ -597,7 +585,7 @@ namespace BlTest
                                 Longitude = longitude,
                                 OpenTime = openTime,
                                 MaxTimeToFinish = maxTimeToFinish,
-                                Status = BO.STATUS.OPEN
+                                Status = BO.STATUS.Open
                             };
 
                             s_bl.Call.AddCall(newCall);
@@ -619,7 +607,7 @@ namespace BlTest
                         try
                         {
                             Console.Write("Enter volunteer ID: ");
-                            if (!int.TryParse(Console.ReadLine(), out int volId))
+                            if (!int.TryParse(Console.ReadLine(), out int volId2))
                             {
                                 Console.WriteLine("Invalid volunteer ID.");
                                 break;
@@ -644,11 +632,11 @@ namespace BlTest
 
                             Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
                             string sortFieldStr = Console.ReadLine();
-                            BO.ClosedCallInListField? sortBy = null;
+                            BO.CallInListField? sortBy = null;
 
                             if (!string.IsNullOrWhiteSpace(sortFieldStr))
                             {
-                                if (Enum.TryParse(sortFieldStr, true, out BO.ClosedCallInListField parsedSortField))
+                                if (Enum.TryParse(sortFieldStr, true, out BO.CallInListField parsedSortField))
                                 {
                                     sortBy = parsedSortField;
                                 }
@@ -659,7 +647,7 @@ namespace BlTest
                                 }
                             }
 
-                            var closedCalls = s_bl.Call.GetClosedCallInList(volId, tOfCall, sortBy);
+                            var closedCalls = s_bl.Call.GetClosedCallInList(volId2, tOfCall, sortBy);
 
                             foreach (var call in closedCalls)
                             {
@@ -675,7 +663,7 @@ namespace BlTest
                         try
                         {
                             Console.Write("Enter volunteer ID: ");
-                            if (!int.TryParse(Console.ReadLine(), out int volId))
+                            if (!int.TryParse(Console.ReadLine(), out int volId3))
                             {
                                 Console.WriteLine("Invalid volunteer ID.");
                                 break;
@@ -700,7 +688,7 @@ namespace BlTest
 
                             Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
                             string sortFieldStr = Console.ReadLine();
-                            BO.ClosedCallInListField? sortBy = null;
+                            BO.CallInListField? sortBy = null;
 
                             if (!string.IsNullOrWhiteSpace(sortFieldStr))
                             {
@@ -715,7 +703,7 @@ namespace BlTest
                                 }
                             }
 
-                            var closedCalls = s_bl.Call.GetOpenCallInList(volId, tOfCall, sortBy);
+                            var closedCalls = s_bl.Call.GetOpenCallInList(volId3, tOfCall, sortBy);
 
                             foreach (var call in closedCalls)
                             {

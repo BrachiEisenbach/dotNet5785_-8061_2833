@@ -358,9 +358,9 @@ namespace BlImplementation
                 // מיון לפי הפרמטר שנבחר, ברירת מחדל לפי מספר קריאה
                 closedCalls = sortBy switch
                 {
-                    BO.ClosedCallInListField.OpenTime => closedCalls.OrderBy(c => c.OpenTime).ToList(),
-                    BO.ClosedCallInListField.EntryTimeForTreatment => closedCalls.OrderBy(c => c.EntryTimeForTreatment).ToList(),
-                    BO.ClosedCallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
+                    BO.CallInListField.OpenTime => closedCalls.OrderBy(c => c.OpenTime).ToList(),
+                    BO.CallInListField.EntryTimeForTreatment => closedCalls.OrderBy(c => c.EntryTimeForTreatment).ToList(),
+                    BO.CallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
                     _ => closedCalls.OrderBy(c => c.Id).ToList() // ברירת מחדל: לפי מזהה קריאה
                 };
                 return closedCalls;
@@ -417,9 +417,9 @@ namespace BlImplementation
 
                 openCallsList = sortBy switch
                 {
-                    BO.OpenCallInList list when list.TypeOfCall != default => openCallsList.OrderBy(c => c.TypeOfCall),
-                    BO.OpenCallInList list when list.OpenTime != default => openCallsList.OrderBy(c => c.OpenTime),
-                    BO.OpenCallInList list when list.Distance != default => openCallsList.OrderBy(c => c.Distance),
+                    BO.CallInListField list when list.TypeOfCall != default => openCallsList.OrderBy(c => c.TypeOfCall),
+                    BO.CallInListField list when list.OpenTime != default => openCallsList.OrderBy(c => c.OpenTime),
+                    BO.CallInListField list when list.Distance != default => openCallsList.OrderBy(c => c.Distance),
                     _ => openCallsList.OrderBy(c => c.Id) // ברירת מחדל: מיון לפי מזהה קריאה
                 };
 
