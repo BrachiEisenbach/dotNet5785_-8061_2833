@@ -415,13 +415,16 @@ namespace BlImplementation
                         Distance = CallManager.GetDistance(volunteer, call)
                     };
 
-                openCallsList = sortBy switch
-                {
-                    BO.CallInListField list when list.TypeOfCall != default => openCallsList.OrderBy(c => c.TypeOfCall),
-                    BO.CallInListField list when list.OpenTime != default => openCallsList.OrderBy(c => c.OpenTime),
-                    BO.CallInListField list when list.Distance != default => openCallsList.OrderBy(c => c.Distance),
-                    _ => openCallsList.OrderBy(c => c.Id) // ברירת מחדל: מיון לפי מזהה קריאה
-                };
+                openCallsList = sortBy.HasValue
+     ? sortBy.Value switch
+     {
+         BO.CallInListField.EndTimeOfTreatment => openCallsList.OrderBy(c => c.TypeOfCall),
+         BO.CallInListField.OpenTime => openCallsList.OrderBy(c => c.OpenTime),
+         BO.CallInListField.EntryTimeForTreatment => openCallsList.OrderBy(c => c.Distance),
+         _ => openCallsList.OrderBy(c => c.Id)
+     }
+     : openCallsList.OrderBy(c => c.Id);
+
 
                 return openCallsList;
             }
