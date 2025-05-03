@@ -51,7 +51,7 @@ namespace BlTest
                 }
             }
         }
-     
+
         private static void AdminMenu()
         {
             while (true)
@@ -97,7 +97,7 @@ namespace BlTest
                 }
             }
         }
-       
+
 
         private static void VolunteersMenu()
         {
@@ -142,10 +142,11 @@ namespace BlTest
                             return;
                         }
 
-                        foreach (var vol in s_bl.Volunteer.GetVolunteerInList(isActive, field)) { 
+                        foreach (var vol in s_bl.Volunteer.GetVolunteerInList(isActive, field))
+                        {
                             Console.WriteLine(vol);
                         }
-                        
+
                         break;
                     case "3":
                         Console.Write("Enter the volunteer ID: ");
@@ -167,7 +168,7 @@ namespace BlTest
                         }
                         break;
                     case "4":
-                    
+
                         try
                         {
                             Console.Write("Enter your ID (the requester): ");
@@ -332,18 +333,17 @@ namespace BlTest
             {
                 Console.WriteLine("Calls Menu:");
                 Console.WriteLine("1. Sum Calls");
-                Console.WriteLine("2. Update Open Calls");
-                Console.WriteLine("3. Read All Calls");
-                Console.WriteLine("4. Read Call");
+                Console.WriteLine("2. Read All Calls");
+                Console.WriteLine("3. Read Call");
+                Console.WriteLine("4. Delete Call");
                 Console.WriteLine("5. Update Call");
-                Console.WriteLine("6. Delete Call");
-                Console.WriteLine("7. Create Call");
-                Console.WriteLine("8. Read All Closed Calls");
-                Console.WriteLine("9. Read All Open Calls");
-                Console.WriteLine("10. End Of Treatment");
-                Console.WriteLine("11. Cancel");
-                Console.WriteLine("12. Call Choice");
-                Console.WriteLine("13. Back");
+                Console.WriteLine("6. Create Call");
+                Console.WriteLine("7. Read All Closed Calls");
+                Console.WriteLine("8. Read All Open Calls");
+                Console.WriteLine("9. End Of Treatment");
+                Console.WriteLine("10. Cancel");
+                Console.WriteLine("11. Call Choice");
+                Console.WriteLine("12. Back");
 
                 Console.Write("Enter your choice: ");
                 string choice = Console.ReadLine();
@@ -351,13 +351,11 @@ namespace BlTest
                 switch (choice)
                 {
                     case "1":
-                        int[] sumCalls = s_bl.Call.SumCalls();
+                        int[] sumCalls = s_bl.Call.GetCallCountsByStatus();
                         Console.WriteLine(string.Join(", ", sumCalls));
                         break;
-                    //case "2":
-                    //    s_bl.Call.UpdateOpenCalls();
-                    //    break;
-                    case "3":
+                  
+                    case "2":
                         try
                         {
                             Console.WriteLine("Enter filter for status (optional):");
@@ -436,20 +434,20 @@ namespace BlTest
                         {
                             Console.WriteLine($"Error: {ex.Message}");
                         }
-                        break;
+
 
                         foreach (var call in s_bl.Call.ReadAll())
                         {
                             Console.WriteLine(call);
                         }
                         break;
-                    case "4":
+                    case "3":
                         Console.Write("Enter the call ID: ");
                         if (int.TryParse(Console.ReadLine(), out int callId))
                         {
                             try
                             {
-                                var call = s_bl.Call.Read(callId);
+                                var call = s_bl.Call.GetCallDetails(callId);
                                 Console.WriteLine(call);
                             }
                             catch (BO.BlDoesNotExistException ex)
@@ -462,69 +460,281 @@ namespace BlTest
                             Console.WriteLine("Invalid call ID. Please try again.");
                         }
                         break;
-                    case "5":
-                        // Update Call logic
-                        break;
-                    case "6":
-                        // Delete Call logic
-                        break;
-                    case "7":
-                        // Create Call logic
-                        break;
-                    case "8":
-                        Console.Write("Enter the volunteer ID: ");
-                        if (int.TryParse(Console.ReadLine(), out int volId))
+                    case "4":
+                        try
                         {
-                            Console.Write("Enter the call type (MEDICAL, FOOD, ERRAND): ");
-                            string callTypeStr = Console.ReadLine();
-                            if (Enum.TryParse<BO.CallType>(callTypeStr, out BO.CallType callType))
+                            Console.Write("Enter call ID to delete: ");
+                            if (!int.TryParse(Console.ReadLine(), out int callIdToDelete))
                             {
-                                foreach (var closedCall in s_bl.Call.ReadAllClosed(volId, callType))
+                                Console.WriteLine("Invalid call ID.");
+                                break;
+                            }
+
+                            s_bl.Call.DeleteCall(callIdToDelete); 
+                            Console.WriteLine("Call deleted successfully.");
+                        }
+                        catch (BO.BlDoesNotExistException ex)
+                        {
+                            Console.WriteLine($"Error: Call not found. {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
+
+                        
+                    case "5":
+                        try
+                        {
+                            Console.Write("Enter call ID to update: ");
+                            if (!int.TryParse(Console.ReadLine(), out int callId))
+                            {
+                                Console.WriteLine("Invalid call ID.");
+                                break;
+                            }
+
+                            Console.Write("Enter type of call (URGENT, NORMAL, etc.): ");
+                            string typeStr = Console.ReadLine();
+                            if (!Enum.TryParse<BO.TYPEOFCALL>(typeStr, true, out BO.TYPEOFCALL typeOfCall))
+                            {
+                                Console.WriteLine("Invalid type of call.");
+                                break;
+                            }
+
+                            Console.Write("Enter verbal description (optional): ");
+                            string verbalDescription = Console.ReadLine();
+
+                            Console.Write("Enter full address: ");
+                            string fullAddress = Console.ReadLine();
+
+                            Console.Write("Enter open time (yyyy-MM-dd HH:mm): ");
+                            if (!DateTime.TryParse(Console.ReadLine(), out DateTime openTime))
+                            {
+                                Console.WriteLine("Invalid open time.");
+                                break;
+                            }
+
+                            Console.Write("Enter max time to finish (optional, yyyy-MM-dd HH:mm): ");
+                            string maxFinishStr = Console.ReadLine();
+                            DateTime? maxTimeToFinish = string.IsNullOrWhiteSpace(maxFinishStr)
+                                ? null
+                                : DateTime.Parse(maxFinishStr);
+
+                            // נמשוך את הקואורדינטות מחדש לפי הכתובת
+                            var (latitude, longitude) = BO.VolunteerManager.FetchCoordinates(fullAddress);
+
+                            // יצירת ישות BO מעודכנת
+                            BO.Call updatedCall = new BO.Call
+                            {
+                                Id = callId,
+                                TypeOfCall = typeOfCall,
+                                VerbalDescription = verbalDescription,
+                                FullAddress = fullAddress,
+                                Latitude = latitude,
+                                Longitude = longitude,
+                                OpenTime = openTime,
+                                MaxTimeToFinish = maxTimeToFinish,
+                                Status = BO.STATUS.OPEN 
+                            };
+
+                            s_bl.Call.UpdateCallDetails(updatedCall); 
+                            Console.WriteLine("Call updated successfully.");
+                        }
+                        catch (BO.BlDoesNotExistException ex)
+                        {
+                            Console.WriteLine($"Error: Error attempting to update call. {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
+
+                        
+                    case "6":
+                        try
+                        {
+                            Console.Write("Enter call ID: ");
+                            int callId = int.Parse(Console.ReadLine());
+
+                            Console.Write("Enter type of call (FLATTIRE, CARBURGLARY, REDRIVE): ");
+                            string typeOfCallStr = Console.ReadLine();
+                            if (!Enum.TryParse<BO.TYPEOFCALL>(typeOfCallStr, true, out BO.TYPEOFCALL typeOfCall))
+                            {
+                                Console.WriteLine("Invalid type of call.");
+                                break;
+                            }
+
+                            Console.Write("Enter verbal description (optional): ");
+                            string? verbalDescription = Console.ReadLine();
+
+                            Console.Write("Enter full address: ");
+                            string fullAddress = Console.ReadLine();
+
+                            Console.Write("Enter open time (yyyy-MM-dd HH:mm): ");
+                            if (!DateTime.TryParse(Console.ReadLine(), out DateTime openTime))
+                            {
+                                Console.WriteLine("Invalid open time.");
+                                break;
+                            }
+
+                            Console.Write("Enter max time to finish (yyyy-MM-dd HH:mm) or leave empty: ");
+                            string maxTimeStr = Console.ReadLine();
+                            DateTime? maxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeStr) ? null : DateTime.Parse(maxTimeStr);
+
+                            // קבלת קואורדינטות מהכתובת
+                            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(fullAddress);
+
+                            // יצירת אובייקט BO.Call
+                            BO.Call newCall = new BO.Call
+                            {
+                                Id = callId,
+                                TypeOfCall = typeOfCall,
+                                VerbalDescription = string.IsNullOrWhiteSpace(verbalDescription) ? null : verbalDescription,
+                                FullAddress = fullAddress,
+                                Latitude = latitude,
+                                Longitude = longitude,
+                                OpenTime = openTime,
+                                MaxTimeToFinish = maxTimeToFinish,
+                                Status = BO.STATUS.OPEN
+                            };
+
+                            s_bl.Call.AddCall(newCall);
+                            Console.WriteLine("Call added successfully.");
+                        }
+                        catch (BO.BlDoesNotExistException ex)
+                        {
+                            Console.WriteLine($"Error: Error attempting to add call. {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
+
+
+
+                    case "7":
+                        try
+                        {
+                            Console.Write("Enter volunteer ID: ");
+                            if (!int.TryParse(Console.ReadLine(), out int volId))
+                            {
+                                Console.WriteLine("Invalid volunteer ID.");
+                                break;
+                            }
+
+                            Console.Write("Enter type of call to filter (FLATTIRE, CARBURGLARY, REDRIVE) or leave empty: ");
+                            string typeOfCallStr = Console.ReadLine();
+                            BO.TYPEOFCALL? tOfCall = null;
+
+                            if (!string.IsNullOrWhiteSpace(typeOfCallStr))
+                            {
+                                if (Enum.TryParse(typeOfCallStr, true, out BO.TYPEOFCALL parsedType))
                                 {
-                                    Console.WriteLine(closedCall);
+                                    tOfCall = parsedType;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid call type.");
+                                    break;
                                 }
                             }
-                            else
+
+                            Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
+                            string sortFieldStr = Console.ReadLine();
+                            BO.ClosedCallInListField? sortBy = null;
+
+                            if (!string.IsNullOrWhiteSpace(sortFieldStr))
                             {
-                                Console.WriteLine("Invalid call type. Please try again.");
+                                if (Enum.TryParse(sortFieldStr, true, out BO.ClosedCallInListField parsedSortField))
+                                {
+                                    sortBy = parsedSortField;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid sort field.");
+                                    break;
+                                }
+                            }
+
+                            var closedCalls = s_bl.Call.GetClosedCallInList(volId, tOfCall, sortBy);
+
+                            foreach (var call in closedCalls)
+                            {
+                                Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Open: {call.OpenTime}, Entry: {call.EntryTimeForTreatment}, End: {call.EndTimeOfTreatment}, Treatment: {call.TypeOfTreatment}");
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Console.WriteLine("Invalid volunteer ID. Please try again.");
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                        break;
+                    case "8":
+                        try
+                        {
+                            Console.Write("Enter volunteer ID: ");
+                            if (!int.TryParse(Console.ReadLine(), out int volId))
+                            {
+                                Console.WriteLine("Invalid volunteer ID.");
+                                break;
+                            }
+
+                            Console.Write("Enter type of call to filter (FLATTIRE, CARBURGLARY, REDRIVE) or leave empty: ");
+                            string typeOfCallStr = Console.ReadLine();
+                            BO.TYPEOFCALL? tOfCall = null;
+
+                            if (!string.IsNullOrWhiteSpace(typeOfCallStr))
+                            {
+                                if (Enum.TryParse(typeOfCallStr, true, out BO.TYPEOFCALL parsedType))
+                                {
+                                    tOfCall = parsedType;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid call type.");
+                                    break;
+                                }
+                            }
+
+                            Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
+                            string sortFieldStr = Console.ReadLine();
+                            BO.ClosedCallInListField? sortBy = null;
+
+                            if (!string.IsNullOrWhiteSpace(sortFieldStr))
+                            {
+                                if (Enum.TryParse(sortFieldStr, true, out BO.GetOpenCallInList parsedSortField))
+                                {
+                                    sortBy = parsedSortField;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid sort field.");
+                                    break;
+                                }
+                            }
+
+                            var closedCalls = s_bl.Call.GetOpenCallInList(volId, tOfCall, sortBy);
+
+                            foreach (var call in closedCalls)
+                            {
+                                Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Open: {call.OpenTime}, Entry: {call.EntryTimeForTreatment}, End: {call.EndTimeOfTreatment}, Treatment: {call.TypeOfTreatment}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
                         }
                         break;
                     case "9":
                         Console.Write("Enter the volunteer ID: ");
-                        if (int.TryParse(Console.ReadLine(), out int volId2))
-                        {
-                            Console.Write("Enter the call type (MEDICAL, FOOD, ERRAND): ");
-                            string callTypeStr = Console.ReadLine();
-                            if (Enum.TryParse<BO.CallType>(callTypeStr, out BO.CallType callType))
-                            {
-                                foreach (var openCall in s_bl.Call.ReadAllOpen(volId2, callType))
-                                {
-                                    Console.WriteLine(openCall);
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid call type. Please try again.");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid volunteer ID. Please try again.");
-                        }
-                        break;
-                    case "10":
-                        Console.Write("Enter the volunteer ID: ");
-                        if (int.TryParse(Console.ReadLine(), out int volId3))
+                        if (int.TryParse(Console.ReadLine(), out int volId))
                         {
                             Console.Write("Enter the assignment ID: ");
                             if (int.TryParse(Console.ReadLine(), out int assignmentId))
                             {
-                                s_bl.Call.EndOfTretment(volId3, assignmentId);
+                                s_bl.Call.updateFinishTreat(volId, assignmentId);
                             }
                             else
                             {
@@ -536,14 +746,14 @@ namespace BlTest
                             Console.WriteLine("Invalid volunteer ID. Please try again.");
                         }
                         break;
-                    case "11":
+                    case "10":
                         Console.Write("Enter the patient ID: ");
                         if (int.TryParse(Console.ReadLine(), out int patientId))
                         {
                             Console.Write("Enter the assignment ID: ");
                             if (int.TryParse(Console.ReadLine(), out int assignmentId))
                             {
-                                s_bl.Call.Cancel(patientId, assignmentId);
+                                s_bl.Call.cancelTreat(patientId, assignmentId);
                             }
                             else
                             {
@@ -555,14 +765,14 @@ namespace BlTest
                             Console.WriteLine("Invalid patient ID. Please try again.");
                         }
                         break;
-                    case "12":
+                    case "11":
                         Console.Write("Enter the volunteer ID: ");
                         if (int.TryParse(Console.ReadLine(), out int volId4))
                         {
                             Console.Write("Enter the assignment ID: ");
                             if (int.TryParse(Console.ReadLine(), out int assignmentId))
                             {
-                                s_bl.Call.CallChoice(volId4, assignmentId);
+                                s_bl.Call.chooseCall(volId4, assignmentId);
                             }
                             else
                             {
@@ -574,7 +784,7 @@ namespace BlTest
                             Console.WriteLine("Invalid volunteer ID. Please try again.");
                         }
                         break;
-                    case "13":
+                    case "12":
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
@@ -612,43 +822,43 @@ namespace BlTest
             }
         }
 
-        //private static void SetClock()
-        //{
-        //    Console.Write("Enter the time unit (MINUTE,HOUR, DAY, MONTH,YEAR): ");
-        //    string timeUnitStr = Console.ReadLine();
-        //    if (Enum.TryParse<BO.TIMEUNIT>(timeUnitStr, out BO.TIMEUNIT timeUnit))
-        //    {
-        //        Console.Write("Enter the amount to forward the clock: ");
-        //        if (int.TryParse(Console.ReadLine(), out int amount))
-        //        {
-        //            for (int i = 0; i < amount; i++)
-        //            {
-        //                s_bl.Admin.ClockPromotion(timeUnit);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Invalid amount. Please try again.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Invalid time unit. Please try again.");
-        //    }
-        //}
+        private static void SetClock()
+        {
+            Console.Write("Enter the time unit (MINUTE,HOUR, DAY, MONTH,YEAR): ");
+            string timeUnitStr = Console.ReadLine();
+            if (Enum.TryParse<BO.TIMEUNIT>(timeUnitStr, out BO.TIMEUNIT timeUnit))
+            {
+                Console.Write("Enter the amount to forward the clock: ");
+                if (int.TryParse(Console.ReadLine(), out int amount))
+                {
+                    for (int i = 0; i < amount; i++)
+                    {
+                        s_bl.Admin.ClockPromotion(timeUnit);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount. Please try again.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid time unit. Please try again.");
+            }
+        }
 
-        //private static void SetRiskRange()
-        //{
-        //    Console.Write("Enter the new maximum risk range (in hours): ");
-        //    if (int.TryParse(Console.ReadLine(), out int maxRange))
-        //    {
-        //        s_bl.Admin.SetRiskRange(TimeSpan.FromHours(maxRange));
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Invalid maximum risk range. Please try again.");
-        //    }
-        //}
+        private static void SetRiskRange()
+        {
+            Console.Write("Enter the new maximum risk range (in hours): ");
+            if (int.TryParse(Console.ReadLine(), out int maxRange))
+            {
+                s_bl.Admin.SetRiskRange(TimeSpan.FromHours(maxRange));
+            }
+            else
+            {
+                Console.WriteLine("Invalid maximum risk range. Please try again.");
+            }
+        }
 
         static void Main(string[] args)
         {

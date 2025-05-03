@@ -65,7 +65,7 @@ namespace BlImplementation
         /// Initializes the database. This method is not implemented yet.
         /// </summary>
 
-        public void IAdmin.initializeDB()
+        public void initializeDB()
         {
             ResetDB();
         }
