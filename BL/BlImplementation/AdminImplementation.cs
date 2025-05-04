@@ -17,6 +17,9 @@ namespace BlImplementation
         public void SetRiskRange(TimeSpan riskRange)
         {
             _dal.Config.RiskRange = riskRange;
+            Console.WriteLine("The riskRange was seted");
+
+
         }
 
         /// <summary>
@@ -58,6 +61,8 @@ namespace BlImplementation
                 BO.TIMEUNIT.YEAR => ClockManager.Now.AddYears(1),
                 _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
             };
+            ClockManager.UpdateClock(newTime);
+            Console.WriteLine($"The clock is forward one {unit}.");
 
         }
 
@@ -68,6 +73,9 @@ namespace BlImplementation
         public void initializeDB()
         {
             ResetDB();
+            DalTest.Initialization.Do();
+            ClockManager.UpdateClock(ClockManager.Now);
+            Console.WriteLine("The Data Base was initialized");
         }
 
         /// <summary>
@@ -82,6 +90,7 @@ namespace BlImplementation
                 _dal.Volunteer.DeleteAll();
                 _dal.Call.DeleteAll();
                 _dal.Assignment.DeleteAll();
+                Console.WriteLine("The Data Base was reseted");
             }
             catch (Exception ex)
             {

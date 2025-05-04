@@ -15,7 +15,7 @@ namespace Helpers
     {
         public static BO.Call GetCallFromDO(DO.Call doCall)
         {
-            return MappingProfile.ConvertToBO(doCall);   //error because there was'nt send riskRange
+            return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
         }
 
         public static DO.Call GetCallFromBO(BO.Call boCall)

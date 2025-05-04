@@ -64,18 +64,27 @@ namespace BO
 
     public enum ClosedCallInListField
     {
-        OpenTime,             // זמן פתיחת הקריאה
-        EntryTimeForTreatment, // זמן כניסה לטיפול
-        EndTimeOfTreatment     // זמן סיום טיפול
-    }
-    public enum OpenCallInListField
-    {
+        Id,
+        FullAddress,
         TypeOfCall,
         OpenTime,
+        EntryTimeForTreatment,
+        EndTimeOfTreatment,
+        TypeOfTreatment
+    }
+   
+public enum OpenCallInListField
+    {
+        Id,
+        FullAddress,
+        TypeOfCall,
+        OpenTime,
+        MaxTimeToFinish,
         Distance
     }
+  
 
-    public enum TIMEUNIT
+public enum TIMEUNIT
     {
         MINUTE,
         HOUR,

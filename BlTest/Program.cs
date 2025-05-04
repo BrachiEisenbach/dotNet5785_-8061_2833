@@ -1,10 +1,10 @@
 ﻿
 using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 using DalTest;
 using BO;
 using DO;
 using System.Data;
+using Microsoft.Extensions.DependencyInjection;
 namespace BlTest
 {
 
@@ -15,8 +15,8 @@ namespace BlTest
 
         private static void MainMenu()
         {
-            var services = new ServiceCollection();
-            services.AddAutoMapper(typeof(MappingProfile));
+            //var services = new ServiceCollection();
+            //services.AddAutoMapper(typeof(MappingProfile));
             while (true)
             {
                 Console.WriteLine("Main Menu:");
@@ -465,8 +465,6 @@ namespace BlTest
                             Console.WriteLine($"Error: {ex.Message}");
                         }
                         break;
-
-                        
                     case "5":
                         try
                         {
@@ -534,8 +532,6 @@ namespace BlTest
                             Console.WriteLine($"Error: {ex.Message}");
                         }
                         break;
-
-                        
                     case "6":
                         try
                         {
@@ -596,9 +592,6 @@ namespace BlTest
                             Console.WriteLine($"Error: {ex.Message}");
                         }
                         break;
-
-
-
                     case "7":
                         try
                         {
@@ -625,14 +618,13 @@ namespace BlTest
                                     break;
                                 }
                             }
-
-                            Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
+                            Console.Write("Enter sort option (Id, FullAddress, TypeOfCall, OpenTime, EntryTimeForTreatment, EndTimeOfTreatment, TypeOfTreatment) or leave empty: ");
                             string sortFieldStr = Console.ReadLine();
-                            BO.CallInListField? sortBy = null;
+                            BO.ClosedCallInListField? sortBy = null;
 
-                            if (!string.IsNullOrWhiteSpace(sortFieldStr))
+                            if (!string.IsNullOrWhiteSpace(sortFieldStr)) 
                             {
-                                if (Enum.TryParse(sortFieldStr, true, out BO.CallInListField parsedSortField))
+                                if (Enum.TryParse(sortFieldStr, true, out BO.ClosedCallInListField parsedSortField))
                                 {
                                     sortBy = parsedSortField;
                                 }
@@ -682,13 +674,13 @@ namespace BlTest
                                 }
                             }
 
-                            Console.Write("Enter sort option (OpenTime, EntryTimeForTreatment, EndTimeOfTreatment) or leave empty: ");
+                            Console.Write("Enter sort option ( Id, FullAddress, TypeOfCall, OpenTime, MaxTimeToFinish, Distance) or leave empty: ");
                             string sortFieldStr = Console.ReadLine();
-                            BO.CallInListField? sortBy = null;
+                            BO.OpenCallInListField? sortBy = null;
 
                             if (!string.IsNullOrWhiteSpace(sortFieldStr))
                             {
-                                if (Enum.TryParse(sortFieldStr, true, out BO.GetOpenCallInList parsedSortField))
+                                if (Enum.TryParse(sortFieldStr, true, out BO.OpenCallInListField parsedSortField))
                                 {
                                     sortBy = parsedSortField;
                                 }
@@ -703,7 +695,7 @@ namespace BlTest
 
                             foreach (var call in closedCalls)
                             {
-                                Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Open: {call.OpenTime}, Entry: {call.EntryTimeForTreatment}, End: {call.EndTimeOfTreatment}, Treatment: {call.TypeOfTreatment}");
+                                Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Discription:{call.VerbalDescription}, Open: {call.OpenTime}, Distance: {call.Distance}, Max Time To Finish:{call.MaxTimeToFinish}");
                             }
                         }
                         catch (Exception ex)
@@ -753,14 +745,14 @@ namespace BlTest
                         Console.Write("Enter the volunteer ID: ");
                         if (int.TryParse(Console.ReadLine(), out int volId4))
                         {
-                            Console.Write("Enter the assignment ID: ");
-                            if (int.TryParse(Console.ReadLine(), out int assignmentId))
+                            Console.Write("Enter the call ID: ");
+                            if (int.TryParse(Console.ReadLine(), out int callId2))
                             {
-                                s_bl.Call.chooseCall(volId4, assignmentId);
+                                s_bl.Call.chooseCall(volId4, callId2);
                             }
                             else
                             {
-                                Console.WriteLine("Invalid assignment ID. Please try again.");
+                                Console.WriteLine("Invalid call ID. Please try again.");
                             }
                         }
                         else
@@ -850,6 +842,7 @@ namespace BlTest
             try
             {
                 s_bl.Admin.initializeDB();
+              
                 MainMenu();
             }
             catch (Exception e)

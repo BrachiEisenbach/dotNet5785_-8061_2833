@@ -260,9 +260,9 @@ namespace DalTest
             bool Active = true;
 
             Console.WriteLine("type of readings (0: AERIALDISTANCE, 1: WALKINGDISTANCE, 2: DRIVINGDISTANCE):");
-            TYPEOFDISTSANCE TypeOfDistance;
+            TYPEOFDISTANCE TypeOfDistance;
             string typeDisStr = Console.ReadLine();
-            if (Enum.TryParse(typeDisStr, true, out TYPEOFDISTSANCE type))
+            if (Enum.TryParse(typeDisStr, true, out TYPEOFDISTANCE type))
             {
                 TypeOfDistance = type;
             }

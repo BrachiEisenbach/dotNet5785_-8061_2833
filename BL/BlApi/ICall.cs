@@ -18,8 +18,8 @@ namespace BlApi
         public void UpdateCallDetails(BO.Call call);
         public void DeleteCall(int callId);
         public void AddCall(BO.Call call);
-        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.CallInListField? sortBy);
-        public IEnumerable<BO.OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.CallInListField? sortBy);
+        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.ClosedCallInListField? sortBy);
+        public IEnumerable<BO.OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInListField? sortBy);
         public void updateFinishTreat(int volId, int callId);
         public void cancelTreat(int volId, int assiId);
         public void chooseCall(int volId, int callId);

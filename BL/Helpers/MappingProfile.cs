@@ -37,7 +37,7 @@ public static class MappingProfile
         _mapper = config.CreateMapper();
     }
 
-    // פונקציה להמיר DO ל-BO ולקבל riskRange כפרמטר
+    // פונקציה המקבלת  riskRange כפרמטר וממירה DO ל-BO 
     public static BO.Call ConvertToBO(DO.Call call, TimeSpan riskRange)
     {
         var boCall = _mapper.Map<BO.Call>(call); // המפר את יתר השדות

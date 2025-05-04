@@ -1,19 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfAssignments>
-  <Assignment>
-    <Id>51</Id>
-    <CallId>1</CallId>
-    <VolunteerId>4444</VolunteerId>
-    <EntryTimeForTreatment>2023-11-22T15:05:10</EntryTimeForTreatment>
-    <EndTimeOfTreatment>2023-11-22T15:06:54.0000000</EndTimeOfTreatment>
-    <TypeOfTreatment>TREATE</TypeOfTreatment>
-  </Assignment>
-  <Assignment>
-    <Id>52</Id>
-    <CallId>0</CallId>
-    <VolunteerId>4444</VolunteerId>
-    <EntryTimeForTreatment>2023-11-22T15:05:10</EntryTimeForTreatment>
-    <EndTimeOfTreatment>2023-11-22T15:05:18.0000000</EndTimeOfTreatment>
-    <TypeOfTreatment>TREATE</TypeOfTreatment>
-  </Assignment>
-</ArrayOfAssignments>
+<ArrayOfAssignments />

@@ -18,7 +18,7 @@ namespace Helpers
 
         public static BO.Volunteer GetVolunteerFromDO(DO.Volunteer doVolunteer)
         {
-            return MappingProfile.ConvertToBO(doVolunteer);
+            return  MappingProfile.ConvertToBO(doVolunteer);
         }
 
         public static DO.Volunteer GetVolunteerFromBO(BO.Volunteer boVolunteer)

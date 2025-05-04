@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using BO;
+using DO;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BO
     {
         public int Id { get; init; }
         public TYPEOFCALL TypeOfCall { get; init; }
-        public string? VerbalDescription { get; init; }
+        public string? VerbalDescription { get; init;}
         public string FullAddress { get; init; }
         public DateTime OpenTime { get; init; }
         public DateTime? MaxTimeToFinish { get; init; }
