@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Helpers
 {
-    internal static class VolunteerManager
+    public static class VolunteerManager
     {
         private static IDal s_dal = Factory.Get; //stage 4
       
@@ -238,7 +238,7 @@ namespace Helpers
         /// </summary>
         /// <param name="address">כתובת לחיפוש</param>
         /// <returns>זוג ערכים: קו רוחב וקו אורך</returns>
-        internal static (double Latitude, double Longitude) FetchCoordinates(string address)
+        public static (double Latitude, double Longitude) FetchCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
                 throw new BlArgumentException("The address provided is invalid.");

@@ -505,7 +505,7 @@ namespace BlTest
                                 : DateTime.Parse(maxFinishStr);
 
                             // נמשוך את הקואורדינטות מחדש לפי הכתובת
-                            var (latitude1, longitude1) = BO.VolunteerManager.FetchCoordinates(fullAddress);
+                            var (latitude1, longitude1) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
 
 
                             // יצירת ישות BO מעודכנת
@@ -568,7 +568,7 @@ namespace BlTest
                             DateTime? maxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeStr) ? null : DateTime.Parse(maxTimeStr);
 
                             // קבלת קואורדינטות מהכתובת
-                            (double latitude, double longitude) = BO.VolunteerManager.FetchCoordinates(fullAddress);
+                            (double latitude, double longitude) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
 
                             // יצירת אובייקט BO.Call
                             BO.Call newCall = new BO.Call
@@ -805,6 +805,7 @@ namespace BlTest
                 }
             }
         }
+
 
         private static void SetClock()
         {
