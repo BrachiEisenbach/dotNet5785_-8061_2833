@@ -53,6 +53,7 @@ namespace BO
 
     }
 
+
     public enum VOLUNTEERFIELDSORT
     {
         FULLNAME,
@@ -61,13 +62,18 @@ namespace BO
         SUMEXPIRED
     }
 
-    public enum CallInListField
+    public enum ClosedCallInListField
     {
         OpenTime,             // זמן פתיחת הקריאה
         EntryTimeForTreatment, // זמן כניסה לטיפול
-        EndTimeOfTreatment
+        EndTimeOfTreatment     // זמן סיום טיפול
     }
-
+    public enum OpenCallInListField
+    {
+        TypeOfCall,
+        OpenTime,
+        Distance
+    }
 
     public enum TIMEUNIT
     {

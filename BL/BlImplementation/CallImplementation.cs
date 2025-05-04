@@ -322,58 +322,61 @@ namespace BlImplementation
         /// <param name="tOfCall">The type of call to filter by (optional).</param>
         /// <param name="sortBy">The field to sort the results by (optional).</param>
 
-        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.CallInListField? sortBy)
+        public IEnumerable<ClosedCallInList> GetClosedCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.ClosedCallInListField? sortBy)
         {
             try
             {
                 var riskRange = _dal.Config.RiskRange;
+
                 var closedCalls = _dal.Assignment.ReadAll()
-                            .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
-                            .Select(a =>
-                            {
-                                var call = GetCallDetails(a.CallId); // שליפת הקריאה המתאימה
-                                if (call == null) return null;
+                    .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
+                    .Select(a =>
+                    {
+                        var call = GetCallDetails(a.CallId); // שליפת הקריאה המתאימה
+                        if (call == null) return null;
 
-                                // המרת DO.Call ל-BO.ClosedCallInList
-                                return new BO.ClosedCallInList
-                                {
-                                    Id = call.Id,
-                                    TypeOfCall = (BO.TYPEOFCALL)(int)call.TypeOfCall,
-                                    FullAddress = call.FullAddress,
-                                    OpenTime = call.OpenTime,
-                                    EntryTimeForTreatment = a.EntryTimeForTreatment,
-                                    EndTimeOfTreatment = a.EndTimeOfTreatment,
-                                    TypeOfTreatment = CallManager.ConvertToBOFinishType(a.TypeOfTreatment)
-                                };
-                            })
-                            .Where(c => c != null) // סינון קריאות ריקות
-                            .ToList();
+                        // המרת DO.Call ל-BO.ClosedCallInList
+                        return new BO.ClosedCallInList
+                        {
+                            Id = call.Id,
+                            TypeOfCall = (BO.TYPEOFCALL)(int)call.TypeOfCall,
+                            FullAddress = call.FullAddress,
+                            OpenTime = call.OpenTime,
+                            EntryTimeForTreatment = a.EntryTimeForTreatment,
+                            EndTimeOfTreatment = a.EndTimeOfTreatment,
+                            TypeOfTreatment = CallManager.ConvertToBOFinishType(a.TypeOfTreatment)
+                        };
+                    })
+                    .Where(c => c != null) // סינון קריאות ריקות
+                    .ToList();
 
-                // סינון לפי סוג קריאה אם הועבר ערך
+                // סינון לפי סוג קריאה אם נדרש
                 if (tOfCall.HasValue)
                 {
-                    closedCalls = closedCalls.Where(c => c.TypeOfCall == tOfCall.Value).ToList();
+                    closedCalls = closedCalls
+                        .Where(c => c.TypeOfCall == tOfCall.Value)
+                        .ToList();
                 }
 
-                // מיון לפי הפרמטר שנבחר, ברירת מחדל לפי מספר קריאה
+                // מיון לפי השדה שנבחר, ברירת מחדל לפי מזהה קריאה
                 closedCalls = sortBy switch
                 {
-                    BO.CallInListField.OpenTime => closedCalls.OrderBy(c => c.OpenTime).ToList(),
-                    BO.CallInListField.EntryTimeForTreatment => closedCalls.OrderBy(c => c.EntryTimeForTreatment).ToList(),
-                    BO.CallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
-                    _ => closedCalls.OrderBy(c => c.Id).ToList() // ברירת מחדל: לפי מזהה קריאה
+                    BO.ClosedCallInListField.OpenTime => closedCalls.OrderBy(c => c.OpenTime).ToList(),
+                    BO.ClosedCallInListField.EntryTimeForTreatment => closedCalls.OrderBy(c => c.EntryTimeForTreatment).ToList(),
+                    BO.ClosedCallInListField.EndTimeOfTreatment => closedCalls.OrderBy(c => c.EndTimeOfTreatment).ToList(),
+                    _ => closedCalls.OrderBy(c => c.Id).ToList()
                 };
+
                 return closedCalls;
             }
-            catch (DalDoesNotExistException dalDoesNotExistException)
+            catch (DalDoesNotExistException dalEx)
             {
-                throw new BlDoesNotExistException("There are no allocations.", dalDoesNotExistException);
+                throw new BlDoesNotExistException("There are no allocations.", dalEx);
             }
             catch (Exception ex)
             {
-                throw new BlInvalidOperationException("Error deleting call", ex);
+                throw new BlInvalidOperationException("Error fetching closed calls.", ex);
             }
-
         }
 
 
@@ -388,22 +391,20 @@ namespace BlImplementation
         {
             try
             {
-                //var calls = GetCallList();
                 var riskRange = _dal.Config.RiskRange;
-                //var volunteer = GetVolunteerDetails(volId) ?? throw new BlDoesNotExistException($"מתנדב עם מזהה {volId} לא נמצא.");
-                var volunteer = _dal.Volunteer.Read(volId) ?? throw new BlDoesNotExistException($"Volunteer with ID {volId} not found.");
+                var volunteer = _dal.Volunteer.Read(volId)
+                    ?? throw new BlDoesNotExistException($"Volunteer with ID {volId} not found.");
 
                 var openCalls = _dal.Call.ReadAll()
-                        .Where(call =>
-                        {
-                            var status = CallManager.CalculateStatus(call, riskRange);
-                            return status == BO.STATUS.Open || status == BO.STATUS.OpenDangerZone;
-                        })
-                        .Where(call => !tOfCall.HasValue || CallManager.ConvertToBOType(call.TypeOfCall) == tOfCall.Value); // סינון לפי סוג הקריאה (אם נדרש)
+                    .Where(call =>
+                    {
+                        var status = CallManager.CalculateStatus(call, riskRange);
+                        return status == BO.STATUS.Open || status == BO.STATUS.OpenDangerZone;
+                    })
+                    .Where(call => !tOfCall.HasValue || CallManager.ConvertToBOType(call.TypeOfCall) == tOfCall.Value);
+
                 var openCallsList =
                     from call in openCalls
-                    group call by call.TypeOfCall into callGroups // קיבוץ לפי סוג קריאה
-                    from call in callGroups // ביטול הקיבוץ כדי שנוכל להמשיך עם הנתונים
                     select new BO.OpenCallInList
                     {
                         Id = call.Id,
@@ -416,28 +417,25 @@ namespace BlImplementation
                     };
 
                 openCallsList = sortBy.HasValue
-     ? sortBy.Value switch
-     {
-         BO.CallInListField.EndTimeOfTreatment => openCallsList.OrderBy(c => c.TypeOfCall),
-         BO.CallInListField.OpenTime => openCallsList.OrderBy(c => c.OpenTime),
-         BO.CallInListField.EntryTimeForTreatment => openCallsList.OrderBy(c => c.Distance),
-         _ => openCallsList.OrderBy(c => c.Id)
-     }
-     : openCallsList.OrderBy(c => c.Id);
-
+                    ? sortBy.Value switch
+                    {
+                        BO.OpenCallInListField.TypeOfCall => openCallsList.OrderBy(c => c.TypeOfCall),
+                        BO.OpenCallInListField.OpenTime => openCallsList.OrderBy(c => c.OpenTime),
+                        BO.OpenCallInListField.Distance => openCallsList.OrderBy(c => c.Distance),
+                        _ => openCallsList.OrderBy(c => c.Id)
+                    }
+                    : openCallsList.OrderBy(c => c.Id);
 
                 return openCallsList;
             }
-            catch (DalDoesNotExistException dalDoesNotExistException)
+            catch (DalDoesNotExistException dalEx)
             {
-                // תרגום חריגת DAL לחריגה של BL
-                throw new BlDoesNotExistException("\"One of the requested items does not exist.\"", dalDoesNotExistException);
+                throw new BlDoesNotExistException("One of the requested items does not exist.", dalEx);
             }
             catch (Exception ex)
             {
-                throw new BlInvalidOperationException("Error deleting call", ex);
+                throw new BlInvalidOperationException("Error retrieving open calls.", ex);
             }
-
         }
 
         /// <summary>
