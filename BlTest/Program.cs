@@ -15,8 +15,9 @@ namespace BlTest
 
         private static void MainMenu()
         {
-            //var services = new ServiceCollection();
-            //services.AddAutoMapper(typeof(MappingProfile));
+           // var services = new ServiceCollection();
+           // services.AddAutoMapper(typeof(MappingProfile));
+
             while (true)
             {
                 Console.WriteLine("Main Menu:");
@@ -257,12 +258,25 @@ namespace BlTest
                             Console.Write("Enter email: ");
                             string email = Console.ReadLine();
 
-                            Console.Write("Enter password (or leave empty): ");
+                            Console.Write("Enter password: ");
                             string password = Console.ReadLine();
                             password = string.IsNullOrWhiteSpace(password) ? null : password;
 
                             Console.Write("Enter full address: ");
                             string fullAddress = Console.ReadLine();
+
+                            //Console.Write("Enter role: (ADMIN, DISTRICTMANAGER,VOLUNTEER)");
+                            //string role = Console.ReadLine();
+                            //if(role!= "VOLUNTEER")
+                            //{
+                            //    if
+                            //}
+                            //else if(!Enum.TryParse<BO.ROLE>(role, true, out BO.ROLE parsedRole))
+                            //{
+                            //    Console.WriteLine("Invalid role.");
+                            //    break;
+                            //}
+                           
 
                             Console.Write("Is active? (true/false): ");
                             if (!bool.TryParse(Console.ReadLine(), out bool active))
@@ -292,7 +306,7 @@ namespace BlTest
                                 Email = email,
                                 Password = password,
                                 FullAddress = fullAddress,
-                                Role = s_bl.Volunteer.GetVolunteerDetails(volunteerAddId).Role,
+                                Role = BO.ROLE.VOLUNTEER,
                                 Active = active,
                                 MaxDistance = maxDistance,
                                 TypeOfDistance = typeOfDistance

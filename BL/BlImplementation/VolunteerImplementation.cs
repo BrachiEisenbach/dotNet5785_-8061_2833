@@ -146,6 +146,14 @@ namespace BlImplementation
 
             boVolunteer.Latitude = latitude;
             boVolunteer.Longitude = longitude;
+            // 📍 Latitude & Longitude validation – must exist and be within range
+            if (!boVolunteer.Latitude.HasValue || !boVolunteer.Longitude.HasValue)
+                throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+            if (boVolunteer.Latitude is < -90 or > 90)
+                throw new BlArgumentException("Latitude must be between -90 and 90.");
+            if (boVolunteer.Longitude is < -180 or > 180)
+                throw new BlArgumentException("Longitude must be between -180 and 180.");
 
             DO.Volunteer doVolunteer = new DO.Volunteer(
                 boVolunteer.Id,

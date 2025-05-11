@@ -28,14 +28,6 @@ namespace Helpers
             if (string.IsNullOrWhiteSpace(volunteer.FullName) || volunteer.FullName.Length < 3)
                 throw new ArgumentException("Full name must be at least 3 characters long.");
 
-            // 📍 Latitude & Longitude validation – must exist and be within range
-            if (!volunteer.Latitude.HasValue || !volunteer.Longitude.HasValue)
-                throw new ArgumentException("Latitude and Longitude must be provided.");
-            if (volunteer.Latitude is < -90 or > 90)
-                throw new ArgumentException("Latitude must be between -90 and 90.");
-            if (volunteer.Longitude is < -180 or > 180)
-                throw new ArgumentException("Longitude must be between -180 and 180.");
-
             // 🔒 Password validation – not empty
             if (string.IsNullOrWhiteSpace(volunteer.Password))
                 throw new ArgumentException("Password cannot be empty.");
@@ -52,12 +44,7 @@ namespace Helpers
             if (volunteer.CallInTreate != null && !volunteer.Active)
                 throw new ArgumentException("A volunteer with an active call must be marked as active.");
 
-            // Location must be present and within valid range
-            if (!volunteer.Latitude.HasValue || !volunteer.Longitude.HasValue)
-                throw new ArgumentException("Volunteer must have a location.");
-            if (volunteer.Latitude is < -90 or > 90 || volunteer.Longitude is < -180 or > 180)
-                throw new ArgumentException("Latitude must be between -90 and 90, and longitude between -180 and 180.");
-
+            
             // ID must be logically valid (with checksum)
             if (!IsValidIsraeliID(volunteer.Id))
                 throw new ArgumentException("Invalid Israeli ID (checksum failed).");
