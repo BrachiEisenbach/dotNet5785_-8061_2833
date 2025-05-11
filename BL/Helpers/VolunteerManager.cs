@@ -263,7 +263,10 @@ namespace Helpers
                 });
 
                 if (locationData == null || locationData.Length == 0)
+                {
+                    Console.WriteLine(jsonResult); // הדפס את התוכן כדי לבדוק
                     throw new BlException("No location data found for this address.");
+                }
 
                 if (!double.TryParse(locationData[0].Lat, out double lat) ||
                     !double.TryParse(locationData[0].Lon, out double lon))
