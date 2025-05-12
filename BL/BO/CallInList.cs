@@ -19,6 +19,7 @@ namespace BO
         public TimeSpan? TimeTaken { get; init; }
         public STATUS Status { get; init; }
         public int SumOfAssigned { get; set; }
+
         public override string ToString()
         {
             var sb = new StringBuilder();

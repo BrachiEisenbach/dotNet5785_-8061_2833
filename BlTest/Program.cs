@@ -750,6 +750,7 @@ namespace BlTest
                                 Console.WriteLine("Invalid assignment ID. Please try again.");
                             }
                         }
+
                         else
                         {
                             Console.WriteLine("Invalid patient ID. Please try again.");
