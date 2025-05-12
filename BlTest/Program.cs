@@ -187,7 +187,7 @@ namespace BlTest
                             Console.Write("Enter email: ");
                             string email = Console.ReadLine();
 
-                            Console.Write("Enter password (or leave empty): ");
+                            Console.Write("Enter password: ");
                             string password = Console.ReadLine();
                             password = string.IsNullOrWhiteSpace(password) ? null : password;
 
@@ -202,7 +202,7 @@ namespace BlTest
                                 break;
                             }
 
-                            Console.Write("Enter max distance (or leave empty): ");
+                            Console.Write("Enter max distance: ");
                             string maxDistStr = Console.ReadLine();
                             double? maxDistance = string.IsNullOrWhiteSpace(maxDistStr) ? null : double.Parse(maxDistStr);
 
@@ -285,7 +285,7 @@ namespace BlTest
                                 break;
                             }
 
-                            Console.Write("Enter max distance (or leave empty): ");
+                            Console.Write("Enter max distance: ");
                             string maxDistStr = Console.ReadLine();
                             double? maxDistance = string.IsNullOrWhiteSpace(maxDistStr) ? null : double.Parse(maxDistStr);
 
@@ -361,7 +361,7 @@ namespace BlTest
                         try
                         {
                             Console.WriteLine("Enter filter for status (optional):");
-                            Console.WriteLine("Options: OPEN, IN_PROGRESS, CLOSED");
+                            Console.WriteLine("Options: InTreatment, InTreatmentDangerZone, Open, Closed, Expired, OpenDangerZone");
                             string statusFilterStr = Console.ReadLine();
                             BO.STATUS? statusFilter = null;
 
@@ -379,8 +379,8 @@ namespace BlTest
                             }
 
                             Console.WriteLine("Enter filter value (optional):");
-                            Console.WriteLine("If filter is status, enter the corresponding status (OPEN, IN_PROGRESS, CLOSED),");
-                            Console.WriteLine("If filter is type of call, enter the corresponding type of call (URGENT, NORMAL, etc.)");
+                            Console.WriteLine("If filter is status, enter the corresponding status : InTreatment, InTreatmentDangerZone, Open, Closed, Expired, OpenDangerZone");
+                            Console.WriteLine("If filter is type of call, enter the corresponding type of call ( FLATTIRE, CARBURGLARY, REDRIVE):");
                             string valFilterStr = Console.ReadLine();
                             object? valFilter = null;
 
@@ -489,7 +489,7 @@ namespace BlTest
                                 break;
                             }
 
-                            Console.Write("Enter type of call (URGENT, NORMAL, etc.): ");
+                            Console.Write("Enter type of call ( FLATTIRE, CARBURGLARY, REDRIVE): ");
                             string typeStr = Console.ReadLine();
                             if (!Enum.TryParse<BO.TYPEOFCALL>(typeStr, true, out BO.TYPEOFCALL typeOfCall))
                             {
