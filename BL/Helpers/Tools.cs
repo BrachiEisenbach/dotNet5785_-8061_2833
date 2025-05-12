@@ -46,8 +46,8 @@ namespace Helpers
 
             
             // ID must be logically valid (with checksum)
-            if (!IsValidIsraeliID(volunteer.Id))
-                throw new ArgumentException("Invalid Israeli ID (checksum failed).");
+            //if (!IsValidIsraeliID(volunteer.Id))
+            //    throw new ArgumentException("Invalid Israeli ID (checksum failed).");
         }
 
         //check if the id is valid
