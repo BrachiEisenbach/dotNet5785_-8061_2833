@@ -9,7 +9,7 @@ using BO;
 
 namespace BlApi
 {
-    public interface ICall
+    public interface ICall : IObservable
     {
         public int[] GetCallCountsByStatus();
         //public void UpdateCallStatus();

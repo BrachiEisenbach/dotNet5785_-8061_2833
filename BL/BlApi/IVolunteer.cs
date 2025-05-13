@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
-    public interface IVolunteer
+    public interface IVolunteer : IObservable
     {
         public BO.ROLE GetUserRole(string userName);//אפשר להוסיף קבלת סיסמא
         public IEnumerable<BO.VolunteerInList> GetVolunteerInList(bool? active, BO.VOLUNTEERFIELDSORT? ROLE);

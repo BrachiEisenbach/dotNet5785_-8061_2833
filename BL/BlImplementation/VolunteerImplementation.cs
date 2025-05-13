@@ -87,6 +87,8 @@ namespace BlImplementation
             try
             {
                 _dal.Volunteer.Update(doVolunteer);
+                VolunteerManager.Observers.NotifyItemUpdated(doVolunteer.Id);
+                VolunteerManager.Observers.NotifyListUpdated();
             }
             catch (DO.DalDoesNotExistException ex)
             {
@@ -120,6 +122,7 @@ namespace BlImplementation
             try
             {
                 _dal.Volunteer.Delete(id);
+                VolunteerManager.Observers.NotifyListUpdated();
             }
             catch (DO.DalDoesNotExistException ex)
             {
@@ -173,6 +176,7 @@ namespace BlImplementation
             try
             {
                 _dal.Volunteer.Create(doVolunteer);
+                VolunteerManager.Observers.NotifyListUpdated();
             }
             catch (DO.DalDoesNotExistException ex)
             {
@@ -247,6 +251,26 @@ namespace BlImplementation
             {
                 throw new BlException("Error while accepting volunteers on the list");
             }
+        }
+
+        public void AddObserver(Action listObserver)
+        {
+            VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+        }
+
+        public void AddObserver(int id, Action observer)
+        {
+            VolunteerManager.Observers.AddObserver(id, observer);
+        }
+
+        public void RemoveObserver(Action listObserver)
+        {
+            VolunteerManager.Observers.RemoveListObserver(listObserver);
+        }
+
+        public void RemoveObserver(int id, Action observer)
+        {
+            VolunteerManager.Observers.RemoveObserver(id, observer);
         }
     }
 }

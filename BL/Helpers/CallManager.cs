@@ -13,6 +13,7 @@ namespace Helpers
 {
     internal static class CallManager
     {
+        internal static ObserverManager Observers = new(); //stage 5 
         public static BO.Call GetCallFromDO(DO.Call doCall)
         {
             return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
