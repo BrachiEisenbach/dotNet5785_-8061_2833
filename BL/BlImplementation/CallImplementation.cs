@@ -119,16 +119,23 @@ namespace BlImplementation
             if (string.IsNullOrWhiteSpace(call.FullAddress))
                 throw new BlArgumentException("Address cannot be empty.");
 
-            //לשנות לקריאה לפונקציה שבודקת תקינות כתובת
-            if (call.Latitude is null || call.Longitude is null)
-                throw new BlArgumentException("Geographic coordinates must be correct.");
+            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
+
+            call.Latitude = latitude;
+            call.Longitude = longitude;
+            if (!call.Latitude.HasValue || !call.Longitude.HasValue)
+                throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+            if (call.Latitude is < -90 or > 90)
+                throw new BlArgumentException("Latitude must be between -90 and 90.");
+            if (call.Longitude is < -180 or > 180)
+                throw new BlArgumentException("Longitude must be between -180 and 180.");
 
             if (call.OpenTime == default)
                 throw new BlArgumentException("The call's start time is incorrect.");
 
             if (call.MaxTimeToFinish is not null && call.MaxTimeToFinish <= call.OpenTime)
                 throw new BlArgumentException("Maximum end time must be later than the call start time");
-            var (latitude, longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
 
             DO.Call newCall = new DO.Call(
                 Id: call.Id,  

@@ -706,11 +706,14 @@ namespace BlTest
                             }
 
                             var closedCalls = s_bl.Call.GetOpenCallInList(volId3, tOfCall, sortBy);
-
-                            foreach (var call in closedCalls)
+                            if (closedCalls != null)
                             {
-                                Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Discription:{call.VerbalDescription}, Open: {call.OpenTime}, Distance: {call.Distance}, Max Time To Finish:{call.MaxTimeToFinish}");
+                                foreach (var call in closedCalls)
+                                {
+                                    Console.WriteLine($"ID: {call.Id}, Type: {call.TypeOfCall}, Address: {call.FullAddress}, Discription:{call.VerbalDescription}, Open: {call.OpenTime}, Distance: {call.Distance}, Max Time To Finish:{call.MaxTimeToFinish}");
+                                }
                             }
+                            else { Console.WriteLine("There is no open calls to this volunteer"); }
                         }
                         catch (Exception ex)
                         {
