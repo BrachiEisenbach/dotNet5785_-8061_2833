@@ -200,7 +200,7 @@ namespace BlImplementation
                 // 5. עדכון הנתונים
                 var updatedAssignment = assignment with
                 {
-                    EndTimeOfTreatment = ClockManager.Now,
+                    EndTimeOfTreatment = AdminManager.Now,
                     TypeOfTreatment = volunteerFromDAL.Id == assignment.VolunteerId
                                       ? TYPEOFTREATMENT.SELFCANCELLATION
                                       : TYPEOFTREATMENT.CANCELINGANADMINISTRATOR
@@ -241,7 +241,7 @@ namespace BlImplementation
                     throw new BlInvalidOperationException("You cannot select a call that is already in progress.");
 
                 // 3. בדיקה שלא פג תוקפה של הקריאה
-                if (call.MaxTimeToFinish != null && call.MaxTimeToFinish < ClockManager.Now)
+                if (call.MaxTimeToFinish != null && call.MaxTimeToFinish < AdminManager.Now)
                     throw new BlInvalidOperationException("Cannot select an expired call.");
 
                 // 4. שליפת המתנדב מה-DAL
@@ -254,7 +254,7 @@ namespace BlImplementation
                     Id:0,
                     CallId: callId,
                     VolunteerId: volId,
-                    EntryTimeForTreatment: ClockManager.Now,
+                    EntryTimeForTreatment: AdminManager.Now,
                     EndTimeOfTreatment: null,
                     TypeOfTreatment: null
                 );
@@ -528,7 +528,7 @@ namespace BlImplementation
 
                 var updatedAssignment = assignment with
                 {
-                    EndTimeOfTreatment = ClockManager.Now,
+                    EndTimeOfTreatment = AdminManager.Now,
                     TypeOfTreatment = TYPEOFTREATMENT.TREATE
                 };
                 // שלב 5: ניסיון עדכון בשכבת הנתונים

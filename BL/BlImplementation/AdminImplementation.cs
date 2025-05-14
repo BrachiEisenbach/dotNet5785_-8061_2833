@@ -42,7 +42,7 @@ namespace BlImplementation
 
         public DateTime GetTime()
         {
-            return ClockManager.Now;
+            return AdminManager.Now;
         }
 
         /// <summary>
@@ -54,14 +54,14 @@ namespace BlImplementation
         {
             DateTime newTime = unit switch
             {
-                BO.TIMEUNIT.MINUTE => ClockManager.Now.AddMinutes(1),
-                BO.TIMEUNIT.HOUR => ClockManager.Now.AddHours(1),
-                BO.TIMEUNIT.DAY => ClockManager.Now.AddDays(1),
-                BO.TIMEUNIT.MONTH => ClockManager.Now.AddMonths(1),
-                BO.TIMEUNIT.YEAR => ClockManager.Now.AddYears(1),
+                BO.TIMEUNIT.MINUTE => AdminManager.Now.AddMinutes(1),
+                BO.TIMEUNIT.HOUR => AdminManager.Now.AddHours(1),
+                BO.TIMEUNIT.DAY => AdminManager.Now.AddDays(1),
+                BO.TIMEUNIT.MONTH => AdminManager.Now.AddMonths(1),
+                BO.TIMEUNIT.YEAR => AdminManager.Now.AddYears(1),
                 _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
             };
-            ClockManager.UpdateClock(newTime);
+            AdminManager.UpdateClock(newTime);
             Console.WriteLine($"The clock is forward one {unit}.");
 
         }
@@ -74,7 +74,7 @@ namespace BlImplementation
         {
             ResetDB();
             DalTest.Initialization.Do();
-            ClockManager.UpdateClock(ClockManager.Now);
+            AdminManager.UpdateClock(AdminManager.Now);
             Console.WriteLine("The Data Base was initialized");
         }
 
