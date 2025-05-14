@@ -72,10 +72,11 @@ namespace BlImplementation
 
         public void initializeDB()
         {
-            ResetDB();
-            DalTest.Initialization.Do();
-            AdminManager.UpdateClock(AdminManager.Now);
-            Console.WriteLine("The Data Base was initialized");
+            //ResetDB();
+            //DalTest.Initialization.Do();
+            //AdminManager.UpdateClock(AdminManager.Now);
+            //Console.WriteLine("The Data Base was initialized");
+            AdminManager.InitializeDB();
         }
 
         /// <summary>
@@ -86,17 +87,29 @@ namespace BlImplementation
         {
             try
             {
-                _dal.Config.Reset();
-                _dal.Volunteer.DeleteAll();
-                _dal.Call.DeleteAll();
-                _dal.Assignment.DeleteAll();
-                Console.WriteLine("The Data Base was reseted");
+                //_dal.Config.Reset();
+                //_dal.Volunteer.DeleteAll();
+                //_dal.Call.DeleteAll();
+                //_dal.Assignment.DeleteAll();
+                //Console.WriteLine("The Data Base was reseted");
+                AdminManager.ResetDB();
             }
             catch (Exception ex)
             {
                 throw new BlException("Error resetting database", ex);
             }
         }
+
+        #region Stage 5
+        public void AddClockObserver(Action clockObserver) =>
+        AdminManager.ClockUpdatedObservers += clockObserver;
+        public void RemoveClockObserver(Action clockObserver) =>
+        AdminManager.ClockUpdatedObservers -= clockObserver;
+        public void AddConfigObserver(Action configObserver) =>
+       AdminManager.ConfigUpdatedObservers += configObserver;
+        public void RemoveConfigObserver(Action configObserver) =>
+        AdminManager.ConfigUpdatedObservers -= configObserver;
+        #endregion Stage 5
     }
 
 
