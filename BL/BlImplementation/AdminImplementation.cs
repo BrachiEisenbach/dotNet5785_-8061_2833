@@ -16,7 +16,7 @@ namespace BlImplementation
 
         public void SetRiskRange(TimeSpan riskRange)
         {
-            _dal.Config.RiskRange = riskRange;
+            AdminManager.RiskRange = riskRange;
             Console.WriteLine("The riskRange was seted");
 
 
@@ -29,7 +29,7 @@ namespace BlImplementation
         public int GetRiskRange()
         {
             int riskRange;
-            if (int.TryParse(_dal.Config.RiskRange.ToString(), out riskRange))
+            if (int.TryParse(AdminManager.RiskRange.ToString(), out riskRange))
             {
                 return riskRange;
             }
@@ -72,11 +72,11 @@ namespace BlImplementation
 
         public void initializeDB()
         {
-            //ResetDB();
-            //DalTest.Initialization.Do();
-            //AdminManager.UpdateClock(AdminManager.Now);
-            //Console.WriteLine("The Data Base was initialized");
+            ResetDB();
             AdminManager.InitializeDB();
+            AdminManager.UpdateClock(AdminManager.Now);
+            Console.WriteLine("The Data Base was initialized");
+            
         }
 
         /// <summary>
@@ -91,8 +91,9 @@ namespace BlImplementation
                 //_dal.Volunteer.DeleteAll();
                 //_dal.Call.DeleteAll();
                 //_dal.Assignment.DeleteAll();
-                //Console.WriteLine("The Data Base was reseted");
                 AdminManager.ResetDB();
+                Console.WriteLine("The Data Base was reseted");
+
             }
             catch (Exception ex)
             {

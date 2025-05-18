@@ -9,6 +9,7 @@ namespace Helpers;
 /// </summary>
 internal static class AdminManager //stage 4
 {
+    
     #region Stage 4
     private static readonly DalApi.IDal s_dal = DalApi.Factory.Get; //stage 4
     #endregion Stage 4
@@ -22,7 +23,7 @@ internal static class AdminManager //stage 4
     /// <summary>
     /// Property for providing/setting current configuration variable value for any BL class that may need it
     /// </summary>
-    internal static int RiskRange
+    internal static TimeSpan  RiskRange
     {
         get => s_dal.Config.RiskRange;
         set
@@ -49,7 +50,7 @@ internal static class AdminManager //stage 4
             AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed for update PL
             AdminManager.RiskRange = AdminManager.RiskRange; //stage 5 - needed for update PL
         }
-
+    }
 
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
@@ -78,9 +79,7 @@ internal static class AdminManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
-
-        StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
-        //etc ...
+         
 
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
@@ -92,6 +91,7 @@ internal static class AdminManager //stage 4
     private static Thread? s_thread;
     private static int s_interval { get; set; } = 1; //in minutes by second    
     private static volatile bool s_stop = false;
+    private static object BlMutex = new();
     private static readonly object mutex = new();
 
     internal static void Start(int interval)
@@ -127,7 +127,7 @@ internal static class AdminManager //stage 4
             //TO_DO:
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-            StudentManager.SimulateCourseRegistrationAndGrade(); //stage 7
+            
 
             //etc...
             #endregion Stage 7

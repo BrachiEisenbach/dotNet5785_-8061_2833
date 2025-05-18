@@ -149,7 +149,7 @@ namespace BlImplementation
             try
             {
                 _dal.Call.Create(newCall);
-                CallManager.Observers.NotifyListUpdated();
+                //CallManager.Observers.NotifyListUpdated();
             }
             catch (DalAlreadyExistException dalAlreadyExistException) { throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException); }
             catch (Exception ex)
@@ -261,7 +261,7 @@ namespace BlImplementation
                 // 6. שמירת ההקצאה החדשה
                 _dal.Assignment.Create(newAssignment);
                 //?????????????
-                CallManager.Observers.NotifyListUpdated();
+                //CallManager.Observers.NotifyListUpdated();
 
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
@@ -300,7 +300,8 @@ namespace BlImplementation
                     throw new BlInvalidOperationException("A call previously assigned to volunteers cannot be deleted.");
 
                 _dal.Call.Delete(callId);
-                CallManager.Observers.NotifyListUpdated();
+                 
+                //CallManager.Observers.NotifyListUpdated();
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
@@ -487,8 +488,8 @@ namespace BlImplementation
 
                 var updatedCall = MappingProfile.ConvertToDO(call);
                 _dal.Call.Update(updatedCall);
-                CallManager.Observers.NotifyItemUpdated(updatedCall.Id);  //stage 5
-                CallManager.Observers.NotifyListUpdated();  //stage 5
+                //CallManager.Observers.NotifyItemUpdated(updatedCall.Id);  //stage 5
+                //CallManager.Observers.NotifyListUpdated();  //stage 5
 
             }
             catch (Exception ex)
@@ -549,22 +550,22 @@ namespace BlImplementation
 
         public void AddObserver(Action listObserver)
         {
-            CallManager.Observers.AddListObserver(listObserver); //stage 5
+            //CallManager.Observers.AddListObserver(listObserver); //stage 5
         }
 
         public void AddObserver(int id, Action observer)
         {
-            CallManager.Observers.AddObserver(id, observer);
+            //CallManager.Observers.AddObserver(id, observer);
         }
 
         public void RemoveObserver(Action listObserver)
         {
-            CallManager.Observers.RemoveListObserver(listObserver);
+            //CallManager.Observers.RemoveListObserver(listObserver);
         }
 
         public void RemoveObserver(int id, Action observer)
         {
-            CallManager.Observers.RemoveObserver(id, observer);
+            //CallManager.Observers.RemoveObserver(id, observer);
         }
     }
 }
