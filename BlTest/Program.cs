@@ -73,7 +73,7 @@ namespace BlTest
                         s_bl.Admin.ResetDB();
                         break;
                     case "2":
-                        s_bl.Admin.initializeDB();
+                        s_bl.Admin.InitializeDB();
                         break;
                     case "3":
                         Console.Write("Enter the time unit (MINUTE,HOUR, DAY, MONTH,YEAR): ");
@@ -859,7 +859,7 @@ namespace BlTest
         {
             try
             {
-                s_bl.Admin.initializeDB();
+                s_bl.Admin.InitializeDB();
               
                 MainMenu();
             }

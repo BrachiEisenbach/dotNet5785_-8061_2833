@@ -71,7 +71,7 @@ namespace BlImplementation
         /// Initializes the database. This method is not implemented yet.
         /// </summary>
 
-        public void initializeDB()
+        public void InitializeDB()
         {
             ResetDB();
             AdminManager.InitializeDB();

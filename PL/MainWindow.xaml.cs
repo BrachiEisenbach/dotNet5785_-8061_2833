@@ -1,4 +1,5 @@
-﻿using PL.Volunteer;
+﻿using PL.Call;
+using PL.Volunteer;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -116,6 +117,19 @@ namespace PL
         private void btnVolunteers_Click(object sender, RoutedEventArgs e)
         {
             new VolunteerListWindow().Show();
+        }
+        private void btnCalls_Click(object sender, RoutedEventArgs e)
+        {
+            new CallListWindow().Show();
+        }
+        private void btnInitialize_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.InitializeDB();
+            
+        }
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.ResetDB();
         }
     }
 }
