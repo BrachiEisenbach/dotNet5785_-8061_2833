@@ -23,7 +23,8 @@ namespace BO
     {
         AERIALDISTANCE,
         WALKINGDISTANCE,
-        DRIVINGDISTANCE
+        DRIVINGDISTANCE,
+        NONE
     }
     public enum TYPEOFCALL
     {
