@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        Loaded="Window_Loaded" 
+        Closed="Window_Closed"
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
@@ -23,7 +25,7 @@
             </Grid.ColumnDefinitions>
 
 
-            <Label Content="{Binding Clock}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="0,202,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.159,1.81" Height="26" Width="214" Grid.Column="1"/>
+            <Label Content="{Binding  Clock}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" Margin="302,326,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.159,1.81" Height="49" Width="214" Grid.ColumnSpan="2"/>
             <Button Content="Add One Minute" HorizontalAlignment="Center" Width="180" Margin="0,56,0,189" Click="btnAddOneMinute_Click"/>
             <Button Content="Add One Hour" HorizontalAlignment="Center" Width="180" Margin="0,161,0,96"  Click="btnAddOneHour_Click"/>
             <Button Content="Add One Day" HorizontalAlignment="Center" Width="180" Margin="0,115,0,139"  Click="btnAddOneDay_Click"/>
@@ -36,8 +38,8 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="28,107,0,0" TextWrapping="Wrap" Text="Risk Range:" VerticalAlignment="Top" Width="65" RenderTransformOrigin="-1.122,0.902"/>
 
 
-
         </Grid>
+
         <!-- איפוס בסיס הנתונים-->
         <Button Content="Reset DB" Click="btnReset_Click" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" Margin="262,74,0,0"/>
         <!-- אתחול בסיס הנתונים-->

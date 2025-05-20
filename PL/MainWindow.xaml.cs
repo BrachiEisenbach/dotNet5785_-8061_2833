@@ -60,8 +60,10 @@ namespace PL
         private void configObserver()
         {
             RiskRange = s_bl.Admin.GetRiskRange();
-
         }
+
+
+     
 
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -83,6 +85,11 @@ namespace PL
         {
             s_bl.Admin.ClockPromotion(BO.TIMEUNIT.YEAR);
         }
+
+
+
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -124,12 +131,51 @@ namespace PL
         }
         private void btnInitialize_Click(object sender, RoutedEventArgs e)
         {
+            // Confirmation message to the user
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the database?",
+                                                      "Initialization Confirmation",
+                                                      MessageBoxButton.YesNo,
+                                                      MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Close all open windows (except the main window)
+                CloseOpenWindows();
+            }
+            Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.InitializeDB();
-            
+            Mouse.OverrideCursor = null;
+
         }
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.ResetDB();
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to reset the database?",
+                                                   "Reset Confirmation",
+                                                   MessageBoxButton.YesNo,
+                                                   MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Close all open windows
+                    CloseOpenWindows();
+                }
+                Mouse.OverrideCursor = Cursors.Wait;
+                s_bl.Admin.ResetDB();
+                Mouse.OverrideCursor = null;
+            }
+
+        }
+        private void CloseOpenWindows()
+        {
+            // סגירת כל החלונות הפתוחים חוץ מהחלון הראשי
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window != this) // 'this' הוא החלון הראשי
+                {
+                    window.Close();
+                }
+            }
         }
     }
 }
