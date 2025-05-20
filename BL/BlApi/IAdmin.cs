@@ -14,7 +14,7 @@ namespace BlApi
         public TimeSpan GetRiskRange();
         public void SetRiskRange(TimeSpan riskRange);
         public void ResetDB();
-        public void initializeDB();
+        public void InitializeDB();
 
         #region Stage 5
         void AddConfigObserver(Action configObserver);
