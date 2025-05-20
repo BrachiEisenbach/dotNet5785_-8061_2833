@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Label" HorizontalAlignment="Left" Margin="13,-5,0,0" VerticalAlignment="Top" Grid.Column="0"/>
-            <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" />
+            <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" />
         </Grid>
         <DataGrid Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" ItemsSource="{Binding Path=VolunteerList}"/>
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Left" Height="50" Width="100" Grid.Column="1" Margin="117,10,0,0"/>
