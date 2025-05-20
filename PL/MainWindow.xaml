@@ -11,32 +11,42 @@
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="250*"/>
-            <RowDefinition Height="250*"/>
+            <RowDefinition Height="300*"/>
+            <RowDefinition Height="150*"/>
         </Grid.RowDefinitions>
 
         <!--clockArea-->
-        <Grid Height="auto" Grid.Row="0" Width="auto">
+        <Grid Height="auto" Grid.Row="0" Width="auto" Margin="0,-19,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Grid.Column="0" RenderTransformOrigin="0.159,1.81" Height="26" Width="92"/>
-            <Button Content="Add One Minute" HorizontalAlignment="Center" Width="179" Margin="0,56,0,136" Click="btnAddOneMinute_Click"/>
-            <Button Content="Add One Day" HorizontalAlignment="Center" Width="180" Margin="0,91,0,101"  Click="btnAddOneDay_Click"/>
-            <Button Content="Add One Hour" HorizontalAlignment="Center" Width="179" Margin="0,123,0,69"  Click="btnAddOneHour_Click"/>
-            <Button Content="Add One Month" HorizontalAlignment="Center" Width="179" Margin="0,156,0,36"  Click="btnAddOneMonth_Click"/>
-            <Button Content="Add One Year" HorizontalAlignment="Center" Width="179" Margin="0,190,0,2"  Click="btnAddOneYear_Click"/>
-            <Button Grid.Column="1" Content="Update" HorizontalAlignment="Left" Margin="295,102,0,0" VerticalAlignment="Top" Width="57" Height="24"/>
-            <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="203,104,0,0" TextWrapping="Wrap" Text="RiskRange" VerticalAlignment="Top" Width="71" Height="19"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="133,105,0,0" TextWrapping="Wrap" Text="Risk Range:" VerticalAlignment="Top" Width="66"/>
-            <Button Grid.Column="1" Content="Update" HorizontalAlignment="Left" Margin="295,136,0,0" VerticalAlignment="Top" Width="57" Height="24" RenderTransformOrigin="0.46,2.123"/>
-            <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="203,139,0,0" TextWrapping="Wrap" Text="Clock" VerticalAlignment="Top" Width="71" Height="19" RenderTransformOrigin="0.38,2.706"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="135,139,0,0" TextWrapping="Wrap" Text="Clock:" VerticalAlignment="Top" Width="49"/>
+
+
+            <Label Content="{Binding Clock}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.159,1.81" Height="26" Width="214"/>
+            <Button Content="Add One Minute" HorizontalAlignment="Center" Width="180" Margin="0,56,0,189" Click="btnAddOneMinute_Click"/>
+            <Button Content="Add One Day" HorizontalAlignment="Center" Width="180" Margin="0,115,0,139"  Click="btnAddOneDay_Click"/>
+            <Button Content="Add One Hour" HorizontalAlignment="Center" Width="180" Margin="0,161,0,96"  Click="btnAddOneHour_Click"/>
+            <Button Content="Add One Month" HorizontalAlignment="Center" Width="180" Margin="0,205,0,57"  Click="btnAddOneMonth_Click"/>
+            <Button Content="Add One Year" HorizontalAlignment="Center" Width="180" Margin="0,253,0,8"  Click="btnAddOneYear_Click"/>
+
+
+            <Button Grid.Column="1" Content="Update Clock" HorizontalAlignment="Left" Margin="266,139,0,0" VerticalAlignment="Top" Width="86" Height="24" Click="btnUpdate_Clock" RenderTransformOrigin="0.48,-0.523"/>
+            <TextBox Text="{Binding Clock, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="97,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="143" Height="19" RenderTransformOrigin="0.146,-3.778"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,147,0,0" TextWrapping="Wrap" Text="Clock:" VerticalAlignment="Top" Width="34" Height="39"/>
+
+            <Button Grid.Column="1" Content="Update Risk Range" HorizontalAlignment="Left" Margin="244,104,0,0" VerticalAlignment="Top" Width="108" Height="24" RenderTransformOrigin="0.46,2.123" Click="btnUpdate_RiskRange"/>
+            <TextBox Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="151,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" Height="18" RenderTransformOrigin="0.38,2.706"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="28,107,0,0" TextWrapping="Wrap" Text="Risk Range:" VerticalAlignment="Top" Width="65" RenderTransformOrigin="-1.122,0.902"/>
+
+
         </Grid>
-        <Button Content="Reset DB" HorizontalAlignment="Center" Margin="0,85,0,0" Grid.Row="1" VerticalAlignment="Top" Height="37" Width="104"/>
-        <Button Content="Initialize DB" HorizontalAlignment="Center" Margin="0,27,0,0" Grid.Row="1" VerticalAlignment="Top" Height="37" Width="103" Click="Button_Click" />
-        <Button Content="Volunteer List" HorizontalAlignment="Center" Margin="0,147,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="37" Width="103"/>
+        <!-- איפוס בסיס הנתונים-->
+        <Button Content="Reset DB" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" Margin="0,84,0,0"/>
+        <!-- אתחול בסיס הנתונים-->
+        <Button Content="Initialize DB"  HorizontalAlignment="Left" Margin="107,79,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" />
+        <!-- פתיחת מסך תצוגת הרשימת מתנדבים-->
+        <Button Content="Handle Volunteer" Click="btnVolunteers_Click" HorizontalAlignment="Left" Margin="540,85,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="23" Width="104"/>
 
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using PL.Volunteer;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -25,8 +26,41 @@ namespace PL
             set { SetValue(CurrentTimeProperty, value); }
         }
         public static readonly DependencyProperty CurrentTimeProperty =
-    DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
+        
+        
+
+        public DateTime Clock
+        {
+            get { return (DateTime)GetValue(ClockProperty); }
+            set { SetValue(ClockProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ClockProperty =
+            DependencyProperty.Register("Clock", typeof(DateTime), typeof(MainWindow));
+
+        public TimeSpan RiskRange
+        {
+            get { return (TimeSpan)GetValue(RiskRangeProperty); }
+            set { SetValue(RiskRangeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RiskRangeProperty =
+            DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
+
+        private void clockObserver()
+        {
+            Clock = s_bl.Admin.GetClock();
+
+        }
+        private void configObserver()
+        {
+            RiskRange = s_bl.Admin.GetRiskRange();
+
+        }
 
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -51,19 +85,37 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
-           
+            this.DataContext = this;
 
 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            s_bl.Admin.AddClockObserver(clockObserver);
+            s_bl.Admin.AddConfigObserver(configObserver);
+            Clock = s_bl.Admin.GetClock();
+            RiskRange = s_bl.Admin.GetRiskRange();
+            CurrentTime = s_bl.Admin.GetClock();    
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            s_bl.Admin.RemoveClockObserver(clockObserver);
+            s_bl.Admin.RemoveConfigObserver(configObserver);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void btnUpdate_RiskRange(object sender, RoutedEventArgs e)
         {
+            s_bl.Admin.SetRiskRange(RiskRange);
+        }
 
+        private void btnUpdate_Clock(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetClock(Clock);
+
+        }
+        private void btnVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            new VolunteerListWindow().Show();
         }
     }
 }

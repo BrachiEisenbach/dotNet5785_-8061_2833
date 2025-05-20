@@ -9,9 +9,9 @@ namespace BlApi
 {
     public interface IAdmin
     {
-        public DateTime GetTime();
+        public DateTime GetClock();
         public void ClockPromotion(TIMEUNIT unit); 
-        public int GetRiskRange();//?????
+        public TimeSpan GetRiskRange();
         public void SetRiskRange(TimeSpan riskRange);
         public void ResetDB();
         public void initializeDB();
@@ -21,6 +21,7 @@ namespace BlApi
         void RemoveConfigObserver(Action configObserver);
         void AddClockObserver(Action clockObserver);
         void RemoveClockObserver(Action clockObserver);
+        void SetClock(DateTime currentTime);
         #endregion Stage 5
 
     }

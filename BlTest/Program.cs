@@ -88,7 +88,7 @@ namespace BlTest
                         }
                         break;
                     case "4":
-                        Console.WriteLine(s_bl.Admin.GetTime());
+                        Console.WriteLine(s_bl.Admin.GetClock());
                         break;
                     case "5":
                         return;

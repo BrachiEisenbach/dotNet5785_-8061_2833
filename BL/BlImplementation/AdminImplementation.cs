@@ -2,6 +2,7 @@
 using BlApi;
 using BO;
 using Helpers;
+using System.Diagnostics;
 
 namespace BlImplementation
 {
@@ -17,7 +18,7 @@ namespace BlImplementation
         public void SetRiskRange(TimeSpan riskRange)
         {
             AdminManager.RiskRange = riskRange;
-            Console.WriteLine("The riskRange was seted");
+            Debug.WriteLine("The riskRange was seted");
 
 
         }
@@ -26,21 +27,21 @@ namespace BlImplementation
         /// Gets the risk range from the system as an integer value.
         /// </summary>
 
-        public int GetRiskRange()
+        public TimeSpan GetRiskRange()
         {
-            int riskRange;
-            if (int.TryParse(AdminManager.RiskRange.ToString(), out riskRange))
+            TimeSpan riskRange;
+            if (TimeSpan.TryParse(AdminManager.RiskRange.ToString(), out riskRange))
             {
                 return riskRange;
             }
-            return 0;
-        }
+            return TimeSpan.Zero;
+        } 
 
         /// <summary>
         /// Retrieves the current time from the system clock.
         /// </summary>
 
-        public DateTime GetTime()
+        public DateTime GetClock()
         {
             return AdminManager.Now;
         }
@@ -110,9 +111,16 @@ namespace BlImplementation
        AdminManager.ConfigUpdatedObservers += configObserver;
         public void RemoveConfigObserver(Action configObserver) =>
         AdminManager.ConfigUpdatedObservers -= configObserver;
+
+        public void SetClock(DateTime currentTime)
+        {
+            AddClockObserver(() => AdminManager.UpdateClock(currentTime));
+        }
+
+
+       
         #endregion Stage 5
     }
-
 
 }
 
