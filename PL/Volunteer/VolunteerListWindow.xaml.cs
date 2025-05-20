@@ -21,6 +21,11 @@ namespace PL.Volunteer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public VolunteerListWindow()
+        {
+            InitializeComponent();
+        }
+
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
             get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
@@ -31,10 +36,17 @@ namespace PL.Volunteer
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
 
-        public VolunteerListWindow()
-        {
-            InitializeComponent();
-        }
 
+        private void queryVolunteerList()
+        => VolunteerList = (CallTypeFilter == BO.TYPEOFCALL.NONE) ?
+        s_bl?.Volunteer.ReadAll()! : s_bl?.Volunteer.ReadAll(null, BO.VOLUNTEERFIELDSORT.CallType)!.Where(v => v.CallType == CallTypeFilter);
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VolunteerList = (type == BO.TYPEOFCALL.NONE)
+        ? s_bl?.Volunteer.ReadAll()!
+        : s_bl?.Volunteer.ReadAll(null, BO.CourseFieldFilter.SemesterName, type)!;
+
+        }
     }
 }

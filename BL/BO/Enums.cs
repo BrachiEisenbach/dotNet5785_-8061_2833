@@ -30,6 +30,7 @@ namespace BO
         FLATTIRE,
         CARBURGLARY,
         REDRIVE,
+        NONE
     }
     public enum STATUS
     {
