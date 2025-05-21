@@ -24,6 +24,8 @@ namespace PL.Volunteer
         public VolunteerListWindow()
         {
             InitializeComponent();
+            this.Loaded += Window_Loaded;
+            this.Closed += Window_Closed;
         }
 
         public IEnumerable<BO.VolunteerInList> VolunteerList
@@ -40,6 +42,16 @@ namespace PL.Volunteer
         private void queryVolunteerList()
         => VolunteerList = (type == BO.TYPEOFCALL.NONE) ?
         s_bl?.Volunteer.GetVolunteerInList(null, null)! : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!.Where(v => v.TypeOfCall == type);
+
+        private void volunteerListObserver()
+        => queryVolunteerList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        => s_bl.Volunteer.AddObserver(volunteerListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+        => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
