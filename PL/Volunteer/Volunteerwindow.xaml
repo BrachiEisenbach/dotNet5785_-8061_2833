@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
+        xmlns:pl="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Volunteerwindow" Height="664" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -24,7 +25,7 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <!-- 16 שורות לפי מספר השדות -->
+            <!-- 10 שורות לפי מספר השדות -->
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,11 +37,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -49,73 +46,56 @@
 
         <!-- Id -->
         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" Text="{Binding Id}"/>
+        <TextBox Text="{Binding CurrentVolunteer.Id,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" />
 
         <!-- FullName -->
         <Label Content="Full Name:" Grid.Row="1" Grid.Column="0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding FullName}"/>
+        <TextBox  Text="{Binding CurrentVolunteer.FullName,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
         <!-- Phone -->
         <Label Content="Phone:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding Phone}"/>
+        <TextBox  Text="{Binding CurrentVolunteer.Phone,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
         <!-- Email -->
         <Label Content="Email:" Grid.Row="3" Grid.Column="0"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding Email}"/>
+        <TextBox Text="{Binding CurrentVolunteer.Email,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
         <!-- Password -->
         <Label Content="Password:" Grid.Row="4" Grid.Column="0"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding Password}"/>
+        <TextBox Text="{Binding CurrentVolunteer.Password,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
         <!-- FullAddress -->
         <Label Content="Full Address:" Grid.Row="5" Grid.Column="0"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding FullAddress}"/>
-
-        <!-- Latitude -->
-        <Label Content="Latitude:" Grid.Row="6" Grid.Column="0"/>
-        <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding Latitude}"/>
-
-        <!-- Longitude -->
-        <Label Content="Longitude:" Grid.Row="7" Grid.Column="0"/>
-        <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding Longitude}"/>
+        <TextBox Text="{Binding CurrentVolunteer.FullAddress,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
         <!-- Role -->
-        <Label Content="Role:" Grid.Row="8" Grid.Column="0"/>
-        <ComboBox Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}" SelectedItem="{Binding Role}"/>
+        <Label Content="Role:" Grid.Row="6" Grid.Column="0"/>
+        <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}"
+          SelectedValue="{Binding CurrentVolunteer.Role}" 
+          Grid.Row="6" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
-        <!-- Active -->
-        <Label Content="Active:" Grid.Row="9" Grid.Column="0"/>
-        <CheckBox Grid.Row="9" Grid.Column="1" Style="{StaticResource InputStyle}" IsChecked="{Binding Active}"/>
 
         <!-- MaxDistance -->
-        <Label Content="Max Distance:" Grid.Row="10" Grid.Column="0"/>
-        <TextBox Grid.Row="10" Grid.Column="1" Style="{StaticResource InputStyle}" Text="{Binding MaxDistance}"/>
+        <Label Content="Max Distance:" Grid.Row="7" Grid.Column="0"/>
+        <TextBox Text="{Binding CurrentVolunteer.MaxDistance,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}"  Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
         <!-- TypeOfDistance -->
-        <Label Content="Type Of Distance:" Grid.Row="11" Grid.Column="0"/>
-        <ComboBox Grid.Row="11" Grid.Column="1" Style="{StaticResource InputStyle}" />
-
-        <!-- AllCallsThatTreated -->
-        <Label Content="Calls Treated:" Grid.Row="12" Grid.Column="0"/>
-        <TextBox Grid.Row="12" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" Text="{Binding AllCallsThatTreated}"/>
-
-        <!-- AllCallsThatCanceled -->
-        <Label Content="Calls Canceled:" Grid.Row="13" Grid.Column="0"/>
-        <TextBox Grid.Row="13" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" Text="{Binding AllCallsThatCanceled}"/>
-
-        <!-- AllCallsThatHaveExpired -->
-        <Label Content="Calls Expired:" Grid.Row="14" Grid.Column="0"/>
-        <TextBox Grid.Row="14" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" Text="{Binding AllCallsThatHaveExpired}"/>
-
-        <!-- CallInTreate -->
-        <!--<Label Content="Call In Treat:" Grid.Row="15" Grid.Column="0"/>
-        <TextBox Grid.Row="15" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" Text="{Binding CallInTreate}"/>-->
+        <Label Content="Type Of Distance:" Grid.Row="8" Grid.Column="0"/>
+        <ComboBox ItemsSource="{StaticResource TypeOfDistanceCollectionKey}"
+          SelectedValue="{Binding volunteerTypeOfDistance, Mode=TwoWay}" 
+          Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
 
+        <!--<ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      Grid.Column="1"
+                      SelectedValue="{Binding Path= volunteerTypeOfCall, Mode=TwoWay}"
+                      SelectionChanged="ComboBox_SelectionChanged"/>-->
 
         <!-- כפתור הוספה/עדכון -->
-        <Button Grid.Row="15" Grid.Column="1"
-        Margin="139,34,0,-24" HorizontalAlignment="Left" Width="150"
+        <Button Grid.Row="9" Grid.Column="1"
+        Margin="139,34,0,-48" HorizontalAlignment="Left" Width="150"
         Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
 
     </Grid>
