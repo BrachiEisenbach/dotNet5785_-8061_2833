@@ -9,7 +9,7 @@ using BO;
 
 namespace PL;
 
-internal class TypeOfCallCollection :  IEnumerable
+public class TypeOfCallCollection :  IEnumerable
 {
     static readonly IEnumerable<BO.TYPEOFCALL> s_enums =
         (Enum.GetValues(typeof(BO.TYPEOFCALL)) as IEnumerable<BO.TYPEOFCALL>)!;
@@ -18,7 +18,7 @@ internal class TypeOfCallCollection :  IEnumerable
     public BO.TYPEOFCALL volunteerTypeOfCall { get; set; } = BO.TYPEOFCALL.NONE;
 }
 
-internal class RoleCollection :  IEnumerable
+public class RoleCollection :  IEnumerable
 {
     static readonly IEnumerable<BO.ROLE> s_enums =
         (Enum.GetValues(typeof(BO.ROLE)) as IEnumerable<BO.ROLE>)!;
@@ -27,7 +27,7 @@ internal class RoleCollection :  IEnumerable
    
 }
 
-internal class TypeOfDistanceCollection : IEnumerable
+public class TypeOfDistanceCollection : IEnumerable
 {
     static readonly IEnumerable<BO.TYPEOFDISTANCE> s_enums =
         (Enum.GetValues(typeof(BO.TYPEOFDISTANCE)) as IEnumerable<BO.TYPEOFDISTANCE>)!;

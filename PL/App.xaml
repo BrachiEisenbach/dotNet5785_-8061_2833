@@ -1,11 +1,15 @@
 ﻿<Application x:Class="PL.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:pl="clr-namespace:PL;assembly=PL"
+             xmlns:pl="clr-namespace:PL"
+             xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
-        <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
-        <pl:RoleCollection x:Key="RoleCollectionKey" />
+        <x:Array x:Key="VolunteerCollectionKey" Type="DiscreteStringKeyFrame" />
+       <local:RoleCollection x:Key="RoleCollectionKey" x:Name="tt"/>  
+        <!--<pl:TypeOfCallCollection x:Name="TypeOfCallCollectionKey" />-->
+        --><!--<pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
+        <pl:RoleCollection x:Key="RoleCollectionKey" />-->
     </Application.Resources>
 </Application>
+    
