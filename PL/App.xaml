@@ -5,11 +5,9 @@
              xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <x:Array x:Key="VolunteerCollectionKey" Type="DiscreteStringKeyFrame" />
        <local:RoleCollection x:Key="RoleCollectionKey" x:Name="tt"/>  
-        <!--<pl:TypeOfCallCollection x:Name="TypeOfCallCollectionKey" />-->
-        --><!--<pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
-        <pl:RoleCollection x:Key="RoleCollectionKey" />-->
+        <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
+       <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
     </Application.Resources>
 </Application>
-    
+ 
