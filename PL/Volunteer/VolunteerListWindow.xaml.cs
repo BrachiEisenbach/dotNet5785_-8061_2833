@@ -35,18 +35,15 @@ namespace PL.Volunteer
         public static readonly DependencyProperty VolunteerListProperty =
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
-
+        public BO.TYPEOFCALL type { get; set; }=BO.TYPEOFCALL.NONE;
 
         private void queryVolunteerList()
-        => VolunteerList = (CallTypeFilter == BO.TYPEOFCALL.NONE) ?
-        s_bl?.Volunteer.ReadAll()! : s_bl?.Volunteer.ReadAll(null, BO.VOLUNTEERFIELDSORT.CallType)!.Where(v => v.CallType == CallTypeFilter);
+        => VolunteerList = (type == BO.TYPEOFCALL.NONE) ?
+        s_bl?.Volunteer.GetVolunteerInList(null, null)! : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!.Where(v => v.TypeOfCall == type);
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            VolunteerList = (type == BO.TYPEOFCALL.NONE)
-        ? s_bl?.Volunteer.ReadAll()!
-        : s_bl?.Volunteer.ReadAll(null, BO.CourseFieldFilter.SemesterName, type)!;
-
+            queryVolunteerList();
         }
     }
 }
