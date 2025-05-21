@@ -87,9 +87,9 @@
 
         <!-- TypeOfDistance -->
         <Label Content="Type Of Distance:" Grid.Row="8" Grid.Column="0"/>
-        <!--<ComboBox ItemsSource="{StaticResource TypeOfDistanceCollectionKey}"
+        <ComboBox ItemsSource="{StaticResource TypeOfDistanceCollectionKey}"
           SelectedValue="{Binding volunteerTypeOfDistance, Mode=TwoWay}" 
-          Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}"/>-->
+          Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
 
         <!--<ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
