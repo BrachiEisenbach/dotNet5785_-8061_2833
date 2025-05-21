@@ -17,6 +17,7 @@ namespace BO
         public int AllCallsThatCanceled { get; init; }
         public int AllCallsThatHaveExpired { get; init; }
         public int? CallId { get; init; }
+        public TYPEOFCALL TypeOfCall { get; init; }
 
 
         public override string ToString()

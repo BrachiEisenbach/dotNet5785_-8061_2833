@@ -57,6 +57,7 @@ namespace BO
 
     public enum VOLUNTEERFIELDSORT
     {
+        CALLTYPE,
         FULLNAME,
         SUMTREATED,
         SUMCANCELED,
