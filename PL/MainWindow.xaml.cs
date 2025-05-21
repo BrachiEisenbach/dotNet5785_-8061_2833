@@ -1,5 +1,6 @@
 ﻿using PL.Call;
 using PL.Volunteer;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,9 +55,12 @@ namespace PL
 
         private void clockObserver()
         {
-            Clock = s_bl.Admin.GetClock();
-
+            Dispatcher.Invoke(() =>
+            {
+                SetCurrentValue(ClockProperty, s_bl.Admin.GetClock());
+            });
         }
+
         private void configObserver()
         {
             RiskRange = s_bl.Admin.GetRiskRange();
@@ -92,6 +96,10 @@ namespace PL
 
         public MainWindow()
         {
+            System.Diagnostics.PresentationTraceSources.Refresh();
+            System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
+                System.Diagnostics.SourceLevels.Error | System.Diagnostics.SourceLevels.Critical;
+
             InitializeComponent();
             this.DataContext = this;
 

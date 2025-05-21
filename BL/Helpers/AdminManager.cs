@@ -79,15 +79,18 @@ internal static class AdminManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
-         
+        //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
+
 
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
     }
-    #endregion Stage 4
 
-    #region Stage 7 base
-    internal static readonly object blMutex = new();
+
+#endregion Stage 4
+
+#region Stage 7 base
+internal static readonly object blMutex = new();
     private static Thread? s_thread;
     private static int s_interval { get; set; } = 1; //in minutes by second    
     private static volatile bool s_stop = false;
