@@ -234,6 +234,7 @@ namespace BlImplementation
 
                 IEnumerable<BO.Volunteer> sortedVolunteers = sort switch
                 {
+                    VOLUNTEERFIELDSORT.CALLTYPE => BOvolunteers.OrderBy(v => v.TypeOfCall),
                     VOLUNTEERFIELDSORT.FULLNAME => BOvolunteers.OrderBy(v => v.FullName),
                     VOLUNTEERFIELDSORT.SUMTREATED => BOvolunteers.OrderByDescending(v => v.AllCallsThatTreated),
                     VOLUNTEERFIELDSORT.SUMCANCELED => BOvolunteers.OrderByDescending(v => v.AllCallsThatCanceled),

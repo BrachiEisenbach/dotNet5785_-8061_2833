@@ -24,7 +24,7 @@ namespace BO
         public int AllCallsThatCanceled { get; init; }
         public int AllCallsThatHaveExpired { get; init; }
         public BO.CallInProgress? CallInTreate { get; init; }
-
+        public BO.TYPEOFCALL? TypeOfCall { get; init; }
 
         public override string ToString()
         {

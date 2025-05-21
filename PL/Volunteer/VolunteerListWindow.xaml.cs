@@ -55,7 +55,12 @@ namespace PL.Volunteer
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            queryVolunteerList();
+            var comboBox = sender as ComboBox;
+            if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
+            {
+                type = selectedType; // עדכון ה-type כאן
+                queryVolunteerList(); // קריאה לעדכון הרשימה
+            }
         }
     }
 }
