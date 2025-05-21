@@ -3,11 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:pl="clr-namespace:PL"
              xmlns:local="clr-namespace:PL"
+             xmlns:bl="clr-namespace:BO;assembly=BL"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
-       <local:RoleCollection x:Key="RoleCollectionKey" x:Name="tt"/>  
-        <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
+        <bl:CallInList x:Key="callinlistob"/>
+        <local:RoleCollection x:Key="RoleCollectionKey" x:Name="tt" />  
+       <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
        <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
     </Application.Resources>
+    
 </Application>
  

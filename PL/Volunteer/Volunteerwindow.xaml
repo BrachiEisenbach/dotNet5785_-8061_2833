@@ -3,11 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
         xmlns:local="clr-namespace:PL.Volunteer"
         xmlns:pl="clr-namespace:PL"
+                     xmlns:bl="clr-namespace:BO;assembly=BL"
+
         mc:Ignorable="d"
         Title="Volunteerwindow" Height="664" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Window.Resources>
+        <bl:CallInList x:Key="callinlistob"/>
+
+    </Window.Resources>
     <Grid Margin="10">
         <Grid.Resources>
             <Style TargetType="Label">
