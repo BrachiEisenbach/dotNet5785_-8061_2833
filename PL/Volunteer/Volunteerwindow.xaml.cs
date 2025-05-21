@@ -53,24 +53,39 @@ namespace PL.Volunteer
                 Email = "",
                 Password = "",
                 FullAddress = "",
-                Latitude = null,
-                //        Longitude = null,
-
-                //public bool Active { get; set; }
-                //public double? MaxDistance { get; set; }
-                //public TYPEOFDISTANCE TypeOfDistance { get; set; }
-                //public int AllCallsThatTreated { get; init; }
-                //public int AllCallsThatCanceled { get; init; }
-                //public int AllCallsThatHaveExpired { get; init; }
-
-
-
-
+                Role = BO.ROLE.VOLUNTEER,
+                MaxDistance = 0,
+                TypeOfDistance = BO.TYPEOFDISTANCE.NONE
             };
         }
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-           
+            if (ButtonText == "Add")
+            {
+                try
+                {
+                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
+                    MessageBox.Show("Volunteer added successfully");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                try
+                {
+                    s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
+                    MessageBox.Show("Volunteer updated successfully");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
         }
+
     }
 }
