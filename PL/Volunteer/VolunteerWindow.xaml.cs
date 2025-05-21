@@ -58,6 +58,8 @@ namespace PL.Volunteer
                 TypeOfDistance = BO.TYPEOFDISTANCE.NONE
             };
         }
+
+
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (ButtonText == "Add")
