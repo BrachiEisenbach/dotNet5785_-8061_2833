@@ -52,7 +52,7 @@
 
         <!-- Id -->
         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Text="{Binding CurrentVolunteer.Id,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" />
+        <TextBox Text="{Binding CurrentVolunteer.Id,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  />
 
         <!-- FullName -->
         <Label Content="Full Name:" Grid.Row="1" Grid.Column="0"/>
