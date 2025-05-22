@@ -72,6 +72,7 @@
                 Height="40"
                 Width="100"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Click="btnAddVolunteer"/>
     </Grid>
 </Window>

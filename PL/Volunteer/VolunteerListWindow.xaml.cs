@@ -97,5 +97,10 @@ namespace PL.Volunteer
                 new VolunteerWindow(SelectesVolunteer.Id).Show();
             }
         }
+
+        private void btnAddVolunteer(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
