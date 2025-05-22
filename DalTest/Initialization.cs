@@ -73,8 +73,8 @@ public static class Initialization
                        "William Wright", "Megan Nelson", "Jack Brown", "Madison Roberts", "Jacob Carter",
                        "Sophia Brooks", "Jackson Scott", "Grace Turner", "Mason Miller", "Liam King",
                        "Charlotte Walker", "Daniel Evans", "Ella Green", "Oliver Evans", "Harper Lewis",
-                       "Benjamin Lee", "Victoria Allen", "James White", "Natalie Scott", "Evan Phillips",
-                       "Zoe Stewart", "Dylan Johnson" };
+                       "Benjamin Lee", "Victoria Allen", "James White", "Natalie Scott", "Evan Phillips"
+                       };
         // Array containing phone numbers of volunteers.
         string[] PhonesVolunteers = { "052-1234567", "053-2345678", "054-3456789", "055-4567890", "056-5678901",
                     "057-6789012", "058-7890123", "059-8901234", "050-9876543", "051-8765432",
@@ -85,7 +85,7 @@ public static class Initialization
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
                     "057-2109876", "058-1098765", "059-0987654", "050-9876543", "051-8765432",
                     "052-7654321", "053-6543210", "054-5432109", "055-4321098", "056-3210987",
-                    "057-2109876", "058-1098765", "059-0987654" };
+                    "057-2109876", "058-1098765", "059-0987654" ,"054-0988684","052-9989654"};
         // Array containing email addresses of volunteers.
         string[] EmailsVolunteers = { "john.doe@example.com", "jane.smith@example.com", "michael.johnson@example.com",
                     "emily.davis@example.com", "chris.brown@example.com", "jessica.taylor@example.com",
@@ -103,7 +103,7 @@ public static class Initialization
                     "liam.king@example.com", "charlotte.walker@example.com", "daniel.evans@example.com",
                     "ella.green@example.com", "oliver.evans@example.com", "harper.lewis@example.com",
                     "benjamin.lee@example.com", "victoria.allen@example.com", "james.white@example.com",
-                    "natalie.scott@example.com", "evan.phillips@example.com", "zoe.stewart@example.com" };
+                    "natalie.scott@example.com", "evan.phillips@example.com" };
         // Array containing passwords for volunteers.
         string[] PasswordsVolunteers = { "password123", "abc123", "qwerty123", "letmein2024", "welcome1",
                        "1234abcd", "iloveyou99", "admin123", "secretpass", "letmein22",
@@ -129,8 +129,7 @@ public static class Initialization
     "Boker 45, Eilat", "Masila 32, Modiin", "Yarden 3, Nahariya", "Ayin 50, Migdal HaEmek",
     "Dekel 99, Petah Tikva", "Kfar 8, Gedera", "Nof 3, Herzliya", "Geva 60, Ashkelon",
     "Hok 11, Haifa", "Geshem 15, Safed", "Horef 2, Jerusalem", "Heder 30, Caesarea",
-    "Binyan 7, Ashdod", "Derech 56, Tel Aviv", "Geshem 22, Rehovot", "Yaar 13, Jerusalem",
-    "Ner 23, Yokneam", "Kibush 5, Petah Tikva", "Mavak 19, Tel Aviv", "Hazon 9, Kiryat Ono" };
+    "Binyan 7, Ashdod", "Derech 56, Tel Aviv" };
         // Array containing latitude coordinates for volunteer addresses.
         double[] LatitudeVolunteers = {
     -45.27, 32.41, -12.55, 57.80, 29.82, -20.94, 48.16, -38.69, 53.03, 24.91,
@@ -156,7 +155,9 @@ public static class Initialization
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
+    ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER};
+
         int i = 0;
 
         // Iterate over the list of full names to create volunteer instances.
@@ -166,8 +167,7 @@ public static class Initialization
             // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
-            while (s_dal!.Volunteer!.Read(id) != null);
-
+            while (s_dal!.Volunteer.Read(id) != null) ;
             // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
             string? FullAddress = FullAddressesVolunteers[i];
@@ -180,7 +180,7 @@ public static class Initialization
                 RolesVolunteers[i], Active, MaxDistance);
 
             // Create the volunteer in the DAL.
-            s_dal!.Volunteer!.Create(newV);
+            s_dal!.Volunteer.Create(newV);
 
             // Increment the index for the next iteration.
             i++;
@@ -203,7 +203,7 @@ public static class Initialization
     TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE,
     TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.CARBURGLARY,
     TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE, TYPEOFCALL.REDRIVE, TYPEOFCALL.CARBURGLARY, TYPEOFCALL.FLATTIRE,
-    TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE};
+    TYPEOFCALL.CARBURGLARY, TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE,TYPEOFCALL.REDRIVE, TYPEOFCALL.FLATTIRE};
         // Array of call descriptions
         string[] callDescriptions =
 {
@@ -251,7 +251,13 @@ public static class Initialization
     "A young man in his 20s calls for help because his car's clutch system is malfunctioning. He needs urgent assistance.",
     "A man in his 50s calls for help after his car won't start due to an issue with the electrical system.",
     "A woman in her 60s needs help starting her car after the battery died.",
-    "A man in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car."
+    "A man in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car.",
+    "A woman in his 40s reports that his car won't start due to an issue with the ignition system. He's stuck on the side of the road.",
+    "A old man in his 20s calls for help because his car's clutch system is malfunctioning. He needs urgent assistance.",
+    "A old woman in his 50s calls for help after his car won't start due to an issue with the electrical system.",
+    "A woman with her husband in her 60s needs help starting her car after the battery died.",
+    "A child in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car."
+
 };
         // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
@@ -267,8 +273,7 @@ public static class Initialization
     "Sharon 30, Kfar Saba", "Hagolan 12, Ashdod", "Oded 45, Petah Tikva", "Tchernichovsky 30, Tel Aviv",
     "Lev Ha'ir 19, Tel Aviv", "Zohar 14, Herzliya", "Herzliya Pituach 6, Herzliya", "Negev 24, Be'er Sheva",
     "Rehovot 11, Rehovot", "Zanvil 3, Petah Tikva", "Jabotinsky 45, Ramat Gan", "Sderot 12, Kiryat Gat",
-    "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon", "Rishonim 2, Haifa", "Netivot 19, Be'er Sheva",
-    "Tzukim 7, Arad", "Giv'atayim 8, Tel Aviv", "Tamar 20, Dead Sea", "Acre 10, Northern District"
+    "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon"
 };
         // Array of latitude coordinates for each call
         double[] LatitudeOfCall ={
@@ -336,8 +341,7 @@ public static class Initialization
     new DateTime(2023, 08, 30, 21, 49, 18),
     new DateTime(2024, 03, 07, 17, 56, 28),
     new DateTime(2023, 07, 05, 12, 12, 12),
-    new DateTime(2023, 12, 08, 17, 04, 23),
-    new DateTime(2024, 01, 04, 22, 11, 45)
+    new DateTime(2023, 12, 08, 17, 04, 23)
 };
         // Array of timestamps representing the expected completion time of each call
         DateTime[] MaxTimeToFinishOfCalls ={
@@ -390,8 +394,8 @@ public static class Initialization
     new DateTime(2023, 08, 30, 02, 49, 18),  // +5 hours
     new DateTime(2024, 03, 07, 22, 56, 28),  // +5 hours
     new DateTime(2023, 07, 05, 17, 12, 12),  // +5 hours
-    new DateTime(2023, 12, 08, 22, 04, 23),  // +5 hours
-    new DateTime(2024, 01, 04, 03, 11, 45)   // +5 hours
+    new DateTime(2023, 12, 08, 22, 04, 23) // +5 hours
+  
 };
 
         int i = 0;
@@ -402,7 +406,7 @@ public static class Initialization
             Call newC = new Call(0, TypesOfCalls[i], callDescriptions[i], FullAddressesOfCalls[i], LatitudeOfCall[i],
                 LongitudeOfCall[i], OpenTimeOfCalls[i], MaxTimeToFinishOfCalls[i]);
             // Add the new call object to the data access layer
-            s_dal!.Call!.Create(newC);
+            s_dal!.Call.Create(newC);
             // Increment the index to move to the next set of data
             i++;
 
@@ -418,61 +422,60 @@ public static class Initialization
     private static void createAssignment()
     {
         // Retrieve all call and volunteer records from the data access layer
-        List<Call> CallIds = (List<Call?>)s_dal!.Call.ReadAll();
-        List<Volunteer> VolunteerIds = (List<Volunteer?>)s_dal!.Volunteer.ReadAll();
+        List<Call> CallIds = (List<Call?>)s_dal!.Call.ReadAll().ToList();
+        List<Volunteer> VolunteerIds = (List<Volunteer?>)s_dal!.Volunteer.ReadAll().ToList();
         // Array of predefined treatment statuses for each assignment
         TYPEOFTREATMENT[] treatmentStatuses ={
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
     TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCALINGANADMINISTRATOR,
-    TYPEOFTREATMENT.CANCELLATIONHASEXPIRED};
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR};
         // Array of entry times for treatment assignments
         DateTime[] ArrayOfEntryTimeForTreatment ={
     new DateTime(2023, 12, 31, 23, 55, 12),
@@ -524,8 +527,7 @@ public static class Initialization
     new DateTime(2023, 08, 30, 21, 25, 18),
     new DateTime(2024, 03, 07, 18, 15, 28),
     new DateTime(2023, 07, 05, 12, 47, 12),
-    new DateTime(2023, 12, 08, 17, 50, 23),
-    new DateTime(2024, 01, 04, 22, 35, 45)
+    new DateTime(2023, 12, 08, 17, 50, 23)
 };
         // Array of end times for treatment assignments
         DateTime[] ArrayOfEndTimeOfTreatment ={
@@ -578,23 +580,20 @@ public static class Initialization
     new DateTime(2023, 08, 30, 02, 55, 18),
     new DateTime(2024, 03, 07, 23, 00, 28),
     new DateTime(2023, 07, 05, 17, 32, 12),
-    new DateTime(2023, 12, 08, 22, 50, 23),
-    new DateTime(2024, 01, 04, 03, 45, 45)};
-
-
+    new DateTime(2023, 12, 08, 22, 50, 23) };
 
         int i = 0;
         // Iterate through the list of call records to create new assignments
         foreach (var call in CallIds)
-            
-        {
-                // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
-                Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
-                ArrayOfEntryTimeForTreatment[i], ArrayOfEndTimeOfTreatment[i],
-                treatmentStatuses[i]);
 
-                // Save the new assignment to the data access layer
-                s_dal!.Assignment!.Create(newA);
+        {
+            // Create a new Assignment object using data from the call, volunteer, entry and end times, and treatment status
+            Assignment newA = new Assignment(0, CallIds[i].Id, VolunteerIds[i].Id,
+            ArrayOfEntryTimeForTreatment[i], ArrayOfEndTimeOfTreatment[i],
+            treatmentStatuses[i]);
+
+            // Save the new assignment to the data access layer
+            s_dal!.Assignment.Create(newA);
             i++;
         }
     }
@@ -606,13 +605,15 @@ public static class Initialization
     /// After that, the function resets the configuration values and deletes all records from the volunteer, call, and assignment lists.
     /// Finally, it calls methods to create new lists of volunteers, calls, and assignments.
     /// </summary>
-    public static void Do(IDal dal)
+    //public static void Do(IDal dal)//stage 2
+    public static void Do()
     {
         //s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
         //s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
         //s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
         //s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
         Console.WriteLine("Reset Configuration values and List values...");
 
         //s_dalConfig.Reset();//stage 1
@@ -626,6 +627,7 @@ public static class Initialization
         createVolunteer();
         Console.WriteLine("I am done vol");
         createCall();
+        Console.WriteLine("I am done call");
         createAssignment();
         Console.WriteLine("I am done");
 

@@ -20,10 +20,6 @@ namespace DO;
 
 public record Volunteer
 (
-
-   
-
-
     int Id,
     string FullName,
     string Phone,
@@ -35,11 +31,14 @@ public record Volunteer
     ROLE Role=ROLE.VOLUNTEER,
     bool Active = false,
     double? MaxDistance = null,
-    TYPEOFDISTSANCE TypeOfDistance=TYPEOFDISTSANCE.AERIALDISTANCE
+    TYPEOFDISTANCE TypeOfDistance=TYPEOFDISTANCE.AERIALDISTANCE
 
 
 )
-{
+{ 
+        public Volunteer() : this(0, "", "", "", null, null, null, null, ROLE.VOLUNTEER, false, null, TYPEOFDISTANCE.AERIALDISTANCE) { }
+
+
     public override string ToString()
     {
         return $"Id: {Id}, Full Name: {FullName}, Phone: {Phone}, Email: {Email}, " +

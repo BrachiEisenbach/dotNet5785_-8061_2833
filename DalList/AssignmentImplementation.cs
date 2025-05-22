@@ -55,7 +55,7 @@ internal class AssignmentImplementation : IAssignment
 
     //}
 
-    public Assignment? Read(Func<Assignment, bool> filter)=>
+    public Assignment? Read(Func<Assignment, bool> filter) =>
         DataSource.Assignments.FirstOrDefault(filter);
     public Assignment? Read(int id)
     {
@@ -76,10 +76,12 @@ internal class AssignmentImplementation : IAssignment
     //}
 
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
-       => filter == null
-            ? DataSource.Assignments.Select(item => item)
-            : DataSource.Assignments.Where(filter);
-
+    { 
+    var results = filter == null
+            ? DataSource.Assignments//.Select(item => item)
+            : DataSource.Assignments.Where(filter!);
+        return results  ;
+}
 
     /// <summary>
     /// A function to update an existing assignment by ID.
@@ -90,7 +92,7 @@ internal class AssignmentImplementation : IAssignment
     {
         if (Read(item.Id) == null)
         {
-            throw new DalDoesNotExistException("Assignment", $" Call with ID={item.Id} not exists");
+            throw new DalDoesNotExistException("Assignment", $" Assignment with ID={item.Id} not exists");
 
         }
         DataSource.Assignments.RemoveAll(i => i.Id == item.Id);

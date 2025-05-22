@@ -9,36 +9,62 @@ internal class CallImplementation : ICall
 {
     public void Create(Call item)
     {
-        throw new NotImplementedException();
+
+        int id = Config.NextCallId;
+        Call newCall = item with { Id = id };
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        calls.Add(newCall);
+        XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml);
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        if (calls.RemoveAll(it => it.Id == id) == 0)
+            throw new DalDoesNotExistException("call",$"Call with ID={id} does Not exist");
+        XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml);
     }
 
-    public Call? Read(int id)
+    public Call Read(int id)
     {
-        throw new NotImplementedException();
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+
+        return calls.Find(it => it.Id == id);
     }
 
-    public Call? Read(Func<Call, bool> filter)
+
+    public Call Read(Func<Call, bool> filter)
     {
-        throw new NotImplementedException();
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+
+        return calls.FirstOrDefault(filter)
+               ?? throw new DalDoesNotExistException("Call", "No call matches the given filter");
     }
 
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+
+        if (filter == null)
+            return calls;
+        return calls.Where(filter);
     }
+
 
     public void Update(Call item)
     {
-        throw new NotImplementedException();
+
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        if (calls.RemoveAll(it => it.Id == item.Id) == 0)
+            throw new DalDoesNotExistException("Call",$"Call with ID={item.Id} does Not exist");
+        calls.Add(item);
+        XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml);
+        
     }
 }

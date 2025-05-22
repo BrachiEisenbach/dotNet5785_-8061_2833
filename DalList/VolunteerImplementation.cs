@@ -61,9 +61,9 @@ internal class VolunteerImplementation : IVolunteer
 
     public Volunteer? Read(int id)
     {
-        return DataSource.Volunteers.Find(item => item.Id == id);
+        var v=DataSource.Volunteers.Find(i => i.Id == id);
+        return v;
 
-        //throw new NotImplementedException();
     }
 
     /// <summary>

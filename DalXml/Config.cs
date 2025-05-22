@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//Test push from home
 namespace Dal
 {
     internal static class Config
@@ -11,13 +11,13 @@ namespace Dal
         internal const string s_data_config_xml = "data-config.xml";
         internal const string s_volunteers_xml = "volunteers.xml";
         internal const string s_calls_xml = "calls.xml";
-        internal const string s_assignment_xml = "assignment.xml";
+        internal const string s_assignments_xml = "assignments.xml";
         internal static int NextCallId
         {
             get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
             private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
         }
-        internal static int NextAssignment
+        internal static int NextAssignmentId
         {
             get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentId");
             private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentId", value);
@@ -27,18 +27,19 @@ namespace Dal
             get => XMLTools.GetConfigDateVal(s_data_config_xml, "Clock");
             set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
         }
-        //internal static TimeSpan RiskRange
-        //{
-        //    get => XMLTools.GetConfigDateVal(s_data_config_xml, "RiskRange");
-        //    set => XMLTools.SetConfigDateVal(s_data_config_xml, "RiskRange", value);
-        //}
+        internal static TimeSpan RiskRange
+        {
+            get => XMLTools.GetConfigDateValTimeSpan(s_data_config_xml, "RiskRange");
+            set => XMLTools.SetConfigDateVal(s_data_config_xml, "RiskRange", value);
+        }
 
         internal static void Reset()
         {
+
             NextCallId = 0;
-            NextAssignment = 0;
-            Clock = DateTime.Now;
-          
+            NextAssignmentId = 0;
+            Clock = default(DateTime);
+            RiskRange = default(TimeSpan);
         }
 
 

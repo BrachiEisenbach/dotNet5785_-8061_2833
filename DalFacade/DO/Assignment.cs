@@ -28,6 +28,13 @@ public record Assignment
 )
 {
 
+
+    public Assignment() : this(0, 0, 0, DateTime.MinValue, null, null) { }
+
+
+
+
+
     /// <summary>
     /// Returns a string representation of the assignment, including its details.
     /// </summary>
@@ -35,7 +42,7 @@ public record Assignment
     /// A string containing the assignment's ID, related call ID, volunteer ID, 
     /// entry time, end time, and type of treatment.
     /// </returns>
-    
+
     public override string ToString()
     {
         return $"Assignment Id: {Id}, " +

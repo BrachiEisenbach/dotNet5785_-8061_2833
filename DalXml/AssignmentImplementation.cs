@@ -8,61 +8,99 @@ using System.Xml.Linq;
 
 internal class AssignmentImplementation : IAssignment
 {
-    static Assignment getAssignment(XElement s)
+    static Assignment getAssignment(XElement a)
     {
+
         return new DO.Assignment()
         {
-            Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
-            CallId = s.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
-            VolunteerId = s.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
-            EntryTimeForTreatment = (DateTime)s.Element("EntryTimeForTreatment"),
-            EndTimeOfTreatment = (DateTime)s.Element("EndTimeOfTreatment"),
-            TypeOfTreatment = s.ToDateTimeNullable<EndTimeOfTreatment>("TypeOfTreatment") ?? EndTimeOfTreatment.
+            Id = a.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
+            CallId = a.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
+            VolunteerId = a.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
+            EntryTimeForTreatment = (DateTime)a.Element("EntryTimeForTreatment"),
+            EndTimeOfTreatment = (DateTime)a.Element("EndTimeOfTreatment"),
+            TypeOfTreatment = a.ToEnumNullable<TYPEOFTREATMENT>("TypeOfTreatment") ?? TYPEOFTREATMENT.TREATE
+
+
         };
     }
 
     public void Create(Assignment item)
     {
-        throw new NotImplementedException();
-    }
+        int id = Config.NextAssignmentId;
+        Assignment newAssignment = item with { Id = id };
+        XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        assignmentRootElem.Add(createAssignmentElement(newAssignment));
+        XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
 
+    }
     public void Delete(int id)
     {
-        List<Assignment> Courses = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignment_xml);
-        if (Courses.RemoveAll(it => it.Id == id) == 0)
-            throw new DalDoesNotExistException("Assignment", $"Course with ID={id} does Not exist");
-        XMLTools.SaveListToXMLSerializer(Courses, Config.s_assignment_xml);
+        XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+
+        (assignmentRootElem.Elements().FirstOrDefault(ass => (int?)ass.Element("Id") == id)
+         ?? throw new DO.DalDoesNotExistException("Assignment", $"Assignment with ID={id} does Not exist"))
+            .Remove();
+
+        XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
     }
+
 
     public void DeleteAll()
     {
-        XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignment_xml);
+        XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+
+        assignmentRootElem.Elements().Remove();
+
+        XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
     }
 
     public Assignment? Read(int id)
     {
-        XElement? studentElem =
-    XMLTools.LoadListFromXMLElement(Config.s_students_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
-        return studentElem is null ? null : getStudent(studentElem);
+        XElement? assignmentElem =
+        XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
+        return assignmentElem is null ? null : getAssignment(assignmentElem);
     }
 
     public Assignment? Read(Func<Assignment, bool> filter)
     {
-        return XMLTools.LoadListFromXMLElement(Config.s_students_xml).Elements().Select(s => getStudent(s)).FirstOrDefault(filter);
+        return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a)).FirstOrDefault(filter);
     }
 
 
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a));
     }
+
+
 
     public void Update(Assignment item)
     {
-        List<Assignment> Courses = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignment_xml);
-        if (Courses.RemoveAll(it => it.Id == item.Id) == 0)
-            throw new DalDoesNotExistException("Assignment",$"Course with ID={item.Id} does Not exist");
-        Courses.Add(item);
-        XMLTools.SaveListToXMLSerializer(Courses, Config.s_assignment_xml);
+        XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+
+        (assignmentRootElem.Elements().FirstOrDefault(ass => (int?)ass.Element("Id") == item.Id)
+        ?? throw new DO.DalDoesNotExistException("Assignment", $"Assignment with ID={item.Id} does Not exist"))
+            .Remove();
+
+        assignmentRootElem.Add(new XElement("Assignment", createAssignmentElement(item)));
+
+        XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
+
+
     }
+
+    //A function that converts a assignment object into XElement
+    private XElement createAssignmentElement(Assignment item)
+    {
+        return new XElement("Assignment",
+            new XElement("Id", item.Id),
+            new XElement("CallId", item.CallId),
+            new XElement("VolunteerId", item.VolunteerId),
+            new XElement("EntryTimeForTreatment", item.EntryTimeForTreatment),
+            new XElement("EndTimeOfTreatment", item.EndTimeOfTreatment?.ToString("o")), 
+            new XElement("TypeOfTreatment", item.TypeOfTreatment?.ToString())
+        );
+    }
+
+
 }

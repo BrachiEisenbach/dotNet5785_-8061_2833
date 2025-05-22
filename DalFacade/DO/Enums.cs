@@ -13,7 +13,7 @@ public enum ROLE
 /// <summary>
 /// A distance type in generating a call
 /// </summary>
-public enum TYPEOFDISTSANCE
+public enum TYPEOFDISTANCE
 {
     AERIALDISTANCE,
     WALKINGDISTANCE,
@@ -37,7 +37,7 @@ public enum TYPEOFTREATMENT
 {
     TREATE,
     SELFCANCELLATION,
-    CANCALINGANADMINISTRATOR,
+    CANCELINGANADMINISTRATOR,
     CANCELLATIONHASEXPIRED
 
 }

@@ -1,0 +1,17 @@
+﻿<Application x:Class="PL.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pl="clr-namespace:PL"
+             xmlns:local="clr-namespace:PL"
+             xmlns:bl="clr-namespace:BO;assembly=BL"
+             StartupUri="MainWindow.xaml">
+
+    <Application.Resources>
+        <!--<bl:CallInList x:Key="callinlistob"/>-->
+        <pl:RoleCollection x:Key="roleCollectionKey" />
+        <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
+        <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
+    </Application.Resources>
+
+</Application>
+ 
