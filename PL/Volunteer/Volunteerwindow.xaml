@@ -76,9 +76,9 @@
 
         <!-- Role -->
         <Label Content="Role:" Grid.Row="6" Grid.Column="0"/>
-        <!--<ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}"
+        <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}"
           SelectedValue="{Binding CurrentVolunteer.Role}" 
-          Grid.Row="6" Grid.Column="1" Style="{StaticResource InputStyle}"/>-->
+          Grid.Row="6" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
 
         <!-- MaxDistance -->
@@ -92,17 +92,10 @@
           Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
 
-        <!--<ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      SelectedValue="{Binding Path= volunteerTypeOfCall, Mode=TwoWay}"
-                      SelectionChanged="ComboBox_SelectionChanged"/>-->
-
         <!-- כפתור הוספה/עדכון -->
         <Button Grid.Row="9" Grid.Column="1"
-        Margin="139,34,0,-48" HorizontalAlignment="Left" Width="150"
-        Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
+        Margin="139,34,0,-72" HorizontalAlignment="Left" Width="150"
+        Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>
