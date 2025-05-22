@@ -74,7 +74,6 @@ namespace PL.Volunteer
             });
         }
 
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentVolunteer == null)
@@ -89,6 +88,7 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
                     MessageBox.Show("Volunteer added successfully");
+                    this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)
                 {
@@ -101,6 +101,7 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully");
+                    this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)
                 {
