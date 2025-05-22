@@ -34,7 +34,8 @@
           AutoGenerateColumns="False"
           EnableRowVirtualization="True" 
           RowDetailsVisibilityMode="VisibleWhenSelected"
-          SelectedItem="{Binding SelectesVolunteer}">
+          SelectedItem="{Binding SelectesVolunteer}"
+          MouseDoubleClick="dgVolunteerList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding FullName}" Header="FullName" Width="Auto">

@@ -21,6 +21,7 @@ namespace PL.Volunteer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.VolunteerInList? SelectesVolunteer { get; set; }
+        
         public VolunteerListWindow()
         {
             InitializeComponent();
@@ -86,6 +87,14 @@ namespace PL.Volunteer
                     MessageBox.Show(ex.Message);
 
                 }
+            }
+        }
+
+        private void dgVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(SelectesVolunteer!=null)
+            {
+                new VolunteerWindow(SelectesVolunteer.Id).Show();
             }
         }
     }
