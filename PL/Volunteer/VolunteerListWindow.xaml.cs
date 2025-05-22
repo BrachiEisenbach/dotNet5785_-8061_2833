@@ -20,7 +20,8 @@ namespace PL.Volunteer
     public partial class VolunteerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        public BO.VolunteerInList? SelectesVolunteer { get; set; }
+        
         public VolunteerListWindow()
         {
             InitializeComponent();
@@ -37,11 +38,13 @@ namespace PL.Volunteer
         public static readonly DependencyProperty VolunteerListProperty =
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
-        public BO.TYPEOFCALL type { get; set; }=BO.TYPEOFCALL.NONE;
+        public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
 
         private void queryVolunteerList()
-        => VolunteerList = (type == BO.TYPEOFCALL.NONE) ?
-        s_bl?.Volunteer.GetVolunteerInList(null, null)! : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!.Where(v => v.TypeOfCall == type);
+            => VolunteerList = (type == BO.TYPEOFCALL.NONE)
+                ? s_bl?.Volunteer.GetVolunteerInList(null, null)!
+                : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
+                    .Where(v => v.TypeOfCall == type);
 
         private void volunteerListObserver()
         => queryVolunteerList();
@@ -61,6 +64,43 @@ namespace PL.Volunteer
                 type = selectedType; // עדכון ה-type כאן
                 queryVolunteerList(); // קריאה לעדכון הרשימה
             }
+        }
+
+        private void Delete_click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null && button.Tag != null)
+            {
+                int volunteerId = (int)button.Tag;
+                try
+                {
+                    MessageBoxResult result = MessageBox.Show
+                        ("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
+                        queryVolunteerList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+        }
+
+        private void dgVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(SelectesVolunteer!=null)
+            {
+                new VolunteerWindow(SelectesVolunteer.Id).Show();
+            }
+        }
+
+        private void btnAddVolunteer(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
