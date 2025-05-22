@@ -100,7 +100,7 @@ namespace PL.Volunteer
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
-
+            new VolunteerWindow(0).Show();
         }
     }
 }
