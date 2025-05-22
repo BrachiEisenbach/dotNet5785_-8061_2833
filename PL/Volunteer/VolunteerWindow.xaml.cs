@@ -55,7 +55,7 @@ namespace PL.Volunteer
                 FullAddress = "",
                 Role = BO.ROLE.VOLUNTEER,
                 MaxDistance = 0,
-                TypeOfDistance = BO.TYPEOFDISTANCE.NONE
+                TypeOfDistance = BO.TYPEOFDISTANCE.WALKINGDISTANCE
             };
         }
 
