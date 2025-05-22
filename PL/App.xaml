@@ -8,7 +8,7 @@
 
     <Application.Resources>
         <!--<bl:CallInList x:Key="callinlistob"/>-->
-        <pl:RoleCollection x:Key="roleCollectionKey" />
+        <pl:RoleCollection x:Key="RoleCollectionKey" />
         <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
         <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
     </Application.Resources>
