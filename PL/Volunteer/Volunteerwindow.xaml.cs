@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Volunteer
 {
@@ -20,48 +9,80 @@ namespace PL.Volunteer
     public partial class VolunteerWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public String ButtonText
+
+        public string ButtonText
         {
-            get { return (String)GetValue(ButtonTextProperty); }
-            set { SetValue(ButtonTextProperty, value); }
+            get => (string)GetValue(ButtonTextProperty);
+            set => SetValue(ButtonTextProperty, value);
         }
         public static readonly DependencyProperty ButtonTextProperty =
-        DependencyProperty.Register("ButtonText", typeof(String), typeof(VolunteerWindow), new PropertyMetadata(""));
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
 
 
         public BO.Volunteer? CurrentVolunteer
         {
-            get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
-            set { SetValue(CurrentVolunteerProperty, value); }
+            get => (BO.Volunteer?)GetValue(CurrentVolunteerProperty);
+            set => SetValue(CurrentVolunteerProperty, value);
         }
-
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
-
 
 
         public VolunteerWindow(int id)
         {
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
-            this.DataContext = this;
-            CurrentVolunteer = (id != 0) ? s_bl.Volunteer.GetVolunteerDetails(id)! : new BO.Volunteer()
+            DataContext = this;
+
+            if (id != 0)
             {
-                Id = 0,
-                FullName = "",
-                Phone = "",
-                Email = "",
-                Password = "",
-                FullAddress = "",
-                Role = BO.ROLE.VOLUNTEER,
-                MaxDistance = 0,
-                TypeOfDistance = BO.TYPEOFDISTANCE.NONE
-            };
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+            }
+            else
+            {
+                CurrentVolunteer = new BO.Volunteer()
+                {
+                    Id = 0,
+                    FullName = "",
+                    Phone = "",
+                    Email = "",
+                    Password = "",
+                    FullAddress = "",
+                    Role = BO.ROLE.VOLUNTEER,
+                    MaxDistance = 0,
+                    TypeOfDistance = BO.TYPEOFDISTANCE.WALKINGDISTANCE
+                };
+            }
+
+            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+            {
+                s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerObserver);
+            }
+        }
+
+
+        private void VolunteerObserver()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (CurrentVolunteer != null)
+                {
+                    int id = CurrentVolunteer.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                }
+            });
         }
 
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentVolunteer == null)
+            {
+                MessageBox.Show("No volunteer data available.");
+                return;
+            }
+
             if (ButtonText == "Add")
             {
                 try
@@ -86,8 +107,16 @@ namespace PL.Volunteer
                     MessageBox.Show(ex.Message);
                 }
             }
-
         }
 
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+            {
+                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, VolunteerObserver);
+            }
+        }
     }
 }

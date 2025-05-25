@@ -10,8 +10,11 @@ static class XMLTools
     const string s_xmlDir = @"..\xml\";
     static XMLTools()
     {
+
+
         if (!Directory.Exists(s_xmlDir))
             Directory.CreateDirectory(s_xmlDir);
+
     }
 
     #region SaveLoadWithXMLSerializer

@@ -5,13 +5,13 @@
              xmlns:local="clr-namespace:PL"
              xmlns:bl="clr-namespace:BO;assembly=BL"
              StartupUri="MainWindow.xaml">
-    
+
     <Application.Resources>
-        <bl:CallInList x:Key="callinlistob"/>
-        <local:RoleCollection x:Key="RoleCollectionKey" x:Name="tt" />  
-       <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
-       <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
+        <!--<bl:CallInList x:Key="callinlistob"/>-->
+        <pl:RoleCollection x:Key="RoleCollectionKey" />
+        <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
+        <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
     </Application.Resources>
-    
+
 </Application>
  

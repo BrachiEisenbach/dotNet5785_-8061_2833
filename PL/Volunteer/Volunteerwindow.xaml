@@ -3,17 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
         xmlns:local="clr-namespace:PL.Volunteer"
         xmlns:pl="clr-namespace:PL"
+<<<<<<< HEAD
                   
 
         mc:Ignorable="d"
+=======
+         mc:Ignorable="d"
+>>>>>>> 1dae9e9214c309d6ef95b66a270a9bcccdc227ad
         Title="Volunteerwindow" Height="664" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Window.Resources>
-        <bl:CallInList x:Key="callinlistob"/>
-
+        <!--<pl:RoleCollection x:Key="roleColl"/>-->
+        <!--<bl:CallInList x:Key="callinlistob"/>-->
     </Window.Resources>
     <Grid Margin="10">
         <Grid.Resources>
@@ -30,8 +33,8 @@
                 <Setter Property="Margin" Value="5"/>
             </Style>
         </Grid.Resources>
-        
-        
+
+
 
         <Grid.RowDefinitions>
             <!-- 10 שורות לפי מספר השדות -->
@@ -55,7 +58,7 @@
 
         <!-- Id -->
         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Text="{Binding CurrentVolunteer.Id,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" IsReadOnly="True" />
+        <TextBox Text="{Binding CurrentVolunteer.Id,ValidatesOnExceptions=true ,NotifyOnValidationError=true,  Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  />
 
         <!-- FullName -->
         <Label Content="Full Name:" Grid.Row="1" Grid.Column="0"/>
@@ -95,17 +98,10 @@
           Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
 
-        <!--<ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      SelectedValue="{Binding Path= volunteerTypeOfCall, Mode=TwoWay}"
-                      SelectionChanged="ComboBox_SelectionChanged"/>-->
-
         <!-- כפתור הוספה/עדכון -->
         <Button Grid.Row="9" Grid.Column="1"
-        Margin="139,34,0,-48" HorizontalAlignment="Left" Width="150"
-        Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
+        Margin="139,34,0,-72" HorizontalAlignment="Left" Width="150"
+        Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>
