@@ -16,7 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Volunteer\‏‏VolunteerListWindow.xaml - עותק.cs" />
     <Compile Remove="Volunteer\‏‏VolunteerWindow.xaml 11.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Volunteer\‏‏VolunteerListWindow - עותק.xaml" />
   </ItemGroup>
 
   <ItemGroup>
