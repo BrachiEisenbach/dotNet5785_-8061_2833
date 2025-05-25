@@ -1,13 +1,13 @@
-﻿using System;
+﻿
 using System.Windows;
 
-namespace PL.Volunteer
+namespace PL.Vol
 {
     /// <summary>
-    /// Interaction logic for VolunteerWindow.xaml
+    /// Interaction logic for Vol.xaml
     /// </summary>
-    public partial class VolunteerWindow : Window
-    {
+    public partial class VolWindow : Window
+    { 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         public string ButtonText
@@ -16,7 +16,7 @@ namespace PL.Volunteer
             set => SetValue(ButtonTextProperty, value);
         }
         public static readonly DependencyProperty ButtonTextProperty =
-            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolWindow), new PropertyMetadata(""));
 
 
         public BO.Volunteer? CurrentVolunteer
@@ -25,10 +25,10 @@ namespace PL.Volunteer
             set => SetValue(CurrentVolunteerProperty, value);
         }
         public static readonly DependencyProperty CurrentVolunteerProperty =
-            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolWindow), new PropertyMetadata(null));
 
 
-        public VolunteerWindow(int id)
+        public VolWindow(int id)
         {
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
@@ -74,7 +74,6 @@ namespace PL.Volunteer
             });
         }
 
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentVolunteer == null)
@@ -89,6 +88,7 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
                     MessageBox.Show("Volunteer added successfully");
+                    this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)
                 {
@@ -101,6 +101,7 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully");
+                    this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)
                 {
@@ -120,3 +121,4 @@ namespace PL.Volunteer
         }
     }
 }
+

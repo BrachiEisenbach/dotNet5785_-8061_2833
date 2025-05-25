@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Vol;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,13 +95,13 @@ namespace PL.Volunteer
         {
             if(SelectesVolunteer!=null)
             {
-                new VolunteerWindow(SelectesVolunteer.Id).Show();
+                new VolWindow (SelectesVolunteer.Id).Show();
             }
         }
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
-            new VolunteerWindow(0).Show();
+            new VolWindow(0).Show();
         }
     }
 }
