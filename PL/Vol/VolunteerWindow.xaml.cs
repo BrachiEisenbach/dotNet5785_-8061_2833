@@ -6,7 +6,7 @@ namespace PL.Vol
     /// <summary>
     /// Interaction logic for Vol.xaml
     /// </summary>
-    public partial class VolWindow : Window
+    public partial class VolunteerWindow : Window
     { 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
@@ -16,7 +16,7 @@ namespace PL.Vol
             set => SetValue(ButtonTextProperty, value);
         }
         public static readonly DependencyProperty ButtonTextProperty =
-            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolWindow), new PropertyMetadata(""));
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
 
 
         public BO.Volunteer? CurrentVolunteer
@@ -25,11 +25,12 @@ namespace PL.Vol
             set => SetValue(CurrentVolunteerProperty, value);
         }
         public static readonly DependencyProperty CurrentVolunteerProperty =
-            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
 
 
-        public VolWindow(int id)
+        public VolunteerWindow(int id)
         {
+              
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;

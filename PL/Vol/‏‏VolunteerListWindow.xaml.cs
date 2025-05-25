@@ -95,13 +95,13 @@ namespace PL.Volunteer
         {
             if(SelectesVolunteer!=null)
             {
-                new VolWindow (SelectesVolunteer.Id).Show();
+                new VolunteerWindow(SelectesVolunteer.Id).Show();
             }
         }
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
-            new VolWindow(0).Show();
+            new VolunteerWindow(0).Show();
         }
     }
 }
