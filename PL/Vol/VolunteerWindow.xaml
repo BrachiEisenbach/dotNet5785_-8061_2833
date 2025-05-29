@@ -12,7 +12,7 @@
         <!--<pl:RoleCollection x:Key="roleColl"/>-->
         <!--<bl:CallInList x:Key="callinlistob"/>-->
     </Window.Resources>
-    <Grid Margin="10">
+    <Grid Height="418" Width="584">
         <Grid.Resources>
             <Style TargetType="Label">
                 <Setter Property="HorizontalAlignment" Value="Right"/>
