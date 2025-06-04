@@ -5,6 +5,8 @@ using System.Windows;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Controls;
 using DO;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace PL.Vol
 {
@@ -109,6 +111,11 @@ namespace PL.Vol
             {
                 try
                 {
+                    if (!IsFormValid(this))
+                    {
+                        MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
+                        return;
+                    }
                     s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
                     MessageBox.Show("Volunteer added successfully");
                     this.Close(); // סגירת החלון
@@ -122,6 +129,11 @@ namespace PL.Vol
             {
                 try
                 {
+                    if (!IsFormValid(this))
+                    {
+                        MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
+                        return;
+                    }
                     s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully");
                     this.Close(); // סגירת החלון
@@ -129,6 +141,34 @@ namespace PL.Vol
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        bool IsFormValid(DependencyObject parent)
+        {
+            // Force validation updates
+            foreach (var control in FindVisualChildren<UIElement>(parent))
+            {
+                var expr = BindingOperations.GetBindingExpression(control, TextBox.TextProperty);
+                expr?.UpdateSource();
+            }
+
+            return !Validation.GetHasError(parent);
+        }
+
+        IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child is T t)
+                        yield return t;
+
+                    foreach (var childOfChild in FindVisualChildren<T>(child))
+                        yield return childOfChild;
                 }
             }
         }
