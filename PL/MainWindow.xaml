@@ -4,9 +4,17 @@
         Title="MainWindow" Height="200" Width="400">
     <Grid Margin="20">
         <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Enter ID:" Margin="0,0,0,5"/>
-            <TextBox x:Name="IdTextBox" Width="200" Height="25" Margin="0,0,0,10"/>
+            <Label Content="Enter ID:" Margin="0,0,0,5"/>
+            
+            <TextBox Width="200" Height="25" Margin="0,0,0,10">
+                <TextBox.Text>
+                    <Binding Path="Id" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged"/>
+                </TextBox.Text>
+            </TextBox>
+            
             <Button Content="Submit" Width="100" Height="30" Click="SubmitButton_Click"/>
         </StackPanel>
+
+
     </Grid>
 </Window>

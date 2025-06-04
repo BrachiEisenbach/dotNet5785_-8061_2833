@@ -10,6 +10,7 @@ namespace BlApi
     public interface IVolunteer : IObservable
     {
         public BO.ROLE GetUserRole(string userName);//אפשר להוסיף קבלת סיסמא
+        public BO.ROLE GetUserRoleById(int id);
         public IEnumerable<BO.VolunteerInList> GetVolunteerInList(bool? active, BO.VOLUNTEERFIELDSORT? ROLE);
         public BO.Volunteer GetVolunteerDetails(int id);
         public void UpdateVolunteerDetails(int id, BO.Volunteer boVolunteer);

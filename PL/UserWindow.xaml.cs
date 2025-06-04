@@ -17,9 +17,9 @@ namespace PL
     /// <summary>
     /// Interaction logic for UesrWindow.xaml
     /// </summary>
-    public partial class UesrWindow : Window
+    public partial class UserWindow : Window
     {
-        public UesrWindow()
+        public UserWindow()
         {
             InitializeComponent();
         }

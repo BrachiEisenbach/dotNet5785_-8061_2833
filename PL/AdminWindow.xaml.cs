@@ -23,6 +23,10 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        private CallListWindow? _callsWindow;
+        private VolunteerListWindow? _volunteersWindow;
+
+
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -132,11 +136,30 @@ namespace PL
         }
         private void btnVolunteers_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerListWindow().Show();
+            if (_volunteersWindow == null || !_volunteersWindow.IsVisible)
+            {
+                _volunteersWindow = new VolunteerListWindow();
+                _volunteersWindow.Closed += (s, e) => _volunteersWindow = null;
+                _volunteersWindow.Show();
+            }
+            else
+            {
+                _volunteersWindow.Activate();
+            }
         }
         private void btnCalls_Click(object sender, RoutedEventArgs e)
         {
-            new CallListWindow().Show();
+            if (_callsWindow == null || !_callsWindow.IsVisible)
+            {
+                _callsWindow = new CallListWindow();
+                _callsWindow.Closed += (s, e) => _callsWindow = null;
+                _callsWindow.Show();
+            }
+            else
+            {
+                _callsWindow.Activate();
+            }
+            
         }
         private void btnInitialize_Click(object sender, RoutedEventArgs e)
         {
