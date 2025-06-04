@@ -1,5 +1,10 @@
 ﻿
+using BO;
+using System;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Controls;
+using DO;
 
 namespace PL.Vol
 {
@@ -26,11 +31,21 @@ namespace PL.Vol
         }
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
+       
+        
+        public bool IsUpdateMode
+        {
+            get => (bool)GetValue(IsUpdateModeProperty);
+            set => SetValue(IsUpdateModeProperty, value);
+        }
+        public static readonly DependencyProperty IsUpdateModeProperty =
+            DependencyProperty.Register("IsUpdateMode", typeof(bool), typeof(VolunteerWindow), new PropertyMetadata(false));
 
 
         public VolunteerWindow(int id)
         {
-              
+            
+            IsUpdateMode = id != 0; // כאן נשתמש בזה בבינדינג ל-IsReadOnly
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;
@@ -51,7 +66,12 @@ namespace PL.Vol
                     FullAddress = "",
                     Role = BO.ROLE.VOLUNTEER,
                     MaxDistance = 0,
-                    TypeOfDistance = BO.TYPEOFDISTANCE.WALKINGDISTANCE
+                    TypeOfDistance = BO.TYPEOFDISTANCE.WALKINGDISTANCE,
+                    AllCallsThatTreated=0,
+                    AllCallsThatCanceled=0,
+                    AllCallsThatHaveExpired = 0,
+                    Active=false,
+                    TypeOfCall= BO.TYPEOFCALL.NONE,
                 };
             }
 
@@ -64,7 +84,9 @@ namespace PL.Vol
 
         private void VolunteerObserver()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+
+
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 if (CurrentVolunteer != null)
                 {
@@ -122,4 +144,5 @@ namespace PL.Vol
         }
     }
 }
+
 

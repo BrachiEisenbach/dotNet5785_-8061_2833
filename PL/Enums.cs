@@ -34,3 +34,12 @@ public class TypeOfDistanceCollection : IEnumerable
 
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
 }
+public class StatusCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.STATUS> s_enums =
+        (Enum.GetValues(typeof(BO.STATUS)) as IEnumerable<BO.STATUS>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+}
+
+
