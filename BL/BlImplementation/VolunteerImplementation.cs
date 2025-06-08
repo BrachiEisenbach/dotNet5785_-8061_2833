@@ -38,6 +38,33 @@ namespace BlImplementation
                 throw new BlException("Error while getting message details.");
             }
         }
+        /// <summary>
+        /// Returns the role of a volunteer based on their id.
+        /// </summary>
+        /// <param id="id">The id of the volunteer.</param>
+        /// <returns>The role of the volunteer.</returns>
+        public BO.ROLE GetUserRoleById(int id)
+        {
+            try
+            {
+                var volunteer = _dal.Volunteer.ReadAll();
+                var user = volunteer.FirstOrDefault(v => v.Id == id);
+                if (user == null)
+                {
+                    throw new BlDoesNotExistException("The user isn't exist.");
+                }
+
+                return VolunteerManager.ConvertToBORole(user.Role);
+            }
+            catch (DalDoesNotExistException dalDoesNotExistException)
+            {
+                throw new BlDoesNotExistException("The user isn't exist.", dalDoesNotExistException);
+            }
+            catch (Exception ex)
+            {
+                throw new BlException("Error while getting message details.");
+            }
+        }
 
         /// <summary>
         /// Updates the details of an existing volunteer.

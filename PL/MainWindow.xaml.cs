@@ -1,189 +1,79 @@
-﻿using PL.Call;
-
-using System.Diagnostics;
-using System.Text;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public DateTime CurrentTime
+        public int Id
         {
-            get { return (DateTime)GetValue(CurrentTimeProperty); }
-            set { SetValue(CurrentTimeProperty, value); }
-        }
-        public static readonly DependencyProperty CurrentTimeProperty =
-        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
-
-        
-        
-
-        public DateTime Clock
-        {
-            get { return (DateTime)GetValue(ClockProperty); }
-            set { SetValue(ClockProperty, value); }
+            get { return (int)GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ClockProperty =
-            DependencyProperty.Register("Clock", typeof(DateTime), typeof(MainWindow));
-
-        public TimeSpan RiskRange
-        {
-            get { return (TimeSpan)GetValue(RiskRangeProperty); }
-            set { SetValue(RiskRangeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RiskRangeProperty =
-            DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
-
-        private void clockObserver()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                SetCurrentValue(ClockProperty, s_bl.Admin.GetClock());
-            });
-        }
-
-        private void configObserver()
-        {
-            RiskRange = s_bl.Admin.GetRiskRange();
-        }
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register("Id", typeof(int), typeof(MainWindow));
 
 
-     
-
-        private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ClockPromotion(BO.TIMEUNIT.MINUTE);
-        }
-        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ClockPromotion(BO.TIMEUNIT.DAY);
-        }
-        private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ClockPromotion(BO.TIMEUNIT.HOUR);
-        }
-        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ClockPromotion(BO.TIMEUNIT.MONTH);
-        }
-        private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ClockPromotion(BO.TIMEUNIT.YEAR);
-        }
-
-
-
+        private AdminWindow _adminWindow;
 
 
         public MainWindow()
         {
-            System.Diagnostics.PresentationTraceSources.Refresh();
-            System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
-                System.Diagnostics.SourceLevels.Error | System.Diagnostics.SourceLevels.Critical;
-
             InitializeComponent();
-            this.DataContext = this;
-
-
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.AddClockObserver(clockObserver);
-            s_bl.Admin.AddConfigObserver(configObserver);
-            Clock = s_bl.Admin.GetClock();
-            RiskRange = s_bl.Admin.GetRiskRange();
-            CurrentTime = s_bl.Admin.GetClock();    
-        }
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            s_bl.Admin.RemoveClockObserver(clockObserver);
-            s_bl.Admin.RemoveConfigObserver(configObserver);
         }
 
-        private void btnUpdate_RiskRange(object sender, RoutedEventArgs e)
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.SetRiskRange(RiskRange);
-        }
-
-        private void btnUpdate_Clock(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.SetClock(Clock);
-
-        }
-        private void btnVolunteers_Click(object sender, RoutedEventArgs e)
-        {
-            //new VolunteerListWindow().Show();
-        }
-        private void btnCalls_Click(object sender, RoutedEventArgs e)
-        {
-            new CallListWindow().Show();
-        }
-        private void btnInitialize_Click(object sender, RoutedEventArgs e)
-        {
-            // Confirmation message to the user
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the database?",
-                                                      "Initialization Confirmation",
-                                                      MessageBoxButton.YesNo,
-                                                      MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
+            if (Id == 0)
             {
-                // Close all open windows (except the main window)
-                CloseOpenWindows();
+                MessageBox.Show("Please enter a valid ID.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            Mouse.OverrideCursor = Cursors.Wait;
-            s_bl.Admin.InitializeDB();
-            Mouse.OverrideCursor = null;
 
-        }
-        private void btnReset_Click(object sender, RoutedEventArgs e)
-        {
+            BO.ROLE role = s_bl.Volunteer.GetUserRoleById(Id);
+
+            if (role == BO.ROLE.ADMIN)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to reset the database?",
-                                                   "Reset Confirmation",
-                                                   MessageBoxButton.YesNo,
-                                                   MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(
+                    "Would you like to enter as Admin?\nClick 'Yes' for Admin, 'No' for Volunteer.",
+                    "Select Role",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Close all open windows
-                    CloseOpenWindows();
+                    if (_adminWindow == null || !_adminWindow.IsVisible)
+                    {
+                        _adminWindow = new AdminWindow();
+                        _adminWindow.Show();
+                    }
+                    else
+                    {
+                        _adminWindow.Activate();
+                    }
                 }
-                Mouse.OverrideCursor = Cursors.Wait;
-                s_bl.Admin.ResetDB();
-                Mouse.OverrideCursor = null;
+                else if (result == MessageBoxResult.No)
+                {
+                    UserWindow userWindow = new UserWindow(); 
+                    userWindow.Show();
+                }
+                // אם Cancel - לא עושים כלום
             }
 
-        }
-        private void CloseOpenWindows()
-        {
-            // סגירת כל החלונות הפתוחים חוץ מהחלון הראשי
-            foreach (Window window in Application.Current.Windows)
+            else if (role == BO.ROLE.VOLUNTEER)
             {
-                if (window != this) // 'this' הוא החלון הראשי
-                {
-                    window.Close();
-                }
+                UserWindow userWindow = new UserWindow(); // תמיד נפתח חדש
+                userWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("You are not authorized to access this application.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
     }
 }
