@@ -25,15 +25,16 @@
             </Grid.ColumnDefinitions>
 
 
-            <Label Content="{Binding Clock, PresentationTraceSources.TraceLevel=High}"
-       FontWeight="Bold" FontSize="20" HorizontalAlignment="Left"
-       Margin="79,228,0,0" VerticalAlignment="Top"
-       RenderTransformOrigin="0.159,1.81" Height="49" Width="214" Grid.Column="1"/>
-            <Button Content="Add One Minute" HorizontalAlignment="Center" Width="180" Margin="0,56,0,189" Click="btnAddOneMinute_Click"/>
+
+            <TextBlock Text="{Binding Clock, PresentationTraceSources.TraceLevel=High}"
+              FontSize="20" HorizontalAlignment="Left"
+             VerticalAlignment="Top"
+              Height="49" Width="214" Margin="96,18,0,0"/>
+            <Button Content="Add One Minute" HorizontalAlignment="Center" Width="180" Margin="0,67,0,189" Click="btnAddOneMinute_Click"/>
             <Button Content="Add One Hour" HorizontalAlignment="Center" Width="180" Margin="0,161,0,96"  Click="btnAddOneHour_Click"/>
             <Button Content="Add One Day" HorizontalAlignment="Center" Width="180" Margin="0,115,0,139"  Click="btnAddOneDay_Click"/>
-            <Button Content="Add One Month" HorizontalAlignment="Center" Width="180" Margin="0,205,0,57"  Click="btnAddOneMonth_Click"/>
-            <Button Content="Add One Year" HorizontalAlignment="Center" Width="180" Margin="0,253,0,8"  Click="btnAddOneYear_Click"/>
+            <Button Content="Add One Month" HorizontalAlignment="Center" Width="180" Margin="0,205,0,49"  Click="btnAddOneMonth_Click"/>
+            <Button Content="Add One Year" HorizontalAlignment="Center" Width="180" Margin="0,254,0,0"  Click="btnAddOneYear_Click"/>
 
 
             <Button Grid.Column="1" Content="Update Risk Range" HorizontalAlignment="Left" Margin="244,104,0,0" VerticalAlignment="Top" Width="108" Height="24" RenderTransformOrigin="0.46,2.123" Click="btnUpdate_RiskRange"/>

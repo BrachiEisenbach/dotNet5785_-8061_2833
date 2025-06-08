@@ -400,6 +400,7 @@ namespace BlImplementation
         /// <param name="tOfCall">The type of call to filter by (optional).</param>
         /// <param name="sortBy">The field to sort the results by (optional).</param>
 
+
         public IEnumerable<OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInListField? sortBy)
         {
             try
@@ -563,6 +564,7 @@ namespace BlImplementation
         {
             CallManager.Observers.RemoveObserver(id, observer);
         }
+
     }
 }
 

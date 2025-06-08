@@ -1,5 +1,5 @@
 ﻿using PL.Call;
-using PL.Volunteer;
+
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -131,7 +131,7 @@ namespace PL
         }
         private void btnVolunteers_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerListWindow().Show();
+            //new VolunteerListWindow().Show();
         }
         private void btnCalls_Click(object sender, RoutedEventArgs e)
         {

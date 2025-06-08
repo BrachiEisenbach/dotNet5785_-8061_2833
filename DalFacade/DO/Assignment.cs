@@ -33,8 +33,6 @@ public record Assignment
 
 
 
-
-
     /// <summary>
     /// Returns a string representation of the assignment, including its details.
     /// </summary>

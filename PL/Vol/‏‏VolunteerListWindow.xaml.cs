@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Vol;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,8 +41,10 @@ namespace PL.Volunteer
         public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
 
         private void queryVolunteerList()
-        => VolunteerList = (type == BO.TYPEOFCALL.NONE) ?
-        s_bl?.Volunteer.GetVolunteerInList(null, null)! : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!.Where(v => v.TypeOfCall == type);
+            => VolunteerList = (type == BO.TYPEOFCALL.NONE)
+                ? s_bl?.Volunteer.GetVolunteerInList(null, null)!
+                : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
+                    .Where(v => v.TypeOfCall == type);
 
         private void volunteerListObserver()
         => queryVolunteerList();
