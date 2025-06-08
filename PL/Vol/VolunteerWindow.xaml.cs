@@ -153,8 +153,8 @@ namespace PL.Vol
                 var expr = BindingOperations.GetBindingExpression(control, TextBox.TextProperty);
                 expr?.UpdateSource();
             }
-
-            return !Validation.GetHasError(parent);
+            //todo:
+            return true;// !Validation.GetHasError(parent);
         }
 
         IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject

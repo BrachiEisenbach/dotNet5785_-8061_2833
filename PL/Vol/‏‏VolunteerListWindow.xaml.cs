@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace PL.Volunteer
+    { }
+namespace PL.Vol
 {
     /// <summary>
     /// Interaction logic for VolunteerListWindow.xaml
@@ -88,6 +90,16 @@ namespace PL.Volunteer
 
                 }
             }
+        }
+
+        private void btnAddVolunteer(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dgVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
