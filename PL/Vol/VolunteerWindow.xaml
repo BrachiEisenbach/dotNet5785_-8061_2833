@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:volunteer="clr-namespace:PL.Vol"
         xmlns:validation="clr-namespace:PL.Validation"
         xmlns:pl="clr-namespace:PL"
@@ -30,7 +31,7 @@
 
 
         <Grid.RowDefinitions>
-            <!-- 15 שורות לפי מספר השדות -->
+            <!-- 16 שורות לפי מספר השדות -->
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -135,7 +136,7 @@
           Style="{StaticResource InputStyle}"/>
 
         <!-- AllCallsThatTreated -->
-        <Label Content="All Calls That Treated :" Grid.Row="9" Grid.Column="0"/>
+        <Label Content="All Calls That Treated:" Grid.Row="9" Grid.Column="0"/>
         <TextBox Grid.Row="9" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentVolunteer.AllCallsThatTreated" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
@@ -171,7 +172,7 @@
         </TextBox>
 
         <!-- Active -->
-        <Label Content="Is Active :" Grid.Row="12" Grid.Column="0"/>
+        <Label Content="Is Active:" Grid.Row="12" Grid.Column="0"/>
         <CheckBox Grid.Row="12" Grid.Column="1"
           IsChecked="{Binding CurrentVolunteer.Active, ValidatesOnExceptions=True, NotifyOnValidationError=True, Mode=TwoWay}"
           Style="{StaticResource InputStyle}" />
@@ -186,7 +187,7 @@
         <Label Content="Call In Progress:" Grid.Column="2" Grid.ColumnSpan="2" Margin="132,0,0,0" HorizontalAlignment="Left"/>
 
         <!-- CallId -->
-        <Label Content="Call Id :" Grid.Row="1" Grid.Column="2"/>
+        <Label Content="Call Id:" Grid.Row="1" Grid.Column="2"/>
         <TextBox Grid.Row="1" Grid.Column="3" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentVolunteer.CallInTreated.CallId" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
@@ -194,7 +195,7 @@
         </TextBox>
 
         <!-- VerbalDescription -->
-        <Label Content="Verbal Description :" Grid.Row="2" Grid.Column="2"/>
+        <Label Content="Verbal Description:" Grid.Row="2" Grid.Column="2"/>
         <TextBox Grid.Row="2" Grid.Column="3" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentVolunteer.CallInTreated.VerbalDescription" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
@@ -202,7 +203,7 @@
         </TextBox>
 
         <!-- FullAddress -->
-        <Label Content="Full Address :" Grid.Row="3" Grid.Column="2"/>
+        <Label Content="Full Address:" Grid.Row="3" Grid.Column="2"/>
         <TextBox Grid.Row="3" Grid.Column="3" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentVolunteer.CallInTreated.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
@@ -210,34 +211,31 @@
         </TextBox>
 
         <!-- OpenTime -->
-        <Label Content="Open Time :" Grid.Row="4" Grid.Column="2"/>
-        <TextBox Grid.Row="4" Grid.Column="3" Style="{StaticResource InputStyle}">
-            <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.OpenTime" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
-            </TextBox.Text>
-        </TextBox>
+        <Label Content="Open Time:" Grid.Row="4" Grid.Column="2"/>
+        <xctk:TimePicker 
+    Value="{Binding CurrentVolunteer.CallInTreated.OpenTime, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="ShortTime"
+    Grid.Row="4" Grid.Column="3" 
+    Style="{StaticResource InputStyle}" />
 
         <!-- MaxTimeToFinish -->
-        <Label Content="Max Time To Finish :" Grid.Row="5" Grid.Column="2"/>
-        <TextBox Grid.Row="5" Grid.Column="3" Style="{StaticResource InputStyle}">
-            <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.MaxTimeToFinish" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
-            </TextBox.Text>
-        </TextBox>
+        <Label Content="Max Time To Finish:" Grid.Row="5" Grid.Column="2"/>
+        <xctk:TimePicker 
+    Value="{Binding CurrentVolunteer.CallInTreated.MaxTimeToFinish, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="ShortTime"
+    Grid.Row="5" Grid.Column="3" 
+    Style="{StaticResource InputStyle}" />
 
         <!-- EnterTime -->
-        <Label Content="Enter Time :" Grid.Row="6" Grid.Column="2"/>
-        <TextBox Grid.Row="6" Grid.Column="3" Style="{StaticResource InputStyle}">
-            <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.EnterTime" 
-                 ValidatesOnExceptions="True" 
-                 NotifyOnValidationError="True" 
-                 Mode="TwoWay"/>
-            </TextBox.Text>
-        </TextBox>
+        <Label Content="Enter Time:" Grid.Row="6" Grid.Column="2"/>
+        <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreated.EnterTime, Mode=TwoWay}" 
+                 Format="ShortTime"
+                 Grid.Row="6" Grid.Column="3" 
+                 Style="{StaticResource InputStyle}" />
+
 
         <!-- Distance -->
-        <Label Content="Distance :" Grid.Row="7" Grid.Column="2"/>
+        <Label Content="Distance:" Grid.Row="7" Grid.Column="2"/>
         <TextBox Grid.Row="7" Grid.Column="3" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentVolunteer.CallInTreated.Distance" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
@@ -255,7 +253,7 @@
 
         <!-- כפתור הוספה/עדכון -->
         <Button Grid.Row="13" Grid.Column="2"
-        Margin="35,18,0,-23" HorizontalAlignment="Left" Width="150"
+        Margin="35,23,0,-28" HorizontalAlignment="Left" Width="150"
         Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
 
     </Grid>

@@ -11,6 +11,7 @@
         <pl:RoleCollection x:Key="RoleCollectionKey" />
         <pl:TypeOfCallCollection x:Key="TypeOfCallCollectionKey" />
         <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
+        <pl:FinishTypeCollection x:Key="FinishTypeCollectionKey" />
         <pl:StatusCollection x:Key="StatusCollectionKey" />
     </Application.Resources>
 

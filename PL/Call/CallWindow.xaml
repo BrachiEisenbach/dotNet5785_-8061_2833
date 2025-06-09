@@ -1,12 +1,148 @@
 ﻿<Window x:Class="PL.Call.CallWindow"
+       
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Call"
-        mc:Ignorable="d"
-        Title="CallWindow" Height="450" Width="800">
-    <Grid>
-        
+        xmlns:call="clr-namespace:PL.Call"
+        xmlns:validation="clr-namespace:PL.Validation"
+        xmlns:pl="clr-namespace:PL"
+         mc:Ignorable="d">
+
+    <Window.Resources>
+    </Window.Resources>
+    <Grid Height="540" Width="877" RenderTransformOrigin="0.503,0.54">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Width" Value="150"/>
+            </Style>
+            <Style TargetType="Control" x:Key="InputStyle">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+        </Grid.Resources>
+
+
+
+        <Grid.RowDefinitions>
+            <!-- 8 שורות לפי מספר השדות -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--//                    public int Id { get; init; }
+                    //public TYPEOFCALL TypeOfCall { get; init; }
+                    //public string? VerbalDescription { get; init; }
+                    //public string FullAddress { get; init; }
+                    //public double? Latitude { get; set; }
+                    //public double? Longitude { get; set; }
+                    //public DateTime OpenTime { get; init; }
+                    //public DateTime? MaxTimeToFinish { get; init; }
+                    //public STATUS Status { get; set; }
+
+                    //public List
+        <BO.CallAssignInList>? listOfCallAssign { get; set; }
+
+                    //                    public int? VolunteerId { get; init; }
+                    //public string? VolunteerName { get; init; }
+                    //public DateTime EntryTimeForTreatment { get; init; }
+                    //public DateTime? EndTimeOfTreatment { get; init; }
+                    //public FINISHTYPE? TypeOfTreatment { get; init; }-->
+
+
+
+        <!-- ID -->
+        <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
+        <TextBox Text="{Binding CurrentCall.Id, Mode=TwoWay}" 
+         Grid.Row="0" Grid.Column="1" 
+         Style="{StaticResource InputStyle}" 
+         IsReadOnly="{Binding IsUpdateMode}" />
+
+        <!-- TypeOfCall -->
+        <Label Content="Type Of Call:" Grid.Row="1" Grid.Column="0"/>
+        <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+          SelectedValue="{Binding CurrentCall.TypeOfCall}" 
+          Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}" HorizontalAlignment="Stretch" Margin="5,0,5,0"/>
+
+        <!-- VerbalDescription -->
+        <Label Content="Verbal Description:" Grid.Row="2" Grid.Column="0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}">
+            <TextBox.Text>
+                <Binding Path="CurrentCall.VerbalDescription" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+            </TextBox.Text>
+        </TextBox>
+
+        <!-- FullAddress -->
+        <Label Content="Full Address:" Grid.Row="3" Grid.Column="0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}">
+            <TextBox.Text>
+                <Binding Path="CurrentCall.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+            </TextBox.Text>
+        </TextBox>
+
+        <!-- OpenTime -->
+        <Label Content="Open Time:" Grid.Row="4" Grid.Column="0"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}">
+            <TextBox.Text>
+                <Binding Path="CurrentCall.OpenTime" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+            </TextBox.Text>
+        </TextBox>
+
+
+        <!-- MaxTimeToFinish -->
+        <Label Content="Max Time To Finish:" Grid.Row="5" Grid.Column="0"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}">
+            <TextBox.Text>
+                <Binding Path="CurrentCall.MaxTimeToFinish" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+            </TextBox.Text>
+        </TextBox>
+
+        <!-- Status -->
+        <Label Content="Status:" Grid.Row="7" Grid.Column="0"/>
+        <ComboBox ItemsSource="{Binding Source= {StaticResource StatusCollectionKey}}"
+          SelectedValue="{Binding CurrentCall.Status, Mode=TwoWay}" 
+          Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}"/>
+
+
+        <!-- CallAssignInList Labels & Fields -->
+        <Label Content="Call Assign In List:" Grid.Column="2" Grid.ColumnSpan="2" Margin="132,0,0,0" HorizontalAlignment="Left"/>
+
+        <DataGrid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="5"
+          ItemsSource="{Binding CurrentCall.listOfCallAssign}"
+          AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,7,5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding VolunteerName}" />
+                <DataGridTextColumn Header="Entry Time" Binding="{Binding EntryTimeForTreatment}" />
+                <DataGridTextColumn Header="End Time" Binding="{Binding EndTimeOfTreatment}" />
+                <DataGridTextColumn Header="Type" Binding="{Binding TypeOfTreatment}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- כפתור הוספה/עדכון -->
+        <Button Grid.Row="8" Grid.Column="1"
+        Margin="145,34,0,-65" HorizontalAlignment="Left" Width="150"
+        Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.ColumnSpan="2"/>
+
     </Grid>
 </Window>
+

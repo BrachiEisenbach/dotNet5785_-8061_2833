@@ -28,10 +28,6 @@ public class TypeOfCallCollection :  IEnumerable
 
 
 }
-    
-
-
-
 public class RoleCollection :  IEnumerable
 {
     static readonly IEnumerable<BO.ROLE> s_enums =
@@ -40,7 +36,6 @@ public class RoleCollection :  IEnumerable
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
    
 }
-
 public class TypeOfDistanceCollection : IEnumerable
 {
     static readonly IEnumerable<BO.TYPEOFDISTANCE> s_enums =
@@ -54,6 +49,14 @@ public class StatusCollection : IEnumerable
         (Enum.GetValues(typeof(BO.STATUS)) as IEnumerable<BO.STATUS>)!;
 
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+}
+public class FinishTypeCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.FINISHTYPE> s_enums =
+        (Enum.GetValues(typeof(BO.FINISHTYPE)) as IEnumerable<BO.FINISHTYPE>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+
 }
 
 
