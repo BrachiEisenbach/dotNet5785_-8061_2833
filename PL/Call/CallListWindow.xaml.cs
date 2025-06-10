@@ -41,6 +41,7 @@ namespace PL.Call
 
         //סינון לפי סוג קריאה
         public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
+        public BO.CallInList? SelectedCall { get; set; }
 
 
         private void queryCallList()
@@ -83,6 +84,10 @@ namespace PL.Call
 
         private void dgCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (SelectedCall != null)
+            {
+                new CallWindow(SelectedCall.Id).Show();
+            }
 
         }
 
@@ -110,5 +115,22 @@ namespace PL.Call
             }
         }
 
+        private void CancelAssignment_Click(object sender, RoutedEventArgs e)
+        {
+            //אפשרי??????
+            //if (sender is Button btn && btn.Tag is int callId)
+            //{
+            //    // בצעי כאן את ביטול ההקצאה בלוגיקה שלך
+            //    MessageBox.Show($"ביטול הקצאה לקריאה {callId}");
+            //    s_bl.Call.(callId);    
+
+            //}
+        }
+
+        private void btnAddVolunteer(object sender, RoutedEventArgs e)
+        {
+            new CallWindow(0).Show();
+
+        }
     }
 }

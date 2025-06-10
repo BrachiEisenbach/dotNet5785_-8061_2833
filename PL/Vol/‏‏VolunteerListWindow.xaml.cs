@@ -98,12 +98,15 @@ namespace PL.Vol
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
-
+            new VolunteerWindow(0).Show();
         }
 
         private void dgVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (SelectesVolunteer != null)
+            {
+                new VolunteerWindow(SelectesVolunteer.Id).Show();
+            }
         }
     }
 }
