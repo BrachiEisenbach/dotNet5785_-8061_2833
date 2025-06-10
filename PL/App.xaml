@@ -13,9 +13,7 @@
         <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
         <pl:FinishTypeCollection x:Key="FinishTypeCollectionKey" />
         <pl:StatusCollection x:Key="StatusCollectionKey" />
-        <Pl:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
-        <Pl:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibilityConverter"/>
-
+		<pl:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
     </Application.Resources>
 
 </Application>
