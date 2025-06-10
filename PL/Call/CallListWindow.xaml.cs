@@ -1,4 +1,6 @@
-﻿using PL.Vol;
+﻿using BO;
+using DO;
+using PL.Vol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,19 +30,54 @@ namespace PL.Call
             InitializeComponent();
         }
 
-        public IEnumerable<BO.VolunteerInList> CallList
+        public IEnumerable<BO.CallInList> CallList
         {
-            get { return (IEnumerable<BO.VolunteerInList>)GetValue(CallListProperty); }
+            get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
             set { SetValue(CallListProperty, value); }
         }
 
         public static readonly DependencyProperty CallListProperty =
-            DependencyProperty.Register("CallList", typeof(IEnumerable<BO.VolunteerInList>), typeof(CallListWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
+        //סינון לפי סוג קריאה
         public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
+
+
+        private void queryCallList()
+      => CallList = (type == BO.TYPEOFCALL.NONE)
+        ? s_bl?.Call.GetCallList(null, null, null)!
+        : s_bl?.Call.GetCallList(type, null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
+            .Where(v => v.TypeOfCall == type);
+
+
+        //סינון לפי סטטוס קריאה
+        //public BO.STATUS status { get; set; } = BO.STATUS.none;
+
+
+        //private void queryCallList()
+        // => CallList = (status == BO.STATUS.none)
+        //? s_bl?.Call.GetCallList(null, null, null)!
+        //: s_bl?.Call.GetCallList(status, null, BO.TYPEOFCALL.FLATTIRE)!
+        //    .Where(c => c.Status == status);
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //סינון לפי סוג קריאה
+
+            var comboBox = sender as ComboBox;
+            if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
+            {
+                type = selectedType; // עדכון ה-type כאן
+                queryCallList(); // קריאה לעדכון הרשימה
+            }
+
+            //סינון לפי סטטוס קריאה
+            //var comboBox = sender as ComboBox;
+            //if (comboBox.SelectedValue is BO.STATUS selectedStatus)
+            //{
+            //    status = selectedStatus; // עדכון ה-type כאן
+            //    queryCallList(); // קריאה לעדכון הרשימה
+            //}
 
         }
 
@@ -48,5 +85,30 @@ namespace PL.Call
         {
 
         }
+
+        private void Delete_click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null && button.Tag != null)
+            {
+                int CallId = (int)button.Tag;
+                try
+                {
+                    MessageBoxResult result = MessageBox.Show
+                        ("Are you sure you want to delete call?", "Confirm Delete", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        s_bl.Call.DeleteCall(CallId);
+                        queryCallList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+        }
+
     }
 }
