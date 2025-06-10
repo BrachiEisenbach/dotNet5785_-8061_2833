@@ -61,10 +61,10 @@
           SelectedItem="{Binding ClosedCallsList}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding AllCallsThatTreated}" Header="Type OfCall" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding AllCallsThatCanceled}" Header="FullAddress" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding AllCallsThatHaveExpired}" Header="OpenTime" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding CallId}" Header="Type OfTreatment" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TypeOfTreatment}" Header="Type Of Treatment" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
@@ -82,53 +82,5 @@
         public FINISHTYPE? TypeOfTreatment { get; init; }
     }-->
 
-
-
-<!--<Grid>
-    <ItemsControl ItemsSource="{Binding ClosedCallsList, RelativeSource={RelativeSource AncestorType=Window}}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border BorderBrush="DarkGray" BorderThickness="1" Padding="10" Margin="5" CornerRadius="5" Background="#FAFAFA">
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        -->
-<!-- שורה 1 -->
-<!--
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="מספר קריאה:" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Id}"/>
-
-                        -->
-<!-- שורה 2 -->
-<!--
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="סוג קריאה:" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TypeOfCall}"/>
-
-                        -->
-<!-- שורה 3 -->
-<!--
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="כתובת:" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FullAddress}"/>
-
-                        -->
-<!-- שורה 4 -->
-<!--
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="זמן פתיחה:" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding OpenTime, StringFormat={}{0:dd/MM/yyyy HH:mm}}"/>
-                    </Grid>
-                </Border>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
-</Grid>-->
 
 
