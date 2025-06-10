@@ -26,14 +26,14 @@
 	
 	 
 	
-  <ItemGroup >
-    <PackageReference Include="AutoMapper" Version="14.0.0"  />
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
   </ItemGroup>
 
 	<Target Name="CopyAutoMapperDll" AfterTargets="Build">
-		<Copy SourceFiles="$(UserProfile)\.nuget\packages\automapper\14.0.0\lib\net8.0\AutoMapper.dll"
-			  DestinationFolder="$(OutputPath)" />
+		<Copy SourceFiles="$(UserProfile)\.nuget\packages\automapper\14.0.0\lib\net8.0\AutoMapper.dll" DestinationFolder="$(OutputPath)" />
 	</Target>
 	
 
