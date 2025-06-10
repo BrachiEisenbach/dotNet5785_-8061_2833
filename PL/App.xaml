@@ -13,6 +13,7 @@
         <pl:TypeOfDistanceCollection x:Key="TypeOfDistanceCollectionKey" />
         <pl:FinishTypeCollection x:Key="FinishTypeCollectionKey" />
         <pl:StatusCollection x:Key="StatusCollectionKey" />
+		<pl:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
     </Application.Resources>
 
 </Application>

@@ -58,5 +58,14 @@ public class FinishTypeCollection : IEnumerable
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
 
 }
+public class ClosedCallInListFieldCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.ClosedCallInListField> s_enums =
+        (Enum.GetValues(typeof(BO.ClosedCallInListField)) as IEnumerable<BO.ClosedCallInListField>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+
+}
+
 
 

@@ -60,6 +60,10 @@ namespace PL.Vol
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            //אסור לגשת לתכונות של sender שמגיע כפרמטר במתודות טיפול באירועים, גם לא לאחר המרה לטיפוס המתאים
+            // -אלא יש תמיד להתבסס על DataBinding  
+            //לתקןןןןןןן
             var comboBox = sender as ComboBox;
             if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
             {
