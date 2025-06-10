@@ -128,13 +128,13 @@
 
         <DataGrid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="5"
           ItemsSource="{Binding CurrentCall.listOfCallAssign}"
-          AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,7,5">
+          AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,9,5">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding VolunteerName}" />
                 <DataGridTextColumn Header="Entry Time" Binding="{Binding EntryTimeForTreatment}" />
                 <DataGridTextColumn Header="End Time" Binding="{Binding EndTimeOfTreatment}" />
-                <DataGridTextColumn Header="Type" Binding="{Binding TypeOfTreatment}" />
+                <DataGridTextColumn Header="Type Of Treatment" Binding="{Binding TypeOfTreatment}" />
             </DataGrid.Columns>
         </DataGrid>
 

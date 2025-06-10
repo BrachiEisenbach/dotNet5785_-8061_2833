@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL.Vol
+namespace PL.Call
 {
     /// <summary>
     /// Interaction logic for CallsHistoryWindow.xaml
@@ -74,17 +74,6 @@ namespace PL.Vol
             this.Closed += Window_Closed;
 
         }
-        //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    var comboBox = sender as ComboBox;
-        //    if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
-        //    {
-        //        type = selectedType; // עדכון ה-type כאן
-
-        //        //לעדכן סוג מיון לפני שמעדנים רשימה!!
-        //        queryClosedCallList(); // קריאה לעדכון הרשימה
-        //    }
-        //}
         private static void OnSelectedCallTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = d as CallsHistoryWindow;
