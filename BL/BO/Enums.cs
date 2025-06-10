@@ -40,7 +40,8 @@ namespace BO
         Open,
         Closed,
         Expired,
-        OpenDangerZone
+        OpenDangerZone,
+        none
 
     }
     /// <summary>
@@ -64,6 +65,14 @@ namespace BO
         SUMCANCELED,
         SUMEXPIRED
     }
+
+    public enum CallFieldSort
+    {
+        CallType,
+        Status,
+        SumOfAssigned
+    }
+
 
     public enum ClosedCallInListField
     {

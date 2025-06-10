@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="CallListWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-
+    <!--<Window.Resources>
+        <local:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+        <local:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibilityConverter"/>
+    </Window.Resources>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,10 +23,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
-            <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+            <!--ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}"-->
+
+            <ComboBox 
+                      ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
                       VerticalAlignment="Center"
                       Grid.Column="1"
-                      SelectedValue="{Binding Path= volunteerTypeOfCall, Mode=TwoWay}"
+                      SelectedValue="{Binding Path= type, Mode=TwoWay}"
                       SelectedValuePath="."
                       SelectionChanged="ComboBox_SelectionChanged"/>
         </Grid>
@@ -37,21 +43,42 @@
           SelectedItem="{Binding yyy}"
           MouseDoubleClick="dgCallList_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding FullName}" Header="FullName" Width="Auto">
+                <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="Background" Value="Chocolate"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
+
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto"/>
+
                 <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding SumOfAssigned}" Header="Sum Assignment" Width="Auto"/>
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <!-- כפתור מחיקה קיים -->
+                                <Button Content="Delete"
+                                 Click="Delete_click"
+                                 Tag="{Binding CallId}" />
+                                 <!--Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"-->
+                                       
+                                 
+                                         <!-- כפתור ביטול הקצאה -->
+                                         <Button Content="בטל הקצאה"
+                                 Click="CancelAssignment_Click"
+                                 Tag="{Binding CallId}"
+                                 Margin="5,0,0,0"/>
+                                 <!--Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibilityConverter}}"-->
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
         </DataGrid>
