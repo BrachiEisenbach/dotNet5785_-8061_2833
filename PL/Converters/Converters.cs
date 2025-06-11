@@ -81,5 +81,53 @@ namespace PL.Converters
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
     }
+    public class InverseBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;
+            return true;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;
+            return false;
+        }
+
+    }
+    public class StatusToGeneralEditabilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is STATUS status &&
+                   (status == STATUS.Open || status == STATUS.OpenDangerZone);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            throw new NotImplementedException();
+    }
+    public class StatusToDeadlineEditabilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is STATUS status &&
+                   (status == STATUS.Open || status == STATUS.OpenDangerZone ||
+                    status == STATUS.InTreatment || status == STATUS.InTreatmentDangerZone);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            throw new NotImplementedException();
+    }
+
+    //InTreatment,
+    //    InTreatmentDangerZone,
+    //    Open,
+    //    Closed,
+    //    Expired,
+    //    OpenDangerZone,
+    //    none
 
 }

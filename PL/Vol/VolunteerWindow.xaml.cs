@@ -93,7 +93,6 @@ namespace PL.Vol
                 if (CurrentVolunteer != null)
                 {
                     int id = CurrentVolunteer.Id;
-                    CurrentVolunteer = null;
                     CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
                 }
             });
@@ -144,17 +143,35 @@ namespace PL.Vol
                 }
             }
         }
-
         bool IsFormValid(DependencyObject parent)
         {
-            // Force validation updates
+            // עדכן את כל ה־Binding ל־Source
             foreach (var control in FindVisualChildren<UIElement>(parent))
             {
                 var expr = BindingOperations.GetBindingExpression(control, TextBox.TextProperty);
                 expr?.UpdateSource();
+
+                var exprCombo = BindingOperations.GetBindingExpression(control, ComboBox.SelectedValueProperty);
+                exprCombo?.UpdateSource();
             }
-            //todo:
-            return true;// !Validation.GetHasError(parent);
+
+            // בדוק אם יש שגיאות
+            return !HasValidationError(parent);
+        }
+
+        bool HasValidationError(DependencyObject obj)
+        {
+            //if (Validation.GetHasError(obj))
+            //    return true;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (HasValidationError(child))
+                    return true;
+            }
+
+            return false;
         }
 
         IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject

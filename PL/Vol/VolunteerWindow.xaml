@@ -19,6 +19,7 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
         <converters:CallInTreateToIsEnabledConverter x:Key="CallInTreateToIsEnabled"/>
+        <converters:InverseBoolConverter x:Key="InverseBool"/>
     </Window.Resources>
 
     <Grid Height="540" Width="877">
@@ -199,7 +200,8 @@
         <!-- TypeOfCall -->
         <Label Content="Type Of Call:" Grid.Row="13" Grid.Column="0"/>
         <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-          SelectedValue="{Binding CurrentVolunteer.TypeOfCall, Mode=TwoWay}" 
+          SelectedValue="{Binding CurrentVolunteer.TypeOfCall, Mode=TwoWay}"
+          SelectedValuePath="."
           Grid.Row="13" Grid.Column="1" Style="{StaticResource InputStyle}"/>
 
         <!-- CallInProgress Labels & Fields -->
@@ -207,57 +209,65 @@
 
         <!-- CallId -->
         <Label Content="Call Id:" Grid.Row="1" Grid.Column="2"/>
-        <TextBox Grid.Row="1" Grid.Column="3" Style="{StaticResource InputStyle}">
+        <TextBox Grid.Row="1" Grid.Column="3" Style="{StaticResource InputStyle}" IsReadOnly="{Binding IsUpdateMode}" >
+            <TextBox.ToolTip>
+                <TextBlock Text="Call Id is the identifier of the call currently being treated by the volunteer."/>
+            </TextBox.ToolTip>
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.CallId" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.CallInTreate.CallId" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
             </TextBox.Text>
+            
         </TextBox>
 
         <!-- VerbalDescription -->
         <Label Content="Verbal Description:" Grid.Row="2" Grid.Column="2"/>
-        <TextBox Grid.Row="2" Grid.Column="3" Style="{StaticResource InputStyle}">
+        <TextBox Grid.Row="2" Grid.Column="3" Style="{StaticResource InputStyle}" IsReadOnly="{Binding IsUpdateMode}" >
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.VerbalDescription" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.CallInTreate.VerbalDescription" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
             </TextBox.Text>
         </TextBox>
 
         <!-- FullAddress -->
         <Label Content="Full Address:" Grid.Row="3" Grid.Column="2"/>
-        <TextBox Grid.Row="3" Grid.Column="3" Style="{StaticResource InputStyle}">
+        <TextBox Grid.Row="3" Grid.Column="3" Style="{StaticResource InputStyle}" IsReadOnly="{Binding IsUpdateMode}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.CallInTreate.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
             </TextBox.Text>
         </TextBox>
 
         <!-- OpenTime -->
         <Label Content="Open Time:" Grid.Row="4" Grid.Column="2"/>
-        <xctk:TimePicker 
-    Value="{Binding CurrentVolunteer.CallInTreated.OpenTime, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
-    Format="ShortTime"
+        <xctk:TimePicker  IsReadOnly="{Binding IsUpdateMode}"
+    Value="{Binding CurrentVolunteer.CallInTreate.OpenTime, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="Custom"
+    FormatString="HH:mm"
     Grid.Row="4" Grid.Column="3" 
     Style="{StaticResource InputStyle}" />
 
         <!-- MaxTimeToFinish -->
         <Label Content="Max Time To Finish:" Grid.Row="5" Grid.Column="2"/>
-        <xctk:TimePicker 
-    Value="{Binding CurrentVolunteer.CallInTreated.MaxTimeToFinish, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
-    Format="ShortTime"
+        <xctk:TimePicker  IsReadOnly="{Binding IsUpdateMode}"
+    Value="{Binding CurrentVolunteer.CallInTreate.MaxTimeToFinish, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="Custom"
+    FormatString="HH:mm"
     Grid.Row="5" Grid.Column="3" 
     Style="{StaticResource InputStyle}" />
 
         <!-- EnterTime -->
         <Label Content="Enter Time:" Grid.Row="6" Grid.Column="2"/>
-        <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreated.EnterTime, Mode=TwoWay}" 
-                 Format="ShortTime"
+        <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.EnterTime, Mode=TwoWay}" 
+                 IsReadOnly="{Binding IsUpdateMode}"
+                 Format="Custom"
+                 FormatString="HH:mm"
                  Grid.Row="6" Grid.Column="3" 
                  Style="{StaticResource InputStyle}" />
 
 
         <!-- Distance -->
         <Label Content="Distance:" Grid.Row="7" Grid.Column="2"/>
-        <TextBox Grid.Row="7" Grid.Column="3" Style="{StaticResource InputStyle}">
+        <TextBox Grid.Row="7" Grid.Column="3" Style="{StaticResource InputStyle}" IsReadOnly="{Binding IsUpdateMode}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.CallInTreated.Distance" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                <Binding Path="CurrentVolunteer.CallInTreate.Distance" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
                     <Binding.ValidationRules>
                         <validation:PositiveDoubleValidationRule />
                     </Binding.ValidationRules>
@@ -267,18 +277,24 @@
         <!-- Status -->
         <Label Content="Status:" Grid.Row="8" Grid.Column="2"/>
         <ComboBox ItemsSource="{Binding Source= {StaticResource StatusCollectionKey}}"
-          SelectedValue="{Binding CurrentVolunteer.CallInTreated.Status, Mode=TwoWay}" 
-          Grid.Row="8" Grid.Column="3" Style="{StaticResource InputStyle}"/>
+          SelectedValue="{Binding CurrentVolunteer.CallInTreate.Status, Mode=TwoWay}" 
+          Grid.Row="8" Grid.Column="3" Style="{StaticResource InputStyle}"
+          IsEnabled="{Binding IsUpdateMode, Converter={StaticResource InverseBool}}"/>
+
 
         <!-- כפתור הוספה/עדכון -->
-        <Button Grid.Row="13" Grid.Column="2"
-        Margin="35,23,0,-28" HorizontalAlignment="Left" Width="150"
-        Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+        <Button Grid.Row="13" Grid.Column="2" Grid.RowSpan="3" Grid.ColumnSpan="2"
+        Margin="35,23,0,0" HorizontalAlignment="Left" Width="150"
+        Content="{Binding ButtonText}" Click="btnAddUpdate_Click"
+        ToolTip="Add a new volunteer or update existing one" />
 
         <!-- כפתור מחיקה -->
-        <Button Content="Delete" Click="Delete_click" Grid.Row="13" Grid.Column="3"
-        Margin="55,23,0,-28" HorizontalAlignment="Left" Width="150" CommandParameter="{Binding CurrentVolunteer.Id}"
-        Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}" Grid.RowSpan="3"/>
+        <Button Grid.Row="13" Grid.Column="3" Grid.RowSpan="3"
+        Margin="10,23,0,0" HorizontalAlignment="Left" Width="150"
+        Content="Delete" Click="Delete_click"
+        CommandParameter="{Binding CurrentVolunteer.Id}"
+        Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"
+        ToolTip="Delete the selected volunteer" />
 
 
 
