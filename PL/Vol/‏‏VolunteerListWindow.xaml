@@ -4,16 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Vol"
-        xmlns:converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
         Title="VolunteerListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-    <Window.Resources>
-        <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
-        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,12 +18,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
+            <Label Content="Select a value for which the calls will be filtered." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
             <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Center"
                       Grid.Column="1"
-                      SelectedValue="{Binding Path= TypeProperty, Mode=TwoWay}"
+                      SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
                       SelectedValuePath="."
                       />
         </Grid>
@@ -67,7 +60,9 @@
                 <DataGridTemplateColumn Header="" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Click="Delete_click" Tag="{Binding Id}"/>
+                            <Button Content="Delete" 
+                              Click="Delete_click" 
+                              CommandParameter="{Binding Id}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:volunteer="clr-namespace:PL.Vol"
         xmlns:call="clr-namespace:PL.Call"
         xmlns:converters="clr-namespace:PL.Converters"
@@ -16,6 +17,8 @@
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
         <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
+        <converters:CallInTreateToIsEnabledConverter x:Key="CallInTreateToIsEnabled"/>
     </Window.Resources>
 
     <Grid Height="540" Width="877">
@@ -181,7 +184,17 @@
         <Label Content="Is Active:" Grid.Row="12" Grid.Column="0"/>
         <CheckBox Grid.Row="12" Grid.Column="1"
           IsChecked="{Binding CurrentVolunteer.Active, ValidatesOnExceptions=True, NotifyOnValidationError=True, Mode=TwoWay}"
-          Style="{StaticResource InputStyle}" />
+          Style="{StaticResource InputStyle}">
+            <CheckBox.ToolTip>
+                <TextBlock Text="Cannot deactivate volunteer while treating a call"
+                   Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}"/>
+            </CheckBox.ToolTip>
+            <CheckBox.IsEnabled>
+                <MultiBinding Converter="{StaticResource CallInTreateToIsEnabled}">
+                    <Binding Path="CurrentVolunteer.CallInTreate"/>
+                </MultiBinding>
+            </CheckBox.IsEnabled>
+        </CheckBox>
 
         <!-- TypeOfCall -->
         <Label Content="Type Of Call:" Grid.Row="13" Grid.Column="0"/>
@@ -263,8 +276,9 @@
         Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
 
         <!-- כפתור מחיקה -->
-        <!--<Button Content="Delete" Click="Delete_click" 
-        Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>-->
+        <Button Content="Delete" Click="Delete_click" Grid.Row="13" Grid.Column="3"
+        Margin="55,23,0,-28" HorizontalAlignment="Left" Width="150" CommandParameter="{Binding CurrentVolunteer.Id}"
+        Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}" Grid.RowSpan="3"/>
 
 
 

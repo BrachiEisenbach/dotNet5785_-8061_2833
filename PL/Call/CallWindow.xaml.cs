@@ -43,19 +43,6 @@ namespace PL.Call
             DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
 
-        //public ObservableCollection<CallAssignInList> AssignmentsHistory
-        //{
-        //    get => (ObservableCollection<CallAssignInList>)GetValue(AssignmentsHistoryProperty);
-        //    set => SetValue(AssignmentsHistoryProperty, value);
-        //}
-
-        //public static readonly DependencyProperty AssignmentsHistoryProperty =
-        //    DependencyProperty.Register(nameof(AssignmentsHistory),
-        //        typeof(ObservableCollection<CallAssignInList>),
-        //        typeof(CallWindow),
-        //        new PropertyMetadata(new ObservableCollection<CallAssignInList>()));
-
-
         public bool IsUpdateMode
         {
             get => (bool)GetValue(IsUpdateModeProperty);
@@ -68,11 +55,10 @@ namespace PL.Call
         public CallWindow(int id)
         {
 
-            IsUpdateMode = id != 0; // כאן נשתמש בזה בבינדינג ל-IsReadOnly
+            IsUpdateMode = id != 0; 
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;
-            //AssignmentsHistory = new ObservableCollection<CallAssignInList>(GetAllAssignmentsForCall(CurrentCall.Id));
             if (id != 0)
             {
                 CurrentCall = s_bl.Call.GetCallDetails(id);

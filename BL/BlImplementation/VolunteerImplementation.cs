@@ -83,6 +83,11 @@ namespace BlImplementation
                 throw new BO.BlUnauthorizedException("Only an admin or the volunteer themselves can update the details.");
             }
 
+            if (!boVolunteer.Active && boVolunteer.CallInTreate != null)
+            {
+                throw new BO.BlUnauthorizedException("Cannot deactivate a volunteer who is currently assigned to a call.");
+            }
+
             Tools.ValidateVolunteerFormat(boVolunteer);
             Tools.ValidateVolunteerLogic(boVolunteer);
 

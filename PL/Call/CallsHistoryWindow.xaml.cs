@@ -101,7 +101,7 @@ namespace PL.Call
 
         private void Window_Closed(object sender, EventArgs e)
         => s_bl.Call.RemoveObserver(closedCallListObserver);
-
+        //לוודא שה TYPE מתעדכן
         private void queryClosedCallList()
         {
             BO.TYPEOFCALL? filteredType = type == BO.TYPEOFCALL.NONE ? null : type;

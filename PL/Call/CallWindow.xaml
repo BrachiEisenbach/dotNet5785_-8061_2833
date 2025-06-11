@@ -53,34 +53,13 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!--//                    public int Id { get; init; }
-                    //public TYPEOFCALL TypeOfCall { get; init; }
-                    //public string? VerbalDescription { get; init; }
-                    //public string FullAddress { get; init; }
-                    //public double? Latitude { get; set; }
-                    //public double? Longitude { get; set; }
-                    //public DateTime OpenTime { get; init; }
-                    //public DateTime? MaxTimeToFinish { get; init; }
-                    //public STATUS Status { get; set; }
-
-                    //public List
-        <BO.CallAssignInList>? listOfCallAssign { get; set; }
-
-                    //                    public int? VolunteerId { get; init; }
-                    //public string? VolunteerName { get; init; }
-                    //public DateTime EntryTimeForTreatment { get; init; }
-                    //public DateTime? EndTimeOfTreatment { get; init; }
-                    //public FINISHTYPE? TypeOfTreatment { get; init; }-->
-
-
-
         <!-- ID -->
-        <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
+        <Label Content="Id:" Grid.Row="0" Grid.Column="0" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
         <TextBox Text="{Binding CurrentCall.Id, Mode=TwoWay}" 
          Grid.Row="0" Grid.Column="1" 
          Style="{StaticResource InputStyle}" 
          IsReadOnly="{Binding IsUpdateMode}"
-       Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
+         Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
 
 
         <!-- TypeOfCall -->
@@ -105,42 +84,66 @@
             </TextBox.Text>
         </TextBox>
 
-        <!-- OpenTime -->
-        <Label Content="Open Time:" Grid.Row="4" Grid.Column="0"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}">
-            <TextBox.Text>
-                <Binding Path="CurrentCall.OpenTime" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
-            </TextBox.Text>
-        </TextBox>
-
-
         <!-- MaxTimeToFinish -->
-        <Label Content="Max Time To Finish:" Grid.Row="5" Grid.Column="0"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}">
+        <Label Content="Max Time To Finish:" Grid.Row="4" Grid.Column="0"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
                 <Binding Path="CurrentCall.MaxTimeToFinish" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
             </TextBox.Text>
         </TextBox>
 
-        <!-- Status -->
-        <Label Content="Status:" Grid.Row="7" Grid.Column="0"/>
+            <!-- OpenTime -->
+        <Label Content="Open Time:"
+       Grid.Row="5"
+       Grid.Column="0"
+       Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
+        <TextBox Grid.Row="5"
+         Grid.Column="1"
+         Style="{StaticResource InputStyle}"
+         Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}">
+                <TextBox.Text>
+                    <Binding Path="CurrentCall.OpenTime"
+                 Mode="TwoWay"
+                 ValidatesOnExceptions="True"
+                 NotifyOnValidationError="True"
+                 UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Status -->
+        <Label Content="Status:" Grid.Row="7" Grid.Column="0" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
+
         <ComboBox ItemsSource="{Binding Source= {StaticResource StatusCollectionKey}}"
           SelectedValue="{Binding CurrentCall.Status, Mode=TwoWay}" 
-          Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}"/>
+          Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}"
+          Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
 
 
         <!-- CallAssignInList Labels & Fields -->
-        <Label Content="Call Assign In List:" Grid.Column="2" Grid.ColumnSpan="2" Margin="132,0,0,0" HorizontalAlignment="Left"/>
+        <!-- Label -->
+        <Label Content="Call Assign In List:"
+       Grid.Column="2"
+       Grid.ColumnSpan="2"
+       Margin="132,0,0,0"
+       HorizontalAlignment="Left"
+       Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
 
-        <DataGrid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="5"
+        <!-- DataGrid - כל הטבלה תוסתר/תוצג לפי IsUpdateMode -->
+        <DataGrid Grid.Row="1"
+          Grid.Column="2"
+          Grid.ColumnSpan="2"
+          Grid.RowSpan="5"
           ItemsSource="{Binding CurrentCall.listOfCallAssign}"
-          AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,9,5">
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          Margin="5,5,9,5"
+          Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding VolunteerName}" />
-                <DataGridTextColumn Header="Entry Time" Binding="{Binding EntryTimeForTreatment}" />
-                <DataGridTextColumn Header="End Time" Binding="{Binding EndTimeOfTreatment}" />
-                <DataGridTextColumn Header="Type Of Treatment" Binding="{Binding TypeOfTreatment}" />
+                <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding VolunteerName}"/>
+                <DataGridTextColumn Header="Entry Time" Binding="{Binding EntryTimeForTreatment}"/>
+                <DataGridTextColumn Header="End Time" Binding="{Binding EndTimeOfTreatment}"/>
+                <DataGridTextColumn Header="Type Of Treatment" Binding="{Binding TypeOfTreatment}"/>
             </DataGrid.Columns>
         </DataGrid>
 

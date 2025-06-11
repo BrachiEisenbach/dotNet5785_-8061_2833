@@ -172,6 +172,25 @@ namespace PL.Vol
                 }
             }
         }
+        private void Delete_click(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
+            {
+                try
+                {
+                    var result = MessageBox.Show("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
+                        this.Close(); // סגירת החלון
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot delete volunteer: " + ex.Message);
+                }
+            }
+        }
 
 
         protected override void OnClosed(EventArgs e)

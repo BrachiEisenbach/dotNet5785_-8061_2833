@@ -43,7 +43,7 @@ namespace PL.Vol
 
 
         public static readonly DependencyProperty TypeProperty =
-         DependencyProperty.Register("Type", typeof(BO.TYPEOFCALL), typeof(VolunteerListWindow),
+         DependencyProperty.Register(nameof(Type), typeof(BO.TYPEOFCALL), typeof(VolunteerListWindow),
          new PropertyMetadata(BO.TYPEOFCALL.NONE, OnSelectedCallTypeChanged));
 
         public BO.TYPEOFCALL Type
@@ -51,7 +51,8 @@ namespace PL.Vol
             get { return (BO.TYPEOFCALL)GetValue(TypeProperty); }
             set { SetValue(TypeProperty, value); }
         }
-        public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
+
+        private BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
 
         private void queryVolunteerList()
         {
@@ -88,14 +89,11 @@ namespace PL.Vol
         }
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null && button.Tag != null)
+            if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
             {
-                int volunteerId = (int)button.Tag;
                 try
                 {
-                    MessageBoxResult result = MessageBox.Show
-                        ("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
+                    var result = MessageBox.Show("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
                         s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
