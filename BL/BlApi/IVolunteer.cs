@@ -16,6 +16,5 @@ namespace BlApi
         public void UpdateVolunteerDetails(int id, BO.Volunteer boVolunteer);
         public void DeleteVolunteerDetails(int id);
         public void AddVolunteer(BO.Volunteer boVolunteer);
-
     }
 }

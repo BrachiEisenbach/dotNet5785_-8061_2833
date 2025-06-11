@@ -29,7 +29,7 @@
                       ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
                       VerticalAlignment="Center"
                       Grid.Column="1"
-                      SelectedValue="{Binding Path= type, Mode=TwoWay}"
+                      SelectedValue="{Binding Type, ElementName=windowName, Mode=TwoWay}"
                       SelectedValuePath="."
                       SelectionChanged="ComboBox_SelectionChanged"/>
         </Grid>

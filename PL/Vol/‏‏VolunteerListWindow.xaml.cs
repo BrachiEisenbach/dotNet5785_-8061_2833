@@ -1,4 +1,5 @@
-﻿using PL.Vol;
+﻿using PL.Call;
+using PL.Vol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,14 +41,33 @@ namespace PL.Vol
         public static readonly DependencyProperty VolunteerListProperty =
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
+
+        public static readonly DependencyProperty TypeProperty =
+         DependencyProperty.Register("Type", typeof(BO.TYPEOFCALL), typeof(VolunteerListWindow),
+         new PropertyMetadata(BO.TYPEOFCALL.NONE, OnSelectedCallTypeChanged));
+
+        public BO.TYPEOFCALL Type
+        {
+            get { return (BO.TYPEOFCALL)GetValue(TypeProperty); }
+            set { SetValue(TypeProperty, value); }
+        }
         public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
 
         private void queryVolunteerList()
-            => VolunteerList = (type == BO.TYPEOFCALL.NONE)
-                ? s_bl?.Volunteer.GetVolunteerInList(null, null)!
-                : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
-                    .Where(v => v.TypeOfCall == type)!;
-
+        {
+            try
+            {
+                VolunteerList = (Type == BO.TYPEOFCALL.NONE)
+                            ? s_bl?.Volunteer.GetVolunteerInList(null, null)!
+                            : s_bl?.Volunteer.GetVolunteerInList(null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
+                                  .Where(v => v.TypeOfCall == Type)!;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load volunteer list: " + ex.Message);
+                VolunteerList = Enumerable.Empty<BO.VolunteerInList>();
+            }
+        }
         private void volunteerListObserver()
         => queryVolunteerList();
 
@@ -58,20 +78,14 @@ namespace PL.Vol
         => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
 
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private static void OnSelectedCallTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
-            //אסור לגשת לתכונות של sender שמגיע כפרמטר במתודות טיפול באירועים, גם לא לאחר המרה לטיפוס המתאים
-            // -אלא יש תמיד להתבסס על DataBinding  
-            //לתקןןןןןןן
-            var comboBox = sender as ComboBox;
-            if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
+            var control = d as VolunteerListWindow;
+            if (control != null)
             {
-                type = selectedType; // עדכון ה-type כאן
-                queryVolunteerList(); // קריאה לעדכון הרשימה
+                control.queryVolunteerList();
             }
         }
-
         private void Delete_click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -90,22 +104,35 @@ namespace PL.Vol
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
-
+                    MessageBox.Show("Cannot delete volunteer: " + ex.Message);
                 }
             }
         }
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
-            new VolunteerWindow(0).Show();
+            try
+            {
+                new VolunteerWindow(0).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to open new volunteer window: " + ex.Message);
+            }
         }
 
         private void dgVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectesVolunteer != null)
+            try
             {
-                new VolunteerWindow(SelectesVolunteer.Id).Show();
+                if (SelectesVolunteer != null)
+                {
+                    new VolunteerWindow(SelectesVolunteer.Id).Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to open volunteer window: " + ex.Message);
             }
         }
     }

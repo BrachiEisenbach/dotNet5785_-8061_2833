@@ -48,7 +48,7 @@ namespace PL.Call
       => CallList = (type == BO.TYPEOFCALL.NONE)
         ? s_bl?.Call.GetCallList(null, null, null)!
         : s_bl?.Call.GetCallList(type, null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
-            .Where(v => v.TypeOfCall == type);
+            .Where(v => v.TypeOfCall == type)!;
 
 
         //סינון לפי סטטוס קריאה
