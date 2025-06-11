@@ -61,27 +61,34 @@ namespace PL.Call
         // ----------------- לחיצה כפולה על קריאה -----------------
         private void dgCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            try { 
             if (SelectedCall != null)
                 new CallWindow(SelectedCall.Id).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to open new volunteer window: " + ex.Message);
+            }
+
         }
 
         // ----------------- מחיקת קריאה -----------------
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is int callId)
+            if (e.OriginalSource is Button button && button.CommandParameter is int CallId)
             {
-                var result = MessageBox.Show("Are you sure you want to delete call?", "Confirm Delete", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
+                try
                 {
-                    try
+                    var result = MessageBox.Show("Are you sure you want to delete call?", "Confirm Delete", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.DeleteCall(callId);
+                        s_bl.Call.DeleteCall(CallId);
                         queryCallList();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot delete volunteer: " + ex.Message);
                 }
             }
         }
@@ -99,14 +106,20 @@ namespace PL.Call
         }
 
         // ----------------- פתיחת קריאה חדשה -----------------
-        private void btnAddVolunteer(object sender, RoutedEventArgs e)
+        private void btnAddCall(object sender, RoutedEventArgs e)
         {
             new CallWindow(0).Show();
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
+        private void CallListObserver()
+          => queryCallList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        => s_bl.Call.AddObserver(CallListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+        => s_bl.Volunteer.RemoveObserver(CallListObserver);
+
     }
 }

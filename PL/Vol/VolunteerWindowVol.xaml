@@ -6,34 +6,34 @@
         xmlns:local="clr-namespace:PL.Vol"
         mc:Ignorable="d"
         Title="VolunteerWindowVol" Height="450" Width="800">
-    <!--<Grid Margin="10">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            --><!-- פרטי מתנדב --><!--
+             <!--פרטי מתנדב--> 
             <RowDefinition Height="*"/>
-            --><!-- פרטי קריאה + מפה --><!--
+             <!--פרטי קריאה + מפה--> 
             <RowDefinition Height="Auto"/>
-            --><!-- כפתורים --><!--
+             <!--כפתורים--> 
         </Grid.RowDefinitions>
 
-        --><!-- פרטי מתנדב --><!--
+         <!--פרטי מתנדב--> 
         <GroupBox Header="פרטי מתנדב" Margin="0,0,0,10">
             <StackPanel Margin="10">
-                <TextBox PlaceholderText="שם פרטי"/>
-                <TextBox PlaceholderText="שם משפחה"/>
-                <TextBox PlaceholderText="כתובת נוכחית"/>
-                <TextBox PlaceholderText="טלפון"/>
+                <TextBox/>
+                <TextBox Text="שם משפחה"/>
+                <TextBox Text="כתובת נוכחית"/>
+                <TextBox Text="טלפון"/>
                 <ComboBox>
-                    <ComboBoxItem Content="מרחק בק""/>
+                    <ComboBoxItem Content="מרחק בק"/>
                     <ComboBoxItem Content="מרחק בדקות"/>
                 </ComboBox>
-                <TextBox PlaceholderText="מרחק מקסימלי"/>
-                <CheckBox Content="אני פעיל"/>
+                <TextBox Text="MAX distance"/>
+                <CheckBox Content="active"/>
                 <Button Content="עדכון פרטים"/>
             </StackPanel>
         </GroupBox>
 
-        --><!-- פרטי קריאה + מפה --><!--
+         <!--פרטי קריאה + מפה--> 
         <Grid Grid.Row="1" Margin="0,10,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -49,17 +49,17 @@
                         </GroupBox>
 
                         <GroupBox Header="מפה" Grid.Column="1" Margin="5">
-                            --><!-- פה ניתן לשלב פקד מפה או סימולציה --><!--
+                             <!--פה ניתן לשלב פקד מפה או סימולציה--> 
                             <Canvas Background="LightGray"/>
                         </GroupBox>
     </Grid>
 
-    --><!-- כפתורים --><!--
-    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Spacing="10">
-        <Button Content="בחירת קריאה"/>
-        <Button Content="סיום טיפול"/>
-        <Button Content="ביטול טיפול"/>
-        <Button Content="היסטוריית קריאות"/>
+     <!--כפתורים--> 
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" >
+        <Button Content="choose call"/>
+        <Button Content="ent treat"/>
+        <Button Content="cancel treat"/>
+        <Button Content="calls history"/>
     </StackPanel>
-    </Grid>-->
+    </Grid>
 </Window>

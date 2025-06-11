@@ -345,21 +345,21 @@ public static class Initialization
 };
         // Array of timestamps representing the expected completion time of each call
         DateTime[] MaxTimeToFinishOfCalls ={
-    new DateTime(2023, 12, 31, 04, 45, 12),  // +5 hours
-    new DateTime(2023, 11, 22, 19, 35, 10),  // +5 hours
-    new DateTime(2023, 10, 15, 15, 25, 45),  // +5 hours
-    new DateTime(2023, 12, 05, 13, 18, 30),  // +5 hours
-    new DateTime(2023, 09, 18, 00, 55, 50),  // +5 hours
-    new DateTime(2023, 12, 03, 18, 30, 05),  // +5 hours
-    new DateTime(2023, 08, 10, 12, 05, 40),  // +5 hours
-    new DateTime(2024, 01, 23, 21, 42, 33),  // +5 hours
-    new DateTime(2023, 11, 09, 14, 50, 25),  // +5 hours
-    new DateTime(2023, 07, 22, 01, 13, 18),  // +5 hours
-    new DateTime(2024, 02, 14, 11, 11, 03),  // +5 hours
-    new DateTime(2023, 09, 29, 23, 22, 48),  // +5 hours
-    new DateTime(2024, 03, 05, 04, 10, 32),  // +5 hours
-    new DateTime(2023, 11, 11, 07, 35, 22),  // +5 hours
-    new DateTime(2023, 12, 16, 19, 50, 05),  // +5 hours
+    new DateTime(2026, 12, 31, 04, 45, 12),  // +5 hours
+    new DateTime(2026, 11, 22, 19, 35, 10),  // +5 hours
+    new DateTime(2026, 10, 15, 15, 25, 45),  // +5 hours
+    new DateTime(2026, 12, 05, 13, 18, 30),  // +5 hours
+    new DateTime(2026, 09, 18, 00, 55, 50),  // +5 hours
+    new DateTime(2026, 12, 03, 18, 30, 05),  // +5 hours
+    new DateTime(2026, 08, 10, 12, 05, 40),  // +5 hours
+    new DateTime(2026, 01, 23, 21, 42, 33),  // +5 hours
+    new DateTime(2026, 11, 09, 14, 50, 25),  // +5 hours
+    new DateTime(2026, 07, 22, 01, 13, 18),  // +5 hours
+    new DateTime(2026, 02, 14, 11, 11, 03),  // +5 hours
+    new DateTime(2026, 09, 29, 23, 22, 48),  // +5 hours
+    new DateTime(2026, 03, 05, 04, 10, 32),  // +5 hours
+    new DateTime(2026, 11, 11, 07, 35, 22),  // +5 hours
+    new DateTime(2026, 12, 16, 19, 50, 05),  // +5 hours
     new DateTime(2024, 01, 02, 16, 17, 03),  // +5 hours
     new DateTime(2023, 10, 01, 02, 05, 59),  // +5 hours
     new DateTime(2023, 12, 24, 15, 30, 35),  // +5 hours
@@ -426,12 +426,12 @@ public static class Initialization
         List<Volunteer> VolunteerIds = (List<Volunteer?>)s_dal!.Volunteer.ReadAll().ToList();
         // Array of predefined treatment statuses for each assignment
         TYPEOFTREATMENT[] treatmentStatuses ={
-    TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
-    TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
-    TYPEOFTREATMENT.SELFCANCELLATION,
-    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
-    TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
+    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.TREATE,
     TYPEOFTREATMENT.SELFCANCELLATION,
     TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
@@ -531,56 +531,56 @@ public static class Initialization
 };
         // Array of end times for treatment assignments
         DateTime[] ArrayOfEndTimeOfTreatment ={
-    new DateTime(2024, 01, 01, 01, 55, 12),
-    new DateTime(2023, 11, 22, 20, 25, 10),
-    new DateTime(2023, 10, 15, 16, 25, 45),
-    new DateTime(2023, 12, 05, 14, 35, 30),
-    new DateTime(2023, 09, 18, 01, 35, 50),
-    new DateTime(2023, 12, 03, 19, 30, 05),
-    new DateTime(2023, 08, 10, 13, 25, 40),
-    new DateTime(2024, 01, 23, 22, 10, 33),
-    new DateTime(2023, 11, 09, 15, 10, 25),
-    new DateTime(2023, 07, 22, 02, 00, 18),
-    new DateTime(2024, 02, 14, 11, 45, 03),
-    new DateTime(2023, 09, 29, 23, 52, 48),
-    new DateTime(2024, 03, 05, 04, 45, 32),
-    new DateTime(2023, 11, 11, 07, 55, 22),
-    new DateTime(2023, 12, 16, 20, 30, 05),
-    new DateTime(2024, 01, 02, 17, 10, 03),
-    new DateTime(2023, 10, 01, 03, 55, 59),
-    new DateTime(2023, 12, 24, 15, 55, 35),
-    new DateTime(2024, 01, 17, 10, 05, 47),
-    new DateTime(2023, 07, 19, 19, 30, 25),
-    new DateTime(2023, 09, 27, 13, 40, 55),
-    new DateTime(2024, 02, 11, 21, 15, 42),
-    new DateTime(2023, 11, 14, 17, 42, 20),
-    new DateTime(2023, 08, 25, 03, 46, 04),
-    new DateTime(2024, 03, 20, 06, 50, 50),
-    new DateTime(2023, 10, 12, 09, 58, 12),
-    new DateTime(2023, 09, 17, 00, 57, 01),
-    new DateTime(2023, 12, 21, 22, 35, 44),
-    new DateTime(2023, 07, 15, 16, 48, 22),
-    new DateTime(2024, 01, 30, 08, 55, 59),
-    new DateTime(2023, 11, 05, 22, 30, 35),
-    new DateTime(2023, 10, 18, 17, 40, 19),
-    new DateTime(2023, 09, 23, 19, 25, 05),
-    new DateTime(2024, 01, 13, 15, 05, 37),
-    new DateTime(2023, 08, 18, 23, 55, 21),
-    new DateTime(2024, 02, 01, 04, 30, 50),
-    new DateTime(2023, 11, 30, 12, 15, 33),
-    new DateTime(2023, 07, 08, 01, 38, 15),
-    new DateTime(2023, 09, 12, 09, 52, 40),
-    new DateTime(2024, 03, 11, 07, 35, 10),
-    new DateTime(2023, 10, 20, 04, 05, 42),
-    new DateTime(2023, 08, 12, 12, 30, 02),
-    new DateTime(2023, 12, 13, 16, 55, 55),
-    new DateTime(2023, 11, 17, 08, 30, 49),
-    new DateTime(2024, 01, 25, 14, 20, 27),
-    new DateTime(2023, 09, 30, 15, 45, 15),
-    new DateTime(2023, 08, 30, 02, 55, 18),
-    new DateTime(2024, 03, 07, 23, 00, 28),
-    new DateTime(2023, 07, 05, 17, 32, 12),
-    new DateTime(2023, 12, 08, 22, 50, 23) };
+    new DateTime(2026, 01, 01, 01, 55, 12),
+    new DateTime(2026, 11, 22, 20, 25, 10),
+    new DateTime(2026, 10, 15, 16, 25, 45),
+    new DateTime(2026, 12, 05, 14, 35, 30),
+    new DateTime(2026, 09, 18, 01, 35, 50),
+    new DateTime(2026, 12, 03, 19, 30, 05),
+    new DateTime(2026, 08, 10, 13, 25, 40),
+    new DateTime(2026, 01, 23, 22, 10, 33),
+    new DateTime(2026, 11, 09, 15, 10, 25),
+    new DateTime(2026, 07, 22, 02, 00, 18),
+    new DateTime(2026, 02, 14, 11, 45, 03),
+    new DateTime(2026, 09, 29, 23, 52, 48),
+    new DateTime(2026, 03, 05, 04, 45, 32),
+    new DateTime(2026, 11, 11, 07, 55, 22),
+    new DateTime(2026, 12, 16, 20, 30, 05),
+    new DateTime(2026, 01, 02, 17, 10, 03),
+    new DateTime(2026, 10, 01, 03, 55, 59),
+    new DateTime(2026, 12, 24, 15, 55, 35),
+    new DateTime(2026, 01, 17, 10, 05, 47),
+    new DateTime(2026, 07, 19, 19, 30, 25),
+    new DateTime(2026, 09, 27, 13, 40, 55),
+    new DateTime(2026, 02, 11, 21, 15, 42),
+    new DateTime(2026, 11, 14, 17, 42, 20), 
+    new DateTime(2026, 08, 25, 03, 46, 04),
+    new DateTime(2026, 03, 20, 06, 50, 50),
+    new DateTime(2026, 10, 12, 09, 58, 12),
+    new DateTime(2026, 09, 17, 00, 57, 01),
+    new DateTime(2026, 12, 21, 22, 35, 44),
+    new DateTime(2026, 07, 15, 16, 48, 22),
+    new DateTime(2026, 01, 30, 08, 55, 59),
+    new DateTime(2026, 11, 05, 22, 30, 35),
+    new DateTime(2026, 10, 18, 17, 40, 19),
+    new DateTime(2026, 09, 23, 19, 25, 05),
+    new DateTime(2026, 01, 13, 15, 05, 37),
+    new DateTime(2026, 08, 18, 23, 55, 21),
+    new DateTime(2026, 02, 01, 04, 30, 50),
+    new DateTime(2026, 11, 30, 12, 15, 33),
+    new DateTime(2026, 07, 08, 01, 38, 15),
+    new DateTime(2026, 09, 12, 09, 52, 40),
+    new DateTime(2026, 03, 11, 07, 35, 10),
+    new DateTime(2026, 10, 20, 04, 05, 42),
+    new DateTime(2026, 08, 12, 12, 30, 02),
+    new DateTime(2026, 12, 13, 16, 55, 55),
+    new DateTime(2026, 11, 17, 08, 30, 49),
+    new DateTime(2026, 01, 25, 14, 20, 27),
+    new DateTime(2026, 09, 30, 15, 45, 15),
+    new DateTime(2026, 08, 30, 02, 55, 18),
+    new DateTime(2026, 03, 07, 23, 00, 28),
+    new DateTime(2026, 07, 05, 17, 32, 12),
+    new DateTime(2026, 12, 08, 22, 50, 23) };
 
         int i = 0;
         // Iterate through the list of call records to create new assignments

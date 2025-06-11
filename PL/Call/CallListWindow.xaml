@@ -26,15 +26,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
-            <!--ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}"-->
 
             <ComboBox 
                       ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
                       VerticalAlignment="Center"
                       Grid.Column="1"
-                      SelectedValue="{Binding Path= type, Mode=TwoWay}"
-                      SelectedValuePath="."
-                      SelectionChanged="ComboBox_SelectionChanged"/>
+                      SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"                      
+                      SelectedValuePath="."/>
         </Grid>
         <DataGrid Grid.Row="1"
           Margin="10"
@@ -43,7 +41,7 @@
           AutoGenerateColumns="False"
           EnableRowVirtualization="True" 
           RowDetailsVisibilityMode="VisibleWhenSelected"
-          SelectedItem="{Binding yyy}"
+          SelectedItem="{Binding SelectedCall}"
           MouseDoubleClick="dgCallList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto">
@@ -68,12 +66,12 @@
                                 <!-- כפתור מחיקה קיים -->
                                 <Button Content="Delete"
                                  Click="Delete_click"
-                                 Tag="{Binding CallId}" 
+                                 CommandParameter="{Binding CallId}"
                                  Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}"/>
-                                       
-                                 
-                                         <!-- כפתור ביטול הקצאה -->
-                                         <Button Content="בטל הקצאה"
+
+
+                                <!-- כפתור ביטול הקצאה -->
+                                <Button Content="בטל הקצאה"
                                  Click="CancelAssignment_Click"
                                  Tag="{Binding CallId}"
                                  Margin="5,0,0,0"
@@ -92,7 +90,7 @@
                 Width="100"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Click="btnAddVolunteer"/>
+                Click="btnAddCall"/>
 
     </Grid>
 </Window>
