@@ -1,4 +1,5 @@
 ﻿
+using PL.Vol;
 using System.Windows;
 
 namespace PL
@@ -60,7 +61,7 @@ namespace PL
                 }
                 else if (result == MessageBoxResult.No)
                 {
-                    UserWindow userWindow = new UserWindow(); 
+                    VolunteerWindowVol userWindow = new Vol.VolunteerWindowVol(); 
                     userWindow.Show();
                 }
                 // אם Cancel - לא עושים כלום
@@ -68,7 +69,7 @@ namespace PL
 
             else if (role == BO.ROLE.VOLUNTEER)
             {
-                UserWindow userWindow = new UserWindow(); // תמיד נפתח חדש
+                VolunteerWindowVol userWindow = new VolunteerWindowVol(); // תמיד נפתח חדש
                 userWindow.Show();
             }
             else
