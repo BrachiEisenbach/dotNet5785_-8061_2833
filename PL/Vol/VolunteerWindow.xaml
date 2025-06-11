@@ -6,12 +6,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:volunteer="clr-namespace:PL.Vol"
+        xmlns:call="clr-namespace:PL.Call"
+        xmlns:converters="clr-namespace:PL.Converters"
         xmlns:validation="clr-namespace:PL.Validation"
         xmlns:pl="clr-namespace:PL"
          mc:Ignorable="d">
 
     <Window.Resources>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
+        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
+
     <Grid Height="540" Width="877">
         <Grid.Resources>
             <Style TargetType="Label">
@@ -255,6 +261,12 @@
         <Button Grid.Row="13" Grid.Column="2"
         Margin="35,23,0,-28" HorizontalAlignment="Left" Width="150"
         Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+
+        <!-- כפתור מחיקה -->
+        <!--<Button Content="Delete" Click="Delete_click" 
+        Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>-->
+
+
 
     </Grid>
 </Window>
