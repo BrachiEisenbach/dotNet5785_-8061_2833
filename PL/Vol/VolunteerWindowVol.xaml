@@ -29,7 +29,7 @@
                 </ComboBox>
                 <TextBox Text="MAX distance"/>
                 <CheckBox Content="active"/>
-                <Button Content="עדכון פרטים"/>
+                <Button Content="update detailes"/>
             </StackPanel>
         </GroupBox>
 
