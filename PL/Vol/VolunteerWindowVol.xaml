@@ -1,0 +1,65 @@
+﻿<Window x:Class="PL.Vol.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Vol"
+        mc:Ignorable="d"
+        Title="Window1" Height="450" Width="800">
+    <!--<Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            --><!-- פרטי מתנדב --><!--
+            <RowDefinition Height="*"/>
+            --><!-- פרטי קריאה + מפה --><!--
+            <RowDefinition Height="Auto"/>
+            --><!-- כפתורים --><!--
+        </Grid.RowDefinitions>
+
+        --><!-- פרטי מתנדב --><!--
+        <GroupBox Header="פרטי מתנדב" Margin="0,0,0,10">
+            <StackPanel Margin="10">
+                <TextBox PlaceholderText="שם פרטי"/>
+                <TextBox PlaceholderText="שם משפחה"/>
+                <TextBox PlaceholderText="כתובת נוכחית"/>
+                <TextBox PlaceholderText="טלפון"/>
+                <ComboBox>
+                    <ComboBoxItem Content="מרחק בק""/>
+                    <ComboBoxItem Content="מרחק בדקות"/>
+                </ComboBox>
+                <TextBox PlaceholderText="מרחק מקסימלי"/>
+                <CheckBox Content="אני פעיל"/>
+                <Button Content="עדכון פרטים"/>
+            </StackPanel>
+        </GroupBox>
+
+        --><!-- פרטי קריאה + מפה --><!--
+        <Grid Grid.Row="1" Margin="0,10,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="פרטי קריאה בטיפול" Margin="5">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="כתובת הקריאה"/>
+                                <TextBlock Text="מרחק מהמתנדב"/>
+                                <TextBlock Text="סטטוס הקריאה"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="מפה" Grid.Column="1" Margin="5">
+                            --><!-- פה ניתן לשלב פקד מפה או סימולציה --><!--
+                            <Canvas Background="LightGray"/>
+                        </GroupBox>
+    </Grid>
+
+    --><!-- כפתורים --><!--
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Spacing="10">
+        <Button Content="בחירת קריאה"/>
+        <Button Content="סיום טיפול"/>
+        <Button Content="ביטול טיפול"/>
+        <Button Content="היסטוריית קריאות"/>
+    </StackPanel>
+    </Grid>-->
+</Window>

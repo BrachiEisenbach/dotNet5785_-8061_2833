@@ -9,7 +9,7 @@
         Title="CallListWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Window.Resources>
-        <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
         <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
@@ -29,12 +29,11 @@
             <!--ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}"-->
 
             <ComboBox 
-                      ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      SelectedValue="{Binding Type, ElementName=windowName, Mode=TwoWay}"
-                      SelectedValuePath="."
-                      SelectionChanged="ComboBox_SelectionChanged"/>
+             ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+             VerticalAlignment="Center"
+             Grid.Column="1"
+             SelectedValue="{Binding Type, Mode=TwoWay}"
+             SelectedValuePath="."/>
         </Grid>
         <DataGrid Grid.Row="1"
           Margin="10"

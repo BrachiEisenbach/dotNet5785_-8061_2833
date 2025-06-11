@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Vol"
+        xmlns:converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
         Title="VolunteerListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Window.Resources>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,9 +30,9 @@
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Center"
                       Grid.Column="1"
-                      SelectedValue="{Binding Path= volunteerTypeOfCall, Mode=TwoWay}"
+                      SelectedValue="{Binding Path= TypeProperty, Mode=TwoWay}"
                       SelectedValuePath="."
-                      SelectionChanged="ComboBox_SelectionChanged"/>
+                      />
         </Grid>
         <DataGrid Grid.Row="1"
           Margin="10"

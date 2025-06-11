@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL
+namespace PL.Vol
 {
     /// <summary>
-    /// Interaction logic for UesrWindow.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class UserWindow : Window
+    public partial class Window1 : Window
     {
-        public UserWindow()
+        public Window1()
         {
             InitializeComponent();
         }

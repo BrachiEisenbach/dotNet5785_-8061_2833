@@ -1,135 +1,111 @@
 ﻿using BO;
-using DO;
 using PL.Vol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Call
 {
-    /// <summary>
-    /// Interaction logic for CallListWindow.xaml
-    /// </summary>
     public partial class CallListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-
         public CallListWindow()
         {
             InitializeComponent();
+            queryCallList();
         }
 
+        // ----------- DP: CallList -------------
         public IEnumerable<BO.CallInList> CallList
         {
-            get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
-            set { SetValue(CallListProperty, value); }
+            get => (IEnumerable<BO.CallInList>)GetValue(CallListProperty);
+            set => SetValue(CallListProperty, value);
         }
 
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        //סינון לפי סוג קריאה
-        public BO.TYPEOFCALL type { get; set; } = BO.TYPEOFCALL.NONE;
-        public BO.CallInList? SelectedCall { get; set; }
-
-
-        private void queryCallList()
-      => CallList = (type == BO.TYPEOFCALL.NONE)
-        ? s_bl?.Call.GetCallList(null, null, null)!
-        : s_bl?.Call.GetCallList(type, null, BO.VOLUNTEERFIELDSORT.CALLTYPE)!
-            .Where(v => v.TypeOfCall == type)!;
-
-
-        //סינון לפי סטטוס קריאה
-        //public BO.STATUS status { get; set; } = BO.STATUS.none;
-
-
-        //private void queryCallList()
-        // => CallList = (status == BO.STATUS.none)
-        //? s_bl?.Call.GetCallList(null, null, null)!
-        //: s_bl?.Call.GetCallList(status, null, BO.TYPEOFCALL.FLATTIRE)!
-        //    .Where(c => c.Status == status);
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // ----------- DP: Type (ל־ComboBox) -------------
+        public BO.TYPEOFCALL Type
         {
-            //סינון לפי סוג קריאה
-
-            var comboBox = sender as ComboBox;
-            if (comboBox.SelectedValue is BO.TYPEOFCALL selectedType)
-            {
-                type = selectedType; // עדכון ה-type כאן
-                queryCallList(); // קריאה לעדכון הרשימה
-            }
-
-            //סינון לפי סטטוס קריאה
-            //var comboBox = sender as ComboBox;
-            //if (comboBox.SelectedValue is BO.STATUS selectedStatus)
-            //{
-            //    status = selectedStatus; // עדכון ה-type כאן
-            //    queryCallList(); // קריאה לעדכון הרשימה
-            //}
-
+            get => (BO.TYPEOFCALL)GetValue(TypeProperty);
+            set => SetValue(TypeProperty, value);
         }
 
+        public static readonly DependencyProperty TypeProperty =
+            DependencyProperty.Register("Type", typeof(BO.TYPEOFCALL), typeof(CallListWindow), new PropertyMetadata(BO.TYPEOFCALL.NONE, OnTypeChanged));
+
+        private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var window = d as CallListWindow;
+            window?.queryCallList();
+        }
+
+        public BO.CallInList? SelectedCall { get; set; }
+
+        // ----------------- שליפת קריאות -----------------
+        private void queryCallList()
+        {
+            if (Type == BO.TYPEOFCALL.NONE)
+                CallList = s_bl.Call.GetCallList(null, null, null);
+            else
+                CallList = s_bl.Call
+                    .GetCallList(Type, null, BO.VOLUNTEERFIELDSORT.CALLTYPE)
+                    .Where(v => v.TypeOfCall == Type);
+        }
+
+        // ----------------- לחיצה כפולה על קריאה -----------------
         private void dgCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedCall != null)
-            {
                 new CallWindow(SelectedCall.Id).Show();
-            }
-
         }
 
+        // ----------------- מחיקת קריאה -----------------
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null && button.Tag != null)
+            if (sender is Button button && button.Tag is int callId)
             {
-                int CallId = (int)button.Tag;
-                try
+                var result = MessageBox.Show("Are you sure you want to delete call?", "Confirm Delete", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult result = MessageBox.Show
-                        ("Are you sure you want to delete call?", "Confirm Delete", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
+                    try
                     {
-                        s_bl.Call.DeleteCall(CallId);
+                        s_bl.Call.DeleteCall(callId);
                         queryCallList();
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }
 
+        // ----------------- ביטול הקצאה (טרם ממומש) -----------------
         private void CancelAssignment_Click(object sender, RoutedEventArgs e)
         {
-            //אפשרי??????
-            //if (sender is Button btn && btn.Tag is int callId)
-            //{
-            //    // בצעי כאן את ביטול ההקצאה בלוגיקה שלך
-            //    MessageBox.Show($"ביטול הקצאה לקריאה {callId}");
-            //    s_bl.Call.(callId);    
-
-            //}
+            if (sender is Button button && button.Tag is int callId)
+            {
+                MessageBox.Show($"(TODO) ביטול הקצאה לקריאה {callId}");
+                // כאן תוכלי לממש את הביטול בפועל:
+                // s_bl.Call.CancelAssignment(callId);
+                queryCallList();
+            }
         }
 
+        // ----------------- פתיחת קריאה חדשה -----------------
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
             new CallWindow(0).Show();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
     }
