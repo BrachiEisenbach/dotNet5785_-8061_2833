@@ -4,13 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
+        xmlns:converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
         Title="CallListWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-    <!--<Window.Resources>
-        <local:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
-        <local:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibilityConverter"/>
-    </Window.Resources>-->
+    <Window.Resources>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
+        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -65,16 +68,16 @@
                                 <!-- כפתור מחיקה קיים -->
                                 <Button Content="Delete"
                                  Click="Delete_click"
-                                 Tag="{Binding CallId}" />
-                                 <!--Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"-->
+                                 Tag="{Binding CallId}" 
+                                 Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"/>
                                        
                                  
                                          <!-- כפתור ביטול הקצאה -->
                                          <Button Content="בטל הקצאה"
                                  Click="CancelAssignment_Click"
                                  Tag="{Binding CallId}"
-                                 Margin="5,0,0,0"/>
-                                 <!--Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibilityConverter}}"-->
+                                 Margin="5,0,0,0"
+                                 Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibilityConverter}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

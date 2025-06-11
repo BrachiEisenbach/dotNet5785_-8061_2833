@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Data;
 
 
-namespace PL.Call
+namespace PL.Converters
 {
     public class StatusToVisibilityConverter : IValueConverter
     {

@@ -5,11 +5,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:call="clr-namespace:PL.Call"
+        xmlns:converters="clr-namespace:PL.Converters"
         xmlns:validation="clr-namespace:PL.Validation"
         xmlns:pl="clr-namespace:PL"
          mc:Ignorable="d">
 
     <Window.Resources>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
+        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
     <Grid Height="540" Width="877" RenderTransformOrigin="0.503,0.54">
         <Grid.Resources>
@@ -75,7 +79,9 @@
         <TextBox Text="{Binding CurrentCall.Id, Mode=TwoWay}" 
          Grid.Row="0" Grid.Column="1" 
          Style="{StaticResource InputStyle}" 
-         IsReadOnly="{Binding IsUpdateMode}" />
+         IsReadOnly="{Binding IsUpdateMode}"
+       Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
+
 
         <!-- TypeOfCall -->
         <Label Content="Type Of Call:" Grid.Row="1" Grid.Column="0"/>
