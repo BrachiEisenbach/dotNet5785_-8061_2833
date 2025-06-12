@@ -109,6 +109,9 @@ namespace PL.Vol
             }
         }
 
-
+        private void btnHistory_click(object sender, RoutedEventArgs e)
+        {
+            new PL.Call.CallsHistoryWindow(CurrentVolunteer.Id).Show();
+        }
     }
 }

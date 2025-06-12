@@ -300,7 +300,7 @@
 
                 <Button Content="ent treat"/>
             <Button Content="cancel treat"/>
-        <Button Content="calls history"/>
+        <Button Content="calls history" Click="btnHistory_click"/>
     </StackPanel>
     </Grid>
     </Grid>
