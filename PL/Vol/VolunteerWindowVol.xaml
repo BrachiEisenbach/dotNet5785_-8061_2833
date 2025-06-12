@@ -5,61 +5,299 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Vol"
         mc:Ignorable="d"
-        Title="VolunteerWindowVol" Height="450" Width="800">
+        Title="VolunteerWindowVol" Height="450" Width="800"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:volunteer="clr-namespace:PL.Vol"
+        xmlns:call="clr-namespace:PL.Call"
+        xmlns:converters="clr-namespace:PL.Converters"
+        xmlns:validation="clr-namespace:PL.Validation">
+    <Window.Resources>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
+        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
+        <converters:CallInTreateToIsEnabledConverter x:Key="CallInTreateToIsEnabled"/>
+    </Window.Resources>
+
+
     <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-             <!--פרטי מתנדב--> 
-            <RowDefinition Height="*"/>
-             <!--פרטי קריאה + מפה--> 
-            <RowDefinition Height="Auto"/>
-             <!--כפתורים--> 
-        </Grid.RowDefinitions>
 
-         <!--פרטי מתנדב--> 
-        <GroupBox Header="פרטי מתנדב" Margin="0,0,0,10">
-            <StackPanel Margin="10">
-                <TextBox/>
-                <TextBox Text="שם משפחה"/>
-                <TextBox Text="כתובת נוכחית"/>
-                <TextBox Text="טלפון"/>
-                <ComboBox>
-                    <ComboBoxItem Content="מרחק בק"/>
-                    <ComboBoxItem Content="מרחק בדקות"/>
-                </ComboBox>
-                <TextBox Text="MAX distance"/>
-                <CheckBox Content="active"/>
-                <Button Content="update detailes"/>
+        <Grid Height="540" Width="877">
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Width" Value="150"/>
+                </Style>
+                <Style TargetType="Control" x:Key="InputStyle">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+            </Grid.Resources>
+
+
+
+            <Grid.RowDefinitions>
+                <!-- 16 שורות לפי מספר השדות -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            
+
+            <!-- ID -->
+            <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Text="{Binding CurrentVolunteer.Id, Mode=TwoWay}" 
+         Grid.Row="0" Grid.Column="1" 
+         Style="{StaticResource InputStyle}" 
+         IsReadOnly="{Binding IsUpdateMode}" />
+
+            <!-- FullName -->
+            <Label Content="Full Name:" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.FullName" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Phone -->
+            <Label Content="Phone:" Grid.Row="2" Grid.Column="0"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.Phone" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Email -->
+            <Label Content="Email:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.Email" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validation:EmailValidationRule></validation:EmailValidationRule>
+                        </Binding.ValidationRules>
+
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Password -->
+            <Label Content="Password:" Grid.Row="4" Grid.Column="0"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.Password" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- FullAddress -->
+            <Label Content="Full Address:" Grid.Row="5" Grid.Column="0"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Role -->
+            <Label Content="Role:" Grid.Row="6" Grid.Column="0"/>
+            <TextBox Text="{Binding CurrentVolunteer.Role, Mode=TwoWay}" 
+         Grid.Row="6" Grid.Column="1" 
+         Style="{StaticResource InputStyle}" 
+         IsReadOnly="{Binding IsUpdateMode}" />
+
+            <!-- MaxDistance -->
+            <Label Content="Max Distance:" Grid.Row="7" Grid.Column="0"/>
+            <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.MaxDistance" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validation:PositiveDoubleValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- TypeOfDistance -->
+            <Label Content="Type Of Distance:" Grid.Row="8" Grid.Column="0"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfDistanceCollectionKey}}"
+          SelectedValue="{Binding CurrentVolunteer.TypeOfDistance, Mode=TwoWay}"
+          Grid.Row="8" Grid.Column="1"
+          Style="{StaticResource InputStyle}"/>
+
+            <!-- AllCallsThatTreated -->
+            <Label Content="All Calls That Treated:" Grid.Row="9" Grid.Column="0"/>
+            <TextBox Grid.Row="9" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.AllCallsThatTreated" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validation:PositiveIntValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- AllCallsThatCanceled -->
+            <Label Content="All Calls That Canceled:" Grid.Row="10" Grid.Column="0"/>
+            <TextBox Grid.Row="10" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.AllCallsThatCanceled" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validation:PositiveIntValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- AllCallsThatHaveExpired -->
+            <Label Content="All Calls That Have Expired:" Grid.Row="11" Grid.Column="0"/>
+            <TextBox Grid.Row="11" Grid.Column="1" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.AllCallsThatHaveExpired" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validation:PositiveIntValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- Active -->
+            <Label Content="Is Active:" Grid.Row="12" Grid.Column="0"/>
+            <CheckBox Grid.Row="12" Grid.Column="1"
+          IsChecked="{Binding CurrentVolunteer.Active, ValidatesOnExceptions=True, NotifyOnValidationError=True, Mode=TwoWay}"
+          Style="{StaticResource InputStyle}">
+                <CheckBox.ToolTip>
+                    <TextBlock Text="Cannot deactivate volunteer while treating a call"
+                   Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}"/>
+                </CheckBox.ToolTip>
+                <CheckBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource CallInTreateToIsEnabled}">
+                        <Binding Path="CurrentVolunteer.CallInTreate"/>
+                    </MultiBinding>
+                </CheckBox.IsEnabled>.
+                
+            </CheckBox>
+            <StackPanel>
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource BoolToVisibility}">
+                        <Binding Path="CurrentCall" Converter="{StaticResource CallVisible}" />
+                        <Binding Path="CurrentCall.Status" Converter="{StaticResource NotExpiredVisibility}" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
+                <!-- TypeOfCall -->
+            <Label Content="Type Of Call:" Grid.Row="13" Grid.Column="0"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+          SelectedValue="{Binding CurrentVolunteer.TypeOfCall, Mode=TwoWay}" 
+          Grid.Row="13" Grid.Column="1" Style="{StaticResource InputStyle}"/>
+
+            <!-- CallInProgress Labels & Fields -->
+            <Label Content="Call In Progress:" Grid.Column="2" Grid.ColumnSpan="2" Margin="132,0,0,0" HorizontalAlignment="Left"/>
+
+            <!-- CallId -->
+            <Label Content="Call Id:" Grid.Row="1" Grid.Column="2"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.CallInTreate.CallId" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- VerbalDescription -->
+            <Label Content="Verbal Description:" Grid.Row="2" Grid.Column="2"/>
+            <TextBox Grid.Row="2" Grid.Column="3" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.CallInTreate.VerbalDescription" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- FullAddress -->
+            <Label Content="Full Address:" Grid.Row="3" Grid.Column="2"/>
+            <TextBox Grid.Row="3" Grid.Column="3" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.CallInTreate.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox.Text>
+            </TextBox>
+
+            <!-- OpenTime -->
+            <Label Content="Open Time:" Grid.Row="4" Grid.Column="2"/>
+            <xctk:TimePicker 
+    Value="{Binding CurrentVolunteer.CallInTreate.OpenTime, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="ShortTime"
+    Grid.Row="4" Grid.Column="3" 
+    Style="{StaticResource InputStyle}" />
+
+            <!-- MaxTimeToFinish -->
+            <Label Content="Max Time To Finish:" Grid.Row="5" Grid.Column="2"/>
+            <xctk:TimePicker 
+    Value="{Binding CurrentVolunteer.CallInTreate.MaxTimeToFinish, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" 
+    Format="ShortTime"
+    Grid.Row="5" Grid.Column="3" 
+    Style="{StaticResource InputStyle}" />
+
+            <!-- EnterTime -->
+            <Label Content="Enter Time:" Grid.Row="6" Grid.Column="2"/>
+            <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.EnterTime, Mode=TwoWay}" 
+                 Format="ShortTime"
+                 Grid.Row="6" Grid.Column="3" 
+                 Style="{StaticResource InputStyle}" />
+
+
+            <!-- Distance -->
+            <Label Content="Distance:" Grid.Row="7" Grid.Column="2"/>
+            <TextBox Grid.Row="7" Grid.Column="3" Style="{StaticResource InputStyle}">
+                <TextBox.Text>
+                    <Binding Path="CurrentVolunteer.CallInTreate.Distance" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <validation:PositiveDoubleValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <!-- Status -->
+            <Label Content="Status:" Grid.Row="8" Grid.Column="2"/>
+            <ComboBox ItemsSource="{Binding Source= {StaticResource StatusCollectionKey}}"
+          SelectedValue="{Binding CurrentVolunteer.CallInTreate.Status, Mode=TwoWay}" 
+          Grid.Row="8" Grid.Column="3" Style="{StaticResource InputStyle}"/>
+
+                <Button Content="choose call"
+             Command="{Binding ChooseCallCommand}"
+        IsEnabled="{Binding CurrentCall, Converter={StaticResource CallEnabledConverter}}"/>
+
             </StackPanel>
-        </GroupBox>
+            <!-- כפתור הוספה/עדכון -->
+            <Button Grid.Row="13" Grid.Column="2"
+        Margin="35,23,0,-28" HorizontalAlignment="Left" Width="150"
+        Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+     
 
-         <!--פרטי קריאה + מפה--> 
-        <Grid Grid.Row="1" Margin="0,10,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" >
 
-                        <GroupBox Header="פרטי קריאה בטיפול" Margin="5">
-                            <StackPanel Margin="10">
-                                <TextBlock Text="כתובת הקריאה"/>
-                                <TextBlock Text="מרחק מהמתנדב"/>
-                                <TextBlock Text="סטטוס הקריאה"/>
-                            </StackPanel>
-                        </GroupBox>
-
-                        <GroupBox Header="מפה" Grid.Column="1" Margin="5">
-                             <!--פה ניתן לשלב פקד מפה או סימולציה--> 
-                            <Canvas Background="LightGray"/>
-                        </GroupBox>
-    </Grid>
-
-     <!--כפתורים--> 
-    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" >
-        <Button Content="choose call"/>
-        <Button Content="ent treat"/>
-        <Button Content="cancel treat"/>
+                <Button Content="ent treat"/>
+            <Button Content="cancel treat"/>
         <Button Content="calls history"/>
     </StackPanel>
+    </Grid>
     </Grid>
 </Window>

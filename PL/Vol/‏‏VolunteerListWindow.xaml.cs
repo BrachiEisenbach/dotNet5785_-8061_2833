@@ -73,8 +73,11 @@ namespace PL.Vol
         => queryVolunteerList();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        => s_bl.Volunteer.AddObserver(volunteerListObserver);
-
+        {
+            s_bl.Volunteer.AddObserver(volunteerListObserver);
+           //לבדוק שזה נכון!!
+            queryVolunteerList(); 
+        }
         private void Window_Closed(object sender, EventArgs e)
         => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
 

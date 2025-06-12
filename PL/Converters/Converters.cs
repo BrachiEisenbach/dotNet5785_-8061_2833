@@ -82,4 +82,18 @@ namespace PL.Converters
             throw new NotImplementedException();
     }
 
+    public class CallIsExpiredToCollapsedConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is STATUS status)
+                return status == STATUS.Expired ? Visibility.Collapsed : Visibility.Visible;
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            throw new NotImplementedException();
+    }
+
 }
