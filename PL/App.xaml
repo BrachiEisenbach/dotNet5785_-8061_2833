@@ -4,7 +4,7 @@
              xmlns:pl="clr-namespace:PL"
              xmlns:local="clr-namespace:PL"
              xmlns:bl="clr-namespace:BO;assembly=BL"
-             StartupUri="AdminWindow.xaml">
+             StartupUri="MainWindow.xaml">
 
     <Application.Resources>
         <bl:CallInList x:Key="callinlistob"/>

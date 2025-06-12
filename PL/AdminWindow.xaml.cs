@@ -33,7 +33,7 @@ namespace PL
             set { SetValue(CurrentTimeProperty, value); }
         }
         public static readonly DependencyProperty CurrentTimeProperty =
-        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(AdminWindow));
 
         
         
@@ -46,7 +46,7 @@ namespace PL
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ClockProperty =
-            DependencyProperty.Register("Clock", typeof(DateTime), typeof(MainWindow));
+            DependencyProperty.Register("Clock", typeof(DateTime), typeof(AdminWindow));
 
         public TimeSpan RiskRange
         {
@@ -56,7 +56,7 @@ namespace PL
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RiskRangeProperty =
-            DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
+            DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(AdminWindow));
 
         private void clockObserver()
         {
