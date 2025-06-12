@@ -36,7 +36,13 @@
           EnableRowVirtualization="True" 
           RowDetailsVisibilityMode="VisibleWhenSelected"
           SelectedItem="{Binding SelectedCall}"
-          MouseDoubleClick="dgCallList_MouseDoubleClick">
+          MouseLeftButtonUp="DataGrid_MouseLeftButtonUp">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="PreviewMouseLeftButtonUp"
+                         Handler="DataGridRow_PreviewMouseLeftButtonUp"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Call ID" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
@@ -54,7 +60,18 @@
                 <DataGridTextColumn Binding="{Binding Distance}" Header="Distance" Width="Auto"/>
 
             </DataGrid.Columns>
-        <Button Content="update address"
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding VerbalDescription}" 
+                       TextWrapping="Wrap" 
+                       Margin="10"  
+                       FontSize="14"
+                       FontStyle="Italic"
+                       Foreground="DarkSlateGray"/>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+            <Button Content="update address"
            Click="Updete_click"/>
 
         </DataGrid>

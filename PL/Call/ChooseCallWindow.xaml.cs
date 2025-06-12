@@ -73,7 +73,7 @@ namespace PL.Call
 
         }
 
-        private void dgCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void DataGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
 
         }
