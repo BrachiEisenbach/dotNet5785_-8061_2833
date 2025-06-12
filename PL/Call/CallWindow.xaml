@@ -177,10 +177,11 @@
         <!-- Status -->
         <Label Content="Status:" Grid.Row="7" Grid.Column="0" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
         <ComboBox ItemsSource="{Binding Source= {StaticResource StatusCollectionKey}}"
-                  SelectedValue="{Binding CurrentCall.Status, Mode=TwoWay}"
-                  Grid.Row="7" Grid.Column="1"
-                  Style="{StaticResource InputStyle}"
-                  Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"/>
+          SelectedValue="{Binding CurrentCall.Status, Mode=TwoWay}"
+          Grid.Row="7" Grid.Column="1"
+          Style="{StaticResource InputStyle}"
+          Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibility}}"
+          IsEnabled="False"/>
 
         <!-- CallAssignInList -->
         <Label Content="Call Assign In List:"
