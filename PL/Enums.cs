@@ -16,17 +16,6 @@ public class TypeOfCallCollection :  IEnumerable
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
         public BO.TYPEOFCALL volunteerTypeOfCall { get; set; } = BO.TYPEOFCALL.NONE;
 
-
-
-    //    static readonly IEnumerable<BO.TYPEOFDISTANCE> d_enums =
-    //(Enum.GetValues(typeof(BO.TYPEOFDISTANCE)) as IEnumerable<BO.TYPEOFDISTANCE>)!;
-
-    //    public IEnumerator GetEnumerator() => d_enums.GetEnumerator();
-    //    public BO.TYPEOFDISTANCE volunteerTypeOfDistance { get; set; } = BO.TYPEOFDISTANCE.NONE;
-
-
-
-
 }
 public class RoleCollection :  IEnumerable
 {

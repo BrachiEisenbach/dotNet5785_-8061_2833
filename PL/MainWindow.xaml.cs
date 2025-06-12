@@ -27,6 +27,8 @@ namespace PL
             //למחוק שורה זו לפני הגשה
             s_bl.Admin.InitializeDB();
             InitializeComponent();
+            this.DataContext = this;
+
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
