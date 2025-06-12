@@ -1,11 +1,13 @@
-﻿<Window x:Class="PL.Call.ChooseCall"
+﻿<Window x:Class="PL.Call.ChooseCallWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="ChooseCall" Height="450" Width="800">
+        Title="ChooseCallWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+  
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -36,7 +38,7 @@
           SelectedItem="{Binding SelectedCall}"
           MouseDoubleClick="dgCallList_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto">
+                <DataGridTextColumn Binding="{Binding Id}" Header="Call ID" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="Background" Value="Chocolate"/>
@@ -45,34 +47,15 @@
 
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding SumOfAssigned}" Header="Sum Assignment" Width="Auto"/>
-                <DataGridTemplateColumn Header="Actions">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <!-- כפתור מחיקה קיים -->
-                                <Button Content="Delete"
-                                 Click="Delete_click"
-                                 CommandParameter="{Binding CallId}"
-                                 Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full  Address" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding MaxTimeToFinish}" Header="Max Time To Finish Name" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Distance}" Header="Distance" Width="Auto"/>
 
-
-                                <!-- כפתור ביטול הקצאה -->
-                                <Button Content="בטל הקצאה"
-                                 Click="CancelAssignment_Click"
-                                 Tag="{Binding CallId}"
-                                 Margin="5,0,0,0"
-                                 Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibility}}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
+        <Button Content="update address"
+           Click="Updete_click"/>
 
         </DataGrid>
 

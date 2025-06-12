@@ -11,13 +11,17 @@
         xmlns:volunteer="clr-namespace:PL.Vol"
         xmlns:call="clr-namespace:PL.Call"
         xmlns:converters="clr-namespace:PL.Converters"
-        xmlns:validation="clr-namespace:PL.Validation">
+        xmlns:validation="clr-namespace:PL.Validation"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+   
     <Window.Resources>
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
         <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
         <converters:CallInTreateToIsEnabledConverter x:Key="CallInTreateToIsEnabled"/>
+        <converters:CallEnabledConverter x:Key="CallEnabled"/>
+
     </Window.Resources>
 
 
@@ -201,12 +205,12 @@
                 
             </CheckBox>
             <StackPanel>
-                <StackPanel.Visibility>
+                <!--<StackPanel.Visibility>
                     <MultiBinding Converter="{StaticResource BoolToVisibility}">
                         <Binding Path="CurrentCall" Converter="{StaticResource CallVisible}" />
                         <Binding Path="CurrentCall.Status" Converter="{StaticResource NotExpiredVisibility}" />
                     </MultiBinding>
-                </StackPanel.Visibility>
+                </StackPanel.Visibility>-->
                 <!-- TypeOfCall -->
             <Label Content="Type Of Call:" Grid.Row="13" Grid.Column="0"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"

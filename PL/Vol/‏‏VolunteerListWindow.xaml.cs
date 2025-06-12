@@ -28,6 +28,7 @@ namespace PL.Vol
         public VolunteerListWindow()
         {
             InitializeComponent();
+            queryVolunteerList();
             this.Loaded += Window_Loaded;
             this.Closed += Window_Closed;
         }
@@ -76,7 +77,7 @@ namespace PL.Vol
         {
             s_bl.Volunteer.AddObserver(volunteerListObserver);
            //לבדוק שזה נכון!!
-            queryVolunteerList(); 
+          
         }
         private void Window_Closed(object sender, EventArgs e)
         => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
