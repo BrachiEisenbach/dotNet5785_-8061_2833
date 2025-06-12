@@ -25,7 +25,7 @@ namespace PL
         public MainWindow()
         {
             //למחוק שורה זו לפני הגשה
-            //s_bl.Admin.InitializeDB();
+            s_bl.Admin.InitializeDB();
             InitializeComponent();
         }
 
