@@ -63,7 +63,7 @@ namespace PL
                 }
                 else if (result == MessageBoxResult.No)
                 {
-                    VolunteerWindowVol userWindow = new Vol.VolunteerWindowVol(); 
+                    VolunteerWindowVol userWindow = new Vol.VolunteerWindowVol(Id); 
                     userWindow.Show();
                 }
                 // אם Cancel - לא עושים כלום
@@ -71,7 +71,7 @@ namespace PL
 
             else if (role == BO.ROLE.VOLUNTEER)
             {
-                VolunteerWindowVol userWindow = new VolunteerWindowVol(); // תמיד נפתח חדש
+                VolunteerWindowVol userWindow = new VolunteerWindowVol(Id); // תמיד נפתח חדש
                 userWindow.Show();
             }
             else

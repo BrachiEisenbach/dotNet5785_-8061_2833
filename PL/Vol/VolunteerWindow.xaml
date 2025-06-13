@@ -79,7 +79,12 @@
         <Label Content="Full Name:" Grid.Row="1" Grid.Column="0"/>
         <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.FullName" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.FullName" Mode="TwoWay" 
+                 UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
             </TextBox.Text>
         </TextBox>
 
@@ -87,10 +92,15 @@
         <Label Content="Phone:" Grid.Row="2" Grid.Column="0"/>
         <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.Phone" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.Phone" Mode="TwoWay"
+                 UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <validation:PhoneValidationRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
             </TextBox.Text>
         </TextBox>
-
+        
         <!-- Email -->
         <Label Content="Email:" Grid.Row="3" Grid.Column="0"/>
         <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}">
@@ -108,7 +118,12 @@
         <Label Content="Password:" Grid.Row="4" Grid.Column="0"/>
         <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.Password" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.Password" Mode="TwoWay"
+                 UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <validation:PasswordValidationRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
             </TextBox.Text>
         </TextBox>
 
@@ -116,10 +131,14 @@
         <Label Content="Full Address:" Grid.Row="5" Grid.Column="0"/>
         <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}">
             <TextBox.Text>
-                <Binding Path="CurrentVolunteer.FullAddress" Mode="TwoWay" ValidatesOnExceptions="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="CurrentVolunteer.FullAddress" Mode="TwoWay"
+                 UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
             </TextBox.Text>
         </TextBox>
-
         <!-- Role -->
         <Label Content="Role:" Grid.Row="6" Grid.Column="0"/>
         <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}"

@@ -398,18 +398,19 @@ public static class Initialization
   
 };
 
-        int i = 0;
-
-        foreach (var Description in callDescriptions)
+        for (int i = 0; i < callDescriptions.Length; i++)
         {
-            // Create a new Call object using the provided data from the arrays
-            Call newC = new Call(0, TypesOfCalls[i], callDescriptions[i], FullAddressesOfCalls[i], LatitudeOfCall[i],
-                LongitudeOfCall[i], OpenTimeOfCalls[i], MaxTimeToFinishOfCalls[i]);
-            // Add the new call object to the data access layer
+            Call newC = new Call(
+                0,
+                TypesOfCalls[i],
+                callDescriptions[i],
+                FullAddressesOfCalls[i],
+                LatitudeOfCall[i],
+                LongitudeOfCall[i],
+                OpenTimeOfCalls[i],
+                MaxTimeToFinishOfCalls[i]
+            );
             s_dal!.Call.Create(newC);
-            // Increment the index to move to the next set of data
-            i++;
-
         }
 
 
@@ -426,12 +427,12 @@ public static class Initialization
         List<Volunteer> VolunteerIds = (List<Volunteer?>)s_dal!.Volunteer.ReadAll().ToList();
         // Array of predefined treatment statuses for each assignment
         TYPEOFTREATMENT[] treatmentStatuses ={
-    TYPEOFTREATMENT.TREATE,
-    TYPEOFTREATMENT.TREATE,
-    TYPEOFTREATMENT.TREATE,
-    TYPEOFTREATMENT.TREATE,
-    TYPEOFTREATMENT.TREATE,
-    TYPEOFTREATMENT.TREATE,
+    TYPEOFTREATMENT.SELFCANCELLATION,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
+    TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
+    TYPEOFTREATMENT.SELFCANCELLATION,
+    TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.SELFCANCELLATION,
     TYPEOFTREATMENT.CANCELINGANADMINISTRATOR,
     TYPEOFTREATMENT.CANCELLATIONHASEXPIRED,

@@ -17,6 +17,8 @@ namespace PL.Call
         {
             InitializeComponent();
             queryCallList();
+            this.Loaded += Window_Loaded;
+            this.Closed += Window_Closed;
         }
 
         // ----------- DP: CallList -------------
@@ -62,8 +64,10 @@ namespace PL.Call
         private void dgCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             try { 
-            if (SelectedCall != null)
-                new CallWindow(SelectedCall.Id).Show();
+            if (SelectedCall != null) {  
+                    MessageBox.Show("ID: " + SelectedCall.CallId); // בדוק מה נשלח
+                    new CallWindow(SelectedCall.CallId).Show();
+            }
             }
             catch (Exception ex)
             {

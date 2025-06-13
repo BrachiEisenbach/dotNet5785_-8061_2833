@@ -55,10 +55,11 @@ namespace PL.Call
         public CallWindow(int id)
         {
 
-            IsUpdateMode = id != 0; 
-            ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;
+            IsUpdateMode = id != 0;
+            ButtonText = id == 0 ? "Add" : "Update";
+
             if (id != 0)
             {
                 CurrentCall = s_bl.Call.GetCallDetails(id);
@@ -144,15 +145,35 @@ namespace PL.Call
 
         bool IsFormValid(DependencyObject parent)
         {
-            // Force validation updates
+            // עדכן את כל ה־Binding ל־Source
             foreach (var control in FindVisualChildren<UIElement>(parent))
             {
                 var expr = BindingOperations.GetBindingExpression(control, TextBox.TextProperty);
                 expr?.UpdateSource();
+
+                var exprCombo = BindingOperations.GetBindingExpression(control, ComboBox.SelectedValueProperty);
+                exprCombo?.UpdateSource();
             }
-            //todo:
-            return true;// !Validation.GetHasError(parent);
+
+            // בדוק אם יש שגיאות
+            return !HasValidationError(parent);
         }
+        bool HasValidationError(DependencyObject obj)
+        {
+            bool hasError = System.Windows.Controls.Validation.GetHasError(obj);
+            if (hasError)
+                return true;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (HasValidationError(child))
+                    return true;
+            }
+
+            return false;
+        }
+
 
         IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {

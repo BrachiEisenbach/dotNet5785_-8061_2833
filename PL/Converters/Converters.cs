@@ -114,18 +114,10 @@ namespace PL.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value is STATUS status &&
-                   (status == STATUS.Open || status == STATUS.OpenDangerZone);
+                       (status == STATUS.Open || status == STATUS.OpenDangerZone||status == STATUS.InTreatment || status == STATUS.InTreatmentDangerZone);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
     }
-
-    //InTreatment,
-    //    InTreatmentDangerZone,
-    //    Open,
-    //    Closed,
-    //    Expired,
-    //    OpenDangerZone,
-    //    none
 }

@@ -161,8 +161,9 @@ namespace PL.Vol
 
         bool HasValidationError(DependencyObject obj)
         {
-            //if (Validation.GetHasError(obj))
-            //    return true;
+            bool hasError = System.Windows.Controls.Validation.GetHasError(obj);
+            if (hasError)
+                return true;
 
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {

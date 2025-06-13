@@ -77,5 +77,9 @@ namespace PL.Call
         {
 
         }
+        private void DataGridRow_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
