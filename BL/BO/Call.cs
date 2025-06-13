@@ -20,7 +20,6 @@ namespace BO
         public DateTime OpenTime { get; init; }
         public DateTime? MaxTimeToFinish { get; init; }
         public STATUS Status { get; set; }
-
         public List<BO.CallAssignInList>? listOfCallAssign { get; set; }
         public override string ToString()
         {
