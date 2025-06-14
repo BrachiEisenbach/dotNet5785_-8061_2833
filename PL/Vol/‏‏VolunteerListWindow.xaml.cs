@@ -74,7 +74,6 @@ namespace PL.Vol
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Volunteer.AddObserver(volunteerListObserver);
-           //לבדוק שזה נכון!!
           
         }
         private void Window_Closed(object sender, EventArgs e)

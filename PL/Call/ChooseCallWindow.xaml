@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="ChooseCallWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-  
+    <!--<Window.Resources>
+        <local:TupleConverter x:Key="TupleConverter"/>
+    </Window.Resources>-->
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -58,6 +61,21 @@
                 <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding MaxTimeToFinish}" Header="Max Time To Finish Name" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Distance}" Header="Distance" Width="Auto"/>
+                <!--<DataGridTemplateColumn Header="" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="בחר"
+        Command="{Binding ChooseCallCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource TupleConverter}">
+                                        <Binding Path="Id"/>
+                                        <Binding Path="CallId"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
 
             </DataGrid.Columns>
 
