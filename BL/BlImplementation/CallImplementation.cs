@@ -261,7 +261,7 @@ namespace BlImplementation
                 // 6. שמירת ההקצאה החדשה
                 _dal.Assignment.Create(newAssignment);
                 //?????????????
-                //CallManager.Observers.NotifyListUpdated();
+                CallManager.Observers.NotifyListUpdated();
 
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
