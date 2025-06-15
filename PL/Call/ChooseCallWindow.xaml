@@ -5,11 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="ChooseCallWindow" Height="450" Width="800"
+        Title="Choose Call" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-    <!--<Window.Resources>
-        <local:TupleConverter x:Key="TupleConverter"/>
-    </Window.Resources>-->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,83 +14,63 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-            <ComboBox 
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+            <TextBlock Text="Your current address: " FontWeight="Bold" Margin="0,0,5,0"/>
+            <TextBox Text="{Binding CurrentVolunteer.FullAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="200" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Button Content="Update Address" Click="Updete_click"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10">
+            <Label Content="Choose call type:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox Width="150"
                       ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"                      
+                      SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
                       SelectedValuePath="."/>
-        </Grid>
-        <DataGrid Grid.Row="1"
-          Margin="10"
-          ItemsSource="{Binding Path=CallList}"
-          IsReadOnly="True"
-          AutoGenerateColumns="False"
-          EnableRowVirtualization="True" 
-          RowDetailsVisibilityMode="VisibleWhenSelected"
-          SelectedItem="{Binding SelectedCall}"
-          MouseLeftButtonUp="DataGrid_MouseLeftButtonUp">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <EventSetter Event="PreviewMouseLeftButtonUp"
-                         Handler="DataGridRow_PreviewMouseLeftButtonUp"/>
-                </Style>
-            </DataGrid.RowStyle>
+        </StackPanel>
+
+
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                  Margin="10"
+                  ItemsSource="{Binding CallList}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  SelectedItem="{Binding SelectedCall}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Call ID" Width="Auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Background" Value="Chocolate"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn Binding="{Binding Id}" Header="Call ID" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type of Call" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Address" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding OpenTime, StringFormat='dd/MM/yyyy HH:mm'}" Header="Open Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding MaxTimeToFinish, StringFormat='dd/MM/yyyy HH:mm'}" Header="Max Time to Finish" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Distance, StringFormat={}{0:F2}}" Header="Distance (km)" Width="Auto"/>
 
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full  Address" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding MaxTimeToFinish}" Header="Max Time To Finish Name" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding Distance}" Header="Distance" Width="Auto"/>
-                <!--<DataGridTemplateColumn Header="" Width="Auto">
+                <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="בחר"
-        Command="{Binding ChooseCallCommand}">
-                                <Button.CommandParameter>
-                                    <MultiBinding Converter="{StaticResource TupleConverter}">
-                                        <Binding Path="Id"/>
-                                        <Binding Path="CallId"/>
-                                    </MultiBinding>
-                                </Button.CommandParameter>
-                            </Button>
+                            <Button Content="Choose Call" Click="Choose_click" CommandParameter="{Binding Id}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-
-                
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding VerbalDescription}" 
-                       TextWrapping="Wrap" 
-                       Margin="10"  
-                       FontSize="14"
-                       FontStyle="Italic"
-                       Foreground="DarkSlateGray"/>
+                    <TextBlock Text="{Binding VerbalDescription}"
+                               TextWrapping="Wrap"
+                               Margin="10"
+                               FontSize="14"
+                               FontStyle="Italic"
+                               Foreground="DarkSlateGray"/>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
-            <Button Content="update address"
-           Click="Updete_click"/>
 
         </DataGrid>
-
     </Grid>
 </Window>

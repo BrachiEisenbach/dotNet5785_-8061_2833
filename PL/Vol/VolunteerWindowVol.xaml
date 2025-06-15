@@ -6,20 +6,20 @@
         xmlns:local="clr-namespace:PL.Vol"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:volunteer="clr-namespace:PL.Vol"
-        xmlns:call="clr-namespace:PL.Call"
+        xmlns:bo="clr-namespace:BO;assembly=BO" 
         xmlns:converters="clr-namespace:PL.Converters"
         xmlns:validation="clr-namespace:PL.Validation"
         mc:Ignorable="d"
-        Title="VolunteerWindowVol" Height="720" Width="1000"
+        Title="Volunteer Details" Height="720" Width="1000"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Window.Resources>
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
-        <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
+        <converters:CanChooseCallConverter x:Key="CanChooseCallConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
         <converters:CallInTreateToIsEnabledConverter x:Key="CallInTreateToIsEnabled"/>
+
     </Window.Resources>
 
     <Grid Margin="10">
@@ -28,11 +28,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Volunteer Info -->
         <GroupBox Header="Volunteer Information" Grid.Column="0" Margin="5">
             <StackPanel Margin="10" VerticalAlignment="Top">
                 <Label Content="Id"/>
-                <TextBox Text="{Binding CurrentVolunteer.Id, Mode=TwoWay}" IsReadOnly="{Binding IsUpdateMode}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.Id}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Full Name"/>
                 <TextBox Text="{Binding CurrentVolunteer.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
@@ -43,7 +42,7 @@
                 <Label Content="Email"/>
                 <TextBox Width="200">
                     <TextBox.Text>
-                        <Binding Path="CurrentVolunteer.Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="CurrentVolunteer.Email" Mode="TwoWay" UpdateSourceTrigger=PropertyChanged>
                             <Binding.ValidationRules>
                                 <validation:EmailValidationRule/>
                             </Binding.ValidationRules>
@@ -55,15 +54,15 @@
                 <TextBox Text="{Binding CurrentVolunteer.Password, Mode=TwoWay}" Width="200"/>
 
                 <Label Content="Full Address"/>
-                <TextBox Text="{Binding CurrentVolunteer.FullAddress, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.FullAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
 
                 <Label Content="Role"/>
-                <TextBox Text="{Binding CurrentVolunteer.Role, Mode=TwoWay}" IsReadOnly="{Binding IsUpdateMode}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.Role}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Max Distance"/>
                 <TextBox Width="200">
                     <TextBox.Text>
-                        <Binding Path="CurrentVolunteer.MaxDistance" Mode="TwoWay">
+                        <Binding Path="CurrentVolunteer.MaxDistance" Mode="TwoWay" UpdateSourceTrigger=PropertyChanged>
                             <Binding.ValidationRules>
                                 <validation:PositiveDoubleValidationRule />
                             </Binding.ValidationRules>
@@ -76,13 +75,13 @@
                           SelectedValue="{Binding CurrentVolunteer.TypeOfDistance, Mode=TwoWay}" Width="200"/>
 
                 <Label Content="Calls Treated"/>
-                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatTreated, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatTreated}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Calls Canceled"/>
-                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatCanceled, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatCanceled}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Calls Expired"/>
-                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatHaveExpired, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.AllCallsThatHaveExpired}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Active"/>
                 <CheckBox IsChecked="{Binding CurrentVolunteer.Active, Mode=TwoWay}" Width="200">
@@ -91,64 +90,68 @@
                                    Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}"/>
                     </CheckBox.ToolTip>
                     <CheckBox.IsEnabled>
-                        <MultiBinding Converter="{StaticResource CallInTreateToIsEnabled}">
-                            <Binding Path="CurrentVolunteer.CallInTreate"/>
-                        </MultiBinding>
+                        <Binding Path="CurrentVolunteer.CallInTreate" Converter="{StaticResource CallInTreateToIsEnabled}"/>
                     </CheckBox.IsEnabled>
                 </CheckBox>
 
-                <Label Content="Type Of Call"/>
+                <Label Content="Type Of Call (Preferred)"/>
                 <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
                           SelectedValue="{Binding CurrentVolunteer.TypeOfCall, Mode=TwoWay}" Width="200"/>
             </StackPanel>
         </GroupBox>
 
-        <!-- Call In Progress -->
-        <GroupBox Header="Call In Progress" Grid.Column="1" Margin="5">
+        <GroupBox Header="Call In Progress" Grid.Column="1" Margin="5"
+                  Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}">
             <StackPanel Margin="10" VerticalAlignment="Top">
                 <Label Content="Call Id"/>
-                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.CallId, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.CallId}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Verbal Description"/>
-                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.VerbalDescription, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.VerbalDescription}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Full Address"/>
-                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.FullAddress, Mode=TwoWay}" Width="200"/>
+                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.FullAddress}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Open Time"/>
-                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.OpenTime, Mode=TwoWay}" Format="ShortTime" Width="200"/>
+                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.OpenTime}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Max Time To Finish"/>
-                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.MaxTimeToFinish, Mode=TwoWay}" Format="ShortTime" Width="200"/>
+                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.MaxTimeToFinish}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Enter Time"/>
-                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.EnterTime, Mode=TwoWay}" Format="ShortTime" Width="200"/>
+                <xctk:TimePicker Value="{Binding CurrentVolunteer.CallInTreate.EnterTime}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Distance"/>
-                <TextBox Width="200">
-                    <TextBox.Text>
-                        <Binding Path="CurrentVolunteer.CallInTreate.Distance" Mode="TwoWay">
-                            <Binding.ValidationRules>
-                                <validation:PositiveDoubleValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <TextBox Text="{Binding CurrentVolunteer.CallInTreate.Distance, StringFormat={}{0:F2}}" IsReadOnly="True" Width="200"/>
 
                 <Label Content="Status"/>
                 <ComboBox ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}"
-                          SelectedValue="{Binding CurrentVolunteer.CallInTreate.Status, Mode=TwoWay}" Width="200"/>
+                          SelectedValue="{Binding CurrentVolunteer.CallInTreate.Status, Mode=TwoWay}" IsReadOnly="True" Width="200"/>
 
-                <Button Content="Choose Call" Command="{Binding ChooseCallCommand}" Width="200" Margin="0,10,0,0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Button Content="Finish Treatment"
+                            Click="btnFinishTreat_Click"
+                            Width="150" Margin="10,0,0,0"
+                            Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}"/>
+                    <Button Content="Cancel Treatment"
+                            Click="btnCancelTreat_Click"
+                            Width="150" Margin="10,0,0,0"
+                            Visibility="{Binding CurrentVolunteer.CallInTreate, Converter={StaticResource NullToVisibility}}"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
 
-        <!-- Bottom Buttons -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="0,20,0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Grid.Row="2" Margin="0,20,0,0">
             <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" Width="150" Margin="10"/>
-            <Button Content="Enter Treat" Width="120" Margin="10"/>
-            <Button Content="Cancel Treat" Width="120" Margin="10"/>
-            <Button Content="Calls History" Click="btnHistory_click" Width="120" Margin="10"/>
+            <Button Content="Choose Call" Click="btnChooseCall_Click" Width="150" Margin="10">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource CanChooseCallConverter}">
+                        <Binding Path="CurrentVolunteer.CallInTreate"/>
+                        <Binding Path="CurrentVolunteer.Active"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button Content="Calls History" Click="btnHistory_click" Width="150" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>

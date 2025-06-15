@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
+            <Label Content="Call list" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
 
             <ComboBox 
                       ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
