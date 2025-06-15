@@ -11,7 +11,7 @@ namespace BlApi
 {
     public interface ICall : IObservable
     {
-        public int[] GetCallCountsByStatus();
+        public Dictionary<BO.STATUS, int> GetCallCountsByStatus();
         //public void UpdateCallStatus();
         public IEnumerable<BO.CallInList> GetCallList(Enum? STATUS, object? valFilter, Enum? TYPEOFCALL);
         public BO.Call GetCallDetails(int callId);

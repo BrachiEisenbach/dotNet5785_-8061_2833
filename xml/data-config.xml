@@ -2,6 +2,6 @@
 <config>
   <NextCallId>50</NextCallId>
   <NextAssignmentId>50</NextAssignmentId>
-  <Clock>01/01/0001 00:00:00</Clock>
+  <Clock>1/1/0001 12:00:00 AM</Clock>
   <RiskRange>00:00:00</RiskRange>
 </config>

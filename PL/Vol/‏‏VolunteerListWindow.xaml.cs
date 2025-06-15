@@ -1,4 +1,5 @@
-﻿using PL.Call;
+﻿using BO;
+using PL.Call;
 using PL.Vol;
 using System;
 using System.Collections.Generic;
@@ -92,18 +93,41 @@ namespace PL.Vol
         {
             if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
             {
-                try
+                var result = MessageBox.Show(
+                    "Are you sure you want to delete this volunteer?",
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    var result = MessageBox.Show("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
+                    try
                     {
                         s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
                         queryVolunteerList();
+
+                        MessageBox.Show(
+                            "The volunteer was successfully deleted.",
+                            "Volunteer Deleted",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Cannot delete volunteer: " + ex.Message);
+                    catch (BlDoesNotExistException)
+                    {
+                        MessageBox.Show(
+                            "The volunteer you are trying to delete does not exist.",
+                            "Delete Failed",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show(
+                            "An unexpected error occurred while trying to delete the volunteer. Please try again or contact support.",
+                            "Unexpected Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
                 }
             }
         }

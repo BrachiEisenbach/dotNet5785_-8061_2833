@@ -133,5 +133,27 @@ namespace PL.Converters
             throw new NotImplementedException();
         }
     }
+    public class UpdateModeAndStatusToIsEnabledConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Length < 2)
+                return false;
 
+            if (!(values[0] is bool isUpdateMode))
+                return false;
+
+            if (!(values[1] is STATUS status))
+                return false;
+
+            if (!isUpdateMode) // במצב הוספה - תמיד פעיל
+                return true;
+
+            // במצב עדכון - פעיל רק אם סטטוס מתאים
+            return status == STATUS.Open || status == STATUS.OpenDangerZone;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
+            throw new NotImplementedException();
+    }
 }

@@ -46,13 +46,59 @@
         </Grid>
 
         <!-- איפוס בסיס הנתונים-->
-        <Button Content="Reset DB" Click="btnReset_Click" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" Margin="262,74,0,0"/>
+        <Button Content="Reset DB" Click="btnReset_Click" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" Margin="110,84,0,0"/>
         <!-- אתחול בסיס הנתונים-->
-        <Button Content="Initialize DB" Click="btnInitialize_Click"   HorizontalAlignment="Left" Margin="107,73,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" />
+        <Button Content="Initialize DB" Click="btnInitialize_Click"   HorizontalAlignment="Left" Margin="107,36,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="104" />
         <!-- פתיחת מסך תצוגת הרשימת מתנדבים-->
-        <Button Content="Handle Volunteer" Click="btnVolunteers_Click" HorizontalAlignment="Left" Margin="426,74,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="23" Width="104"/>
+        <Button Content="Handle Volunteer" Click="btnVolunteers_Click" HorizontalAlignment="Left" Margin="277,36,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="23" Width="104"/>
         <!-- פתיחת מסך תצוגת הרשימת קריאות-->
-        <Button Content="Handle Call" Click="btnCalls_Click" HorizontalAlignment="Left" Margin="598,73,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="23" Width="104"/>
+        <Button Content="Handle Call" Click="btnCalls_Click" HorizontalAlignment="Left" Margin="277,82,0,0" Grid.Row="1" VerticalAlignment="Top"  Height="26" Width="104"/>
+
+        <!-- פתיחת מסך תצוגת הרשימת קריאות ממוינים לפי הסטטוס המתבקש-->
+        <Button Click="btnInTreatmentCalls_Click"
+        HorizontalAlignment="Left"
+        Margin="566,38,0,0"
+        Grid.Row="1"
+        VerticalAlignment="Top"
+        Height="23"
+        Width="136">
+            <TextBlock>
+        <Run Text="InTreatmentCalls ("/>
+        <Run Text="{Binding InTreatmentCount}"/>
+        <Run Text=")"/>
+            </TextBlock>
+        </Button>
+
+
+        <Button Click="btnOpenCalls_Click"
+        HorizontalAlignment="Left"
+        Margin="522,86,0,0"
+        Grid.Row="1"
+        VerticalAlignment="Top"
+        Height="23"
+        Width="103">
+            <TextBlock Height="23" Width="87">
+        <Run Text="Open Calls ("/>
+        <Run Text="{Binding OpenCount}"/>
+        <Run Text=")"/>
+            </TextBlock>
+        </Button>
+
+        <Button Click="btnExpired_Click"
+        HorizontalAlignment="Left"
+        Margin="662,87,0,0"
+        Grid.Row="1"
+        VerticalAlignment="Top"
+        Height="23"
+        Width="104">
+            <TextBlock>
+        <Run Text="Expired Calls ("/>
+        <Run Text="{Binding ExpiredCount}"/>
+        <Run Text=")"/>
+            </TextBlock>
+        </Button>
+
 
     </Grid>
 </Window>
+
