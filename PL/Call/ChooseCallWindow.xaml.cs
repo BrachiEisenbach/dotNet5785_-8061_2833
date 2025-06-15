@@ -82,28 +82,29 @@ namespace PL.Call
 
         }
 
-        //private void Choose_click(object sender, RoutedEventArgs e)
-        //{
-        //    if (e.OriginalSource is Button button && button.CommandParameter is Tuple<int, int> parameters)
-        //    {
-        //        int callId = parameters.Item1;
-        //        int volunteerId = parameters.Item2;
+        private void Choose_click(object sender, RoutedEventArgs e)
+        {
+            
+            if (e.OriginalSource is Button button && button.CommandParameter is Tuple<int, int> parameters)
+            {
+                int callId = parameters.Item1;
+                int volunteerId = parameters.Item2;
 
-        //        try
-        //        {
-        //            var result = MessageBox.Show("Are you sure you want to choose this call?", "Confirm", MessageBoxButton.YesNo);
-        //            if (result == MessageBoxResult.Yes)
-        //            {
-        //                s_bl.Call.chooseCall(callId, volunteerId); // שימי לב שפה צריך להתאים גם בצד ה-BL
-        //                queryCallList();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Cannot choose call: " + ex.Message);
-        //        }
-        //    }
-        //}
+                try
+                {
+                    var result = MessageBox.Show("Are you sure you want to choose this call?", "Confirm", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        s_bl.Call.chooseCall(callId, volunteerId); // שימי לב שפה צריך להתאים גם בצד ה-BL
+                        queryCallListChooseCall();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot choose call: " + ex.Message);
+                }
+            }
+        }
     }
 //    public ICommand ChooseCallCommand => new RelayCommand<BO.CallInList>(call =>
 //{
