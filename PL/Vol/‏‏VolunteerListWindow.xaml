@@ -35,7 +35,6 @@
         </Style>
         <converters:TypeOfCallToColorConverter x:Key="TypeOfCallToColor"/>
     </Window.Resources>
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
