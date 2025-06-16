@@ -6,90 +6,138 @@
         xmlns:local="clr-namespace:PL.Call"
         xmlns:converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
-        Title="CallListWindow" Height="450" Width="800"
+        Title="Call List"
+        Height="550" Width="850"
+        Background="#F0FFF4"
+        FontFamily="Segoe UI"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
     <Window.Resources>
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
         <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <!-- סגנון כפתור מעוגל -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#66BB6A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Call list" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" />
 
-            <ComboBox 
-                      ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"                      
-                      SelectedValuePath="."/>
-        </Grid>
-        <DataGrid Grid.Row="1"
-          Margin="10"
-          ItemsSource="{Binding Path=CallList}"
-          IsReadOnly="True"
-          AutoGenerateColumns="False"
-          EnableRowVirtualization="True" 
-          RowDetailsVisibilityMode="VisibleWhenSelected"
-          SelectedItem="{Binding SelectedCall}"
-          MouseDoubleClick="dgCallList_MouseDoubleClick">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Background" Value="Chocolate"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
+        <!-- אזור עליון -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#81C784"
+                BorderThickness="1"
+                Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                </DataGridTextColumn>
+                <Label Content="📋 Call List"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       Foreground="#388E3C"
+                       FontSize="16"/>
 
-                <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding SumOfAssigned}" Header="Sum Assignment" Width="Auto"/>
-                <DataGridTemplateColumn Header="Actions">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <!-- כפתור מחיקה קיים -->
-                                <Button Content="Delete"
-                                 Click="Delete_click"
-                                 CommandParameter="{Binding CallId}"
-                                 Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+                          Grid.Column="1"
+                          Width="200"
+                          SelectedItem="{Binding Type, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
+                          SelectedValuePath="."
+                          Background="#E8F5E9"
+                          BorderBrush="#A5D6A7"
+                          Margin="10,0,0,0"/>
+            </Grid>
+        </Border>
 
+        <!-- טבלת קריאות -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#A5D6A7"
+                BorderThickness="1">
+            <DataGrid ItemsSource="{Binding Path=CallList}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      EnableRowVirtualization="True"
+                      RowDetailsVisibilityMode="VisibleWhenSelected"
+                      SelectedItem="{Binding SelectedCall}"
+                      MouseDoubleClick="dgCallList_MouseDoubleClick"
+                      GridLinesVisibility="None"
+                      RowBackground="#F9FFF9"
+                      AlternatingRowBackground="#E8F5E9"
+                      HeadersVisibility="Column"
+                      CanUserResizeRows="False"
+                      CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
+                    <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="*" />
+                    <DataGridTextColumn Binding="{Binding SumOfAssigned}" Header="Sum Assignment" Width="Auto"/>
 
-                                <Button Content="cancel assignment"
-                                 Click="CancelAssignment_Click"
-                                 CommandParameter="{Binding Id}"
-                                 Margin="5,0,0,0"
-                                 Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibility}}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Actions" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Delete"
+                                            Click="Delete_click"
+                                            CommandParameter="{Binding CallId}"
+                                            Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}"
+                                            Style="{StaticResource RoundedButtonStyle}"/>
 
-        </DataGrid>
+                                    <Button Content="Cancel"
+                                            Click="CancelAssignment_Click"
+                                            CommandParameter="{Binding Id}"
+                                            Margin="5,0,0,0"
+                                            Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibility}}"
+                                            Style="{StaticResource RoundedButtonStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- כפתור הוספה -->
         <Button Content="Add"
                 Grid.Row="2"
-                Margin="10"
                 Height="40"
                 Width="100"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Click="btnAddCall"/>
-
+                Margin="0,15,0,0"
+                Click="btnAddCall"
+                Style="{StaticResource RoundedButtonStyle}"/>
     </Grid>
 </Window>

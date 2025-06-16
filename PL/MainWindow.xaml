@@ -14,57 +14,77 @@
     </Window.Resources>
 
     <Grid Margin="10" BindingGroup="{Binding}">
-        <Border Background="White" CornerRadius="15" Padding="20" Margin="20" BorderBrush="#66BB6A" BorderThickness="2">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Background="White"
+                CornerRadius="15"
+                Padding="20"
+                Margin="20"
+                BorderBrush="#66BB6A"
+                BorderThickness="2"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch">
+
+            <!-- שימוש ב-Grid במקום StackPanel כדי לאפשר פריסה דינמית -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
                 <!-- Logo / Title -->
                 <TextBlock Text="Yedidim Volunteer Login" FontSize="20" FontWeight="Bold" 
-                           Foreground="#388E3C" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+                           Foreground="#388E3C" Margin="0,0,0,20" HorizontalAlignment="Center"
+                           Grid.Row="0"/>
 
                 <!-- ID -->
-                <TextBlock Text="Enter ID:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox Width="250" Height="30" Margin="0,0,0,15"
-                         Background="#E8F5E9" BorderBrush="#A5D6A7">
-                    <TextBox.Text>
-                        <Binding Path="Id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
-                                 ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <validation:PositiveIntValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                    <TextBlock Text="Enter ID:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox Width="250" Height="30"
+                             Background="#E8F5E9" BorderBrush="#A5D6A7">
+                        <TextBox.Text>
+                            <Binding Path="Id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                     ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validation:PositiveIntValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
 
                 <!-- Username -->
-                <TextBlock Text="Enter Username:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox Width="250" Height="30" Margin="0,0,0,15"
-                         Background="#E8F5E9" BorderBrush="#A5D6A7">
-                    <TextBox.Text>
-                        <Binding Path="Username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
-                                 ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <validation:NameValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <StackPanel Grid.Row="2" Margin="0,0,0,10">
+                    <TextBlock Text="Enter Username:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox Width="250" Height="30"
+                             Background="#E8F5E9" BorderBrush="#A5D6A7">
+                        <TextBox.Text>
+                            <Binding Path="Username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                     ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True"/>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
 
                 <!-- Password -->
-                <TextBlock Text="Enter Password:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox Width="250" Height="30" Margin="0,0,0,25"
-                         Background="#E8F5E9" BorderBrush="#A5D6A7">
-                    <TextBox.Text>
-                        <Binding Path="Password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
-                                 ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <validation:PasswordValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <StackPanel Grid.Row="3" Margin="0,0,0,10">
+                    <TextBlock Text="Enter Password:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox Width="250" Height="30"
+                             Background="#E8F5E9" BorderBrush="#A5D6A7">
+                        <TextBox.Text>
+                            <Binding Path="Password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                     ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validation:PasswordValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
 
                 <!-- Submit Button -->
-                <Border CornerRadius="5" Background="#66BB6A" Width="150" Height="35" Margin="0" HorizontalAlignment="Center">
+                <Border Grid.Row="4" CornerRadius="5" Background="#66BB6A"
+                        Width="150" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Button Content="Login"
                             Background="Transparent"
                             BorderThickness="0"
@@ -76,7 +96,7 @@
                                                  Path=(Validation.HasError),
                                                  Converter={StaticResource InverseBoolConverter}}" />
                 </Border>
-            </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>
