@@ -355,7 +355,7 @@ namespace BlTest
                 switch (choice)
                 {
                     case "1":
-                        int[] sumCalls = s_bl.Call.GetCallCountsByStatus();
+                        var sumCalls = s_bl.Call.GetCallCountsByStatus();
                         Console.WriteLine(string.Join(", ", sumCalls));
                         break;
                   
