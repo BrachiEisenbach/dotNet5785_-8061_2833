@@ -319,15 +319,29 @@ namespace BlImplementation
         /// Returns the count of calls based on their status.
         /// </summary>
 
-        public int[] GetCallCountsByStatus()
+        public Dictionary<BO.STATUS, int> GetCallCountsByStatus()
         {
             var calls = GetCallList(null, null, null);
-            return calls
-                        .GroupBy(call => (int)call.Status)  // מקבץ לפי הסטטוס (מותאם לאינדקס)
-                        .ToDictionary(g => g.Key, g => g.Count()) // יוצר מילון {סטטוס -> כמות קריאות}
-                        .Select(kvp => kvp.Value) // שולף את הכמויות
-                        .ToArray(); // ממיר למערך
+
+            // מקבל ספירה של כל סטטוס שקיים ברשימה
+            var counts = calls
+                .GroupBy(call => call.Status)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            // לוודא שכל סטטוס שמעניין אותנו קיים במילון, גם אם הערך 0
+            foreach (BO.STATUS status in Enum.GetValues(typeof(BO.STATUS)))
+            {
+                if (!counts.ContainsKey(status))
+                {
+                    counts[status] = 0;
+                }
+            }
+
+            return counts;
         }
+
+
+
         /// <summary>
         /// Returns the list of closed calls handled by a volunteer, with options to filter and sort by call type.
         /// </summary>

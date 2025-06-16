@@ -25,6 +25,7 @@ namespace PL.Call
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public static event Action? CallsChanged;
         public string ButtonText
         {
             get => (string)GetValue(ButtonTextProperty);
@@ -116,6 +117,10 @@ namespace PL.Call
                     }
                     s_bl.Call.AddCall(CurrentCall);
                     MessageBox.Show("Call added successfully");
+
+                    // כאן מפעילים את האירוע לדיווח על שינוי
+                    CallsChanged?.Invoke();
+
                     this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)
@@ -134,6 +139,10 @@ namespace PL.Call
                     }
                     s_bl.Call.UpdateCallDetails(CurrentCall);
                     MessageBox.Show("Call updated successfully");
+
+                    // כאן מפעילים את האירוע לדיווח על שינוי
+                    CallsChanged?.Invoke();
+
                     this.Close(); // סגירת החלון
                 }
                 catch (Exception ex)

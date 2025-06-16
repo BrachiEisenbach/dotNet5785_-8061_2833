@@ -1,5 +1,7 @@
-﻿using PL.Call;
+﻿using BO;
+using PL.Call;
 using PL.Vol;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -56,6 +58,29 @@ namespace PL
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RiskRangeProperty =
             DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(AdminWindow));
+        public int InTreatmentCount
+        {
+            get => (int)GetValue(InTreatmentCountProperty);
+            set => SetValue(InTreatmentCountProperty, value);
+        }
+        public static readonly DependencyProperty InTreatmentCountProperty =
+            DependencyProperty.Register("InTreatmentCount", typeof(int), typeof(AdminWindow));
+
+        public int OpenCount
+        {
+            get => (int)GetValue(OpenCountProperty);
+            set => SetValue(OpenCountProperty, value);
+        }
+        public static readonly DependencyProperty OpenCountProperty =
+            DependencyProperty.Register("OpenCount", typeof(int), typeof(AdminWindow));
+
+        public int ExpiredCount
+        {
+            get => (int)GetValue(ExpiredCountProperty);
+            set => SetValue(ExpiredCountProperty, value);
+        }
+        public static readonly DependencyProperty ExpiredCountProperty =
+            DependencyProperty.Register("ExpiredCount", typeof(int), typeof(AdminWindow));
 
         private void clockObserver()
         {
@@ -94,10 +119,6 @@ namespace PL
             s_bl.Admin.ClockPromotion(BO.TIMEUNIT.YEAR);
         }
 
-
-
-
-
         public AdminWindow()
         {
             System.Diagnostics.PresentationTraceSources.Refresh();
@@ -106,7 +127,7 @@ namespace PL
 
             InitializeComponent();
             this.DataContext = this;
-
+            UpdateCallStatusCounts();
 
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -115,7 +136,8 @@ namespace PL
             s_bl.Admin.AddConfigObserver(configObserver);
             Clock = s_bl.Admin.GetClock();
             RiskRange = s_bl.Admin.GetRiskRange();
-            CurrentTime = s_bl.Admin.GetClock();    
+            CurrentTime = s_bl.Admin.GetClock();
+            UpdateCallStatusCounts();
         }
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -175,6 +197,7 @@ namespace PL
             }
             Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.InitializeDB();
+            UpdateCallStatusCounts();
             Mouse.OverrideCursor = null;
 
         }
@@ -193,10 +216,21 @@ namespace PL
                 }
                 Mouse.OverrideCursor = Cursors.Wait;
                 s_bl.Admin.ResetDB();
+                UpdateCallStatusCounts();
                 Mouse.OverrideCursor = null;
             }
 
         }
+        private void UpdateCallStatusCounts()
+        {
+            var counts = s_bl.Call.GetCallCountsByStatus();
+
+            InTreatmentCount = counts.ContainsKey(BO.STATUS.InTreatment) ? counts[BO.STATUS.InTreatment] : 0;
+            OpenCount = counts.ContainsKey(BO.STATUS.Open) ? counts[BO.STATUS.Open] : 0;
+            ExpiredCount = counts.ContainsKey(BO.STATUS.Expired) ? counts[BO.STATUS.Expired] : 0;
+        }
+
+
         private void CloseOpenWindows()
         {
             // סגירת כל החלונות הפתוחים חוץ מהחלון הראשי
@@ -206,6 +240,46 @@ namespace PL
                 {
                     window.Close();
                 }
+            }
+        }
+        private void btnInTreatmentCalls_Click(object sender, RoutedEventArgs e)
+        {
+            if (_callsWindow == null || !_callsWindow.IsVisible)
+            {
+                _callsWindow = new CallListWindow(BO.STATUS.InTreatment); // <-- סינון לפי סטטוס
+                _callsWindow.Closed += (s, e) => _callsWindow = null;
+                _callsWindow.Show();
+            }
+            else
+            {
+                _callsWindow.Activate();
+            }
+        }
+        private void btnOpenCalls_Click(object sender, RoutedEventArgs e)
+        {
+            if (_callsWindow == null || !_callsWindow.IsVisible)
+            {
+                _callsWindow = new CallListWindow(BO.STATUS.Open); // <-- סינון לפי סטטוס
+                _callsWindow.Closed += (s, e) => _callsWindow = null;
+                _callsWindow.Show();
+            }
+            else
+            {
+                _callsWindow.Activate();
+            }
+        }
+
+        private void btnExpired_Click(object sender, RoutedEventArgs e)
+        {
+            if (_callsWindow == null || !_callsWindow.IsVisible)
+            {
+                _callsWindow = new CallListWindow(BO.STATUS.Expired); // <-- סינון לפי סטטוס
+                _callsWindow.Closed += (s, e) => _callsWindow = null;
+                _callsWindow.Show();
+            }
+            else
+            {
+                _callsWindow.Activate();
             }
         }
     }
