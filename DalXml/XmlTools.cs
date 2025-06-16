@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-
 static class XMLTools
 {
     const string s_xmlDir = @"..\xml\";
