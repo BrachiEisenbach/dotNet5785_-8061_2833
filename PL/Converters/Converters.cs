@@ -168,4 +168,28 @@ namespace PL.Converters
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
     }
+
+    public class CanChooseCallConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            // ודא שיש שני ערכים: CallInTreate (values[0]) ו-Active (values[1])
+            if (values != null && values.Length >= 2)
+            {
+                var callInTreate = values[0]; // אובייקט ה-CallInTreate של המתנדב
+                bool isActive = values[1] is bool b && b; // האם המתנדב פעיל
+
+                // הכפתור "בחר קריאה" יהיה פעיל רק אם:
+                // 1. למתנדב אין קריאה בטיפול כרגע (callInTreate הוא null)
+                // 2. המתנדב פעיל (isActive הוא true)
+                return callInTreate == null && isActive;
+            }
+            return false; // אם הערכים לא תקינים, הכפתור מושבת
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
