@@ -470,34 +470,4 @@
     <OpenTime>2023-08-30T21:49:18</OpenTime>
     <MaxTimeToFinish>2023-08-30T02:49:18</MaxTimeToFinish>
   </Call>
-  <Call>
-    <Id>47</Id>
-    <TypeOfCall>FLATTIRE</TypeOfCall>
-    <VerbalDescription>A old woman in his 50s calls for help after his car won't start due to an issue with the electrical system.</VerbalDescription>
-    <FullAddress>Sderot 12, Kiryat Gat</FullAddress>
-    <Latitude>12</Latitude>
-    <Longitude>26</Longitude>
-    <OpenTime>2024-03-07T17:56:28</OpenTime>
-    <MaxTimeToFinish>2024-03-07T22:56:28</MaxTimeToFinish>
-  </Call>
-  <Call>
-    <Id>48</Id>
-    <TypeOfCall>REDRIVE</TypeOfCall>
-    <VerbalDescription>A woman with her husband in her 60s needs help starting her car after the battery died.</VerbalDescription>
-    <FullAddress>Shalom Aleichem 4, Rishon Lezion</FullAddress>
-    <Latitude>54</Latitude>
-    <Longitude>-111</Longitude>
-    <OpenTime>2023-07-05T12:12:12</OpenTime>
-    <MaxTimeToFinish>2023-07-05T17:12:12</MaxTimeToFinish>
-  </Call>
-  <Call>
-    <Id>49</Id>
-    <TypeOfCall>FLATTIRE</TypeOfCall>
-    <VerbalDescription>A child in his 30s calls for help after discovering an issue with the car's alignment. He can’t start the car.</VerbalDescription>
-    <FullAddress>Sderot 30, Ashkelon</FullAddress>
-    <Latitude>24</Latitude>
-    <Longitude>7</Longitude>
-    <OpenTime>2023-12-08T17:04:23</OpenTime>
-    <MaxTimeToFinish>2023-12-08T22:04:23</MaxTimeToFinish>
-  </Call>
 </ArrayOfCall>
