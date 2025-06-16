@@ -1,4 +1,5 @@
 ﻿using BO;
+using DO;
 using PL.Vol;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,25 @@ namespace PL.Call
     public partial class CallListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public int VolunteerId { get; set; }
 
-        public CallListWindow()
+        public BO.Volunteer? CurrentVolunteer
+        {
+            get => (BO.Volunteer?)GetValue(CurrentVolunteerProperty);
+            set => SetValue(CurrentVolunteerProperty, value);
+        }
+
+        public static readonly DependencyProperty CurrentVolunteerProperty =
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(ChooseCallWindow), new PropertyMetadata(null));
+
+
+        public CallListWindow(int id)
         {
             InitializeComponent();
-            queryCallList();
+            VolunteerId = id; // שמירת ה-ID של המתנדב
+            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+
+            CallListObserver();
             this.Loaded += Window_Loaded;
             this.Closed += Window_Closed;
         }
@@ -44,7 +59,8 @@ namespace PL.Call
         private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var window = d as CallListWindow;
-            window?.queryCallList();
+            window?.CallListObserver();
+            
         }
 
         public BO.CallInList? SelectedCall { get; set; }
@@ -87,7 +103,7 @@ namespace PL.Call
                     if (result == MessageBoxResult.Yes)
                     {
                         s_bl.Call.DeleteCall(CallId);
-                        queryCallList();
+                        CallListObserver();
                     }
                 }
                 catch (Exception ex)
@@ -97,15 +113,22 @@ namespace PL.Call
             }
         }
 
-        // ----------------- ביטול הקצאה (טרם ממומש) -----------------
+        // ----------------- ביטול הקצאה  -----------------
         private void CancelAssignment_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is int callId)
+            if (e.OriginalSource is Button button && button.CommandParameter is int id)
             {
-                MessageBox.Show($"(TODO) ביטול הקצאה לקריאה {callId}");
-                // כאן תוכלי לממש את הביטול בפועל:
-                // s_bl.Call.CancelAssignment(callId);
-                queryCallList();
+                int volId = CurrentVolunteer.Id;
+                try
+                {
+
+                    s_bl.Call.cancelTreat(volId, id);
+                    CallListObserver();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot cancel assignment: " + ex.Message);
+                }
             }
         }
 

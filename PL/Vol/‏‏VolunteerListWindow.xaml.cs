@@ -26,7 +26,7 @@ namespace PL.Vol
         public VolunteerListWindow()
         {
             InitializeComponent();
-            queryVolunteerList();
+            volunteerListObserver();
             this.Loaded += Window_Loaded;
             this.Closed += Window_Closed;
         }
@@ -85,7 +85,7 @@ namespace PL.Vol
             var control = d as VolunteerListWindow;
             if (control != null)
             {
-                control.queryVolunteerList();
+                control.volunteerListObserver();
             }
         }
         private void Delete_click(object sender, RoutedEventArgs e)
@@ -98,7 +98,7 @@ namespace PL.Vol
                     if (result == MessageBoxResult.Yes)
                     {
                         s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
-                        queryVolunteerList();
+                        volunteerListObserver();
                     }
                 }
                 catch (Exception ex)

@@ -132,6 +132,18 @@ namespace PL.Converters
         {
             throw new NotImplementedException();
         }
+
+        public class IsNullToIsEnabledConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                // הפקד יהיה מאופשר (IsEnabled=true) רק אם הערך הוא null
+                return value == null;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+                throw new NotImplementedException();
+        }
     }
 
 }

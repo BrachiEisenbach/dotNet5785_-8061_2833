@@ -70,10 +70,9 @@
                                  Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}"/>
 
 
-                                <!-- כפתור ביטול הקצאה -->
-                                <Button Content="בטל הקצאה"
+                                <Button Content="cancel assignment"
                                  Click="CancelAssignment_Click"
-                                 Tag="{Binding CallId}"
+                                 CommandParameter="{Binding Id}"
                                  Margin="5,0,0,0"
                                  Visibility="{Binding Status, Converter={StaticResource AssignedOnlyVisibility}}"/>
                             </StackPanel>

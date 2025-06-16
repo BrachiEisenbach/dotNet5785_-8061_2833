@@ -21,9 +21,10 @@ namespace PL.Call
             InitializeComponent();
             VolunteerId = id; // שמירת ה-ID של המתנדב
             CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-            // קריאה ראשונית לטעינת הקריאות, כרגע ללא סינון או מיון ספציפיים
-            // (הפונקציה ב-BL מסננת לפתוחות ומחשבת מרחק)
-            queryCallListChooseCall();
+            ChooseCallObserver();
+            this.Loaded += Window_Loaded;
+            this.Closed += Window_Closed;
+
         }
 
         // שמירת ה-ID של המתנדב כחבר מחלקה (לא Dependency Property)
@@ -70,7 +71,7 @@ namespace PL.Call
         private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var window = d as ChooseCallWindow;
-            window?.queryCallListChooseCall();
+            window?.ChooseCallObserver();
         }
 
         private void queryCallListChooseCall()
@@ -95,7 +96,7 @@ namespace PL.Call
                 s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                 MessageBox.Show("Volunteer updated successfully");
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(VolunteerId);
-                queryCallListChooseCall(); 
+                ChooseCallObserver(); 
             }
             catch (Exception ex)
             {
@@ -114,7 +115,7 @@ namespace PL.Call
                     if (result == MessageBoxResult.Yes)
                     {
                         s_bl.Call.chooseCall(CurrentVolunteer.Id, callId);
-                        queryCallListChooseCall(); // רענון הרשימה כך שהקריאה שנבחרה תיעלם
+                        ChooseCallObserver(); // רענון הרשימה כך שהקריאה שנבחרה תיעלם
                         MessageBox.Show("Call chosen successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
@@ -128,6 +129,17 @@ namespace PL.Call
                 }
             }
         }
+
+        private void ChooseCallObserver()
+         => queryCallListChooseCall();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        => s_bl.Call.AddObserver(ChooseCallObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+        => s_bl.Volunteer.RemoveObserver(ChooseCallObserver);
+
+
 
     }
 }
