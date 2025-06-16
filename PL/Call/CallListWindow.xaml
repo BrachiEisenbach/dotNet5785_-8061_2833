@@ -16,6 +16,8 @@
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility"/>
         <converters:AssignedOnlyVisibilityConverter x:Key="AssignedOnlyVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:TypeOfCallToColorConverter x:Key="TypeOfCallToColor"/>
+        <converters:StatusToColorConverter x:Key="StatusToColor"/>
 
         <!-- סגנון כפתור מעוגל -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
@@ -99,8 +101,34 @@
                       CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
+                    <DataGridTemplateColumn Header="Status" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Status, Converter={StaticResource StatusToColor}}"
+                    CornerRadius="3"
+                    Padding="5,2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Status}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="Black" />
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Call Type" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding TypeOfCall, Converter={StaticResource TypeOfCallToColor}}"
+                    CornerRadius="3"
+                    Padding="5,2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TypeOfCall}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="Black" />
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
                     <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
                     <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="*" />
