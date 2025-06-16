@@ -17,6 +17,22 @@ namespace PL
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IdProperty =
             DependencyProperty.Register("Id", typeof(int), typeof(MainWindow));
+        public string Username
+        {
+            get { return (string)GetValue(UsernameProperty); }
+            set { SetValue(UsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameProperty =
+            DependencyProperty.Register("Username", typeof(string), typeof(MainWindow));
+        public string Password
+        {
+            get { return (string)GetValue(PasswordProperty); }
+            set { SetValue(PasswordProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordProperty =
+            DependencyProperty.Register("Password", typeof(string), typeof(MainWindow));
 
 
         private AdminWindow _adminWindow;
@@ -39,8 +55,14 @@ namespace PL
                 return;
             }
 
-            BO.ROLE role = s_bl.Volunteer.GetUserRoleById(Id);
-
+            BO.ROLE roleA = s_bl.Volunteer.GetUserRole(Username, Password);
+            BO.ROLE roleB = s_bl.Volunteer.GetUserRoleById(Id);
+            BO.ROLE? role = roleA == roleB ? roleA : null;
+            if (role == null)
+            {
+                MessageBox.Show("One of the details entered is incorrect.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (role == BO.ROLE.ADMIN)
             {
                 MessageBoxResult result = MessageBox.Show(

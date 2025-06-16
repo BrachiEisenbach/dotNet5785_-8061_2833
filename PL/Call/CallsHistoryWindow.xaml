@@ -5,83 +5,106 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="CallsHistoryWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
->
-    <Grid>
+        Title="Calls History" Height="500" Width="850"
+        Background="#F0FFF4"
+        FontFamily="Segoe UI"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <Label Content="Select a value for which the calls will be filtered."
-           HorizontalAlignment="Left"
-           VerticalAlignment="Center"
-           Grid.Column="0"
-           Grid.Row="0" />
+        <!-- Title -->
+        <TextBlock Text="📞 Calls History" 
+                   FontSize="26" 
+                   FontWeight="Bold" 
+                   Foreground="#388E3C" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
 
-            <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-          Grid.Column="1"
-          Grid.Row="0"
-          SelectedValue="{Binding SelectedCallType, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
-          SelectedValuePath="."
-          Margin="66,0,75,26"
-          Grid.RowSpan="2" />
+        <!-- Filter & Sort Panel -->
+        <Border Grid.Row="1" 
+                Background="White" 
+                CornerRadius="10" 
+                Padding="15" 
+                BorderBrush="#81C784" 
+                BorderThickness="1" 
+                Margin="0,0,0,20">
 
-            <Label Content="Select a value for which calls will be sorted."
-           HorizontalAlignment="Left"
-           VerticalAlignment="Center"
-           Grid.Column="0"
-           Grid.Row="1" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
 
-            <ComboBox ItemsSource="{Binding Source={StaticResource ClosedCallInListFieldCollectionKey}}"
-          Grid.Column="1"
-          Grid.Row="1"
-          SelectedValue="{Binding SelectedSortField, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
-          SelectedValuePath="."
-          Margin="66,0,75,0" />
-        </Grid>
+                <Label Content="Filter by call type:" 
+                       Grid.Row="0" Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="5" Foreground="#388E3C" />
 
-        <DataGrid Grid.Row="1"
-          Margin="10"
-          ItemsSource="{Binding Path=ClosedCallsList}"
-          IsReadOnly="True"
-          AutoGenerateColumns="False"
-          EnableRowVirtualization="True" 
-          RowDetailsVisibilityMode="VisibleWhenSelected"
-          SelectedItem="{Binding ClosedCallsList}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type Of Call" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TypeOfTreatment}" Header="Type Of Treatment" Width="Auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                <ComboBox Grid.Row="0" Grid.Column="1"
+                          ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
+                          SelectedValue="{Binding SelectedCallType, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
+                          SelectedValuePath="."
+                          Margin="5"
+                          Background="#E8F5E9" 
+                          BorderBrush="#A5D6A7" 
+                          Height="28"/>
+
+                <Label Content="Sort by field:" 
+                       Grid.Row="1" Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="5" Foreground="#388E3C" />
+
+                <ComboBox Grid.Row="1" Grid.Column="1"
+                          ItemsSource="{Binding Source={StaticResource ClosedCallInListFieldCollectionKey}}"
+                          SelectedValue="{Binding SelectedSortField, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
+                          SelectedValuePath="."
+                          Margin="5"
+                          Background="#E8F5E9"
+                          BorderBrush="#A5D6A7"
+                          Height="28"/>
+            </Grid>
+        </Border>
+
+        <!-- DataGrid -->
+        <Border Grid.Row="2" 
+                Background="White" 
+                CornerRadius="10" 
+                Padding="10" 
+                BorderBrush="#A5D6A7" 
+                BorderThickness="1">
+
+            <DataGrid ItemsSource="{Binding ClosedCallsList}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      EnableRowVirtualization="True"
+                      RowDetailsVisibilityMode="VisibleWhenSelected"
+                      SelectedItem="{Binding ClosedCallsList}"
+                      GridLinesVisibility="None"
+                      RowBackground="#F9FFF9"
+                      AlternatingRowBackground="#E8F5E9"
+                      BorderThickness="0"
+                      HeadersVisibility="Column"
+                      CanUserResizeRows="False"
+                      CanUserAddRows="False"
+                      Margin="0">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="*" />
+                    <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Type of Call" Width="*" />
+                    <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="2*" />
+                    <DataGridTextColumn Binding="{Binding OpenTime}" Header="Open Time" Width="*" />
+                    <DataGridTextColumn Binding="{Binding TypeOfTreatment}" Header="Type of Treatment" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </Window>
-
-<!--public class ClosedCallInList
-    {
-
-        public int Id { get; init; }
-        public TYPEOFCALL TypeOfCall { get; init; }
-        public string FullAddress { get; init; }
-        public DateTime OpenTime { get; init; }
-        public DateTime EntryTimeForTreatment { get; init; }
-        public DateTime? EndTimeOfTreatment { get; init; }
-        public FINISHTYPE? TypeOfTreatment { get; init; }
-    }-->
-
-
-

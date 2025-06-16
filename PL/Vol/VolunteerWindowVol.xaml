@@ -15,7 +15,7 @@
         <converters:CanChooseCallConverter x:Key="CanChooseCallConverter"/>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
         <converters:IsNullToIsEnabledConverter x:Key="IsNullToIsEnabledConverter"/>
-        <converters:BoolToVisibilityInverted x:Key="BoolToVisibilityInverted"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityInverted"/>
 
         <Style TargetType="TextBox">
             <Style.Triggers>

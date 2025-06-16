@@ -16,28 +16,30 @@ namespace BlImplementation
         /// </summary>
         /// <param name="userName">The full name of the volunteer.</param>
         /// <returns>The role of the volunteer.</returns>
-        public BO.ROLE GetUserRole(string userName)
+        public BO.ROLE GetUserRole(string userName, string password)
         {
             try
             {
-                var volunteer = _dal.Volunteer.ReadAll();
-                var user = volunteer.FirstOrDefault(v => v.FullName == userName);
+                var volunteers = _dal.Volunteer.ReadAll();
+                var user = volunteers.FirstOrDefault(v => v.FullName == userName && v.Password == password);
+
                 if (user == null)
                 {
-                    throw new BlDoesNotExistException("The user isn't exist.");
+                    throw new BlDoesNotExistException("The user does not exist or password is incorrect.");
                 }
 
                 return VolunteerManager.ConvertToBORole(user.Role);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
-                throw new BlDoesNotExistException("The user isn't exist.", dalDoesNotExistException);
+                throw new BlDoesNotExistException("The user does not exist.", dalDoesNotExistException);
             }
             catch (Exception ex)
             {
-                throw new BlException("Error while getting message details.");
+                throw new BlException("Error while getting user role.");
             }
         }
+
         /// <summary>
         /// Returns the role of a volunteer based on their id.
         /// </summary>

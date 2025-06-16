@@ -121,8 +121,10 @@ namespace BlTest
                     case "1":
                         Console.Write("Enter the volunteer userName: ");
                         string volunteerUN = Console.ReadLine();
-                        if (volunteerUN != null)
-                            Console.WriteLine(s_bl.Volunteer.GetUserRole(volunteerUN));
+                        Console.Write("Enter the volunteer password: ");
+                        string volunteerPW = Console.ReadLine();
+                        if (volunteerUN != null&& volunteerPW != null)
+                            Console.WriteLine(s_bl.Volunteer.GetUserRole(volunteerUN, volunteerPW));
                         break;
                     case "2":
                         Console.WriteLine("If you want the list of volunteers to be filtered by those who are active, enter true, and if by those who are inactive, enter false:");
