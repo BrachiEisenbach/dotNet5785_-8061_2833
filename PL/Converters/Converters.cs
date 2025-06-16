@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 
 namespace PL.Converters
@@ -186,9 +187,35 @@ namespace PL.Converters
             return false; // אם הערכים לא תקינים, הכפתור מושבת
         }
 
+
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class TypeOfCallToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is BO.TYPEOFCALL callType)
+            {
+                // הגדר צבעים שונים לכל סוג קריאה
+                return callType switch
+                {
+                    BO.TYPEOFCALL.CARBURGLARY => new SolidColorBrush(Color.FromRgb(0xFF, 0xA0, 0x7A)), // Salmon: FF=255, A0=160, 7A=122
+                    BO.TYPEOFCALL.FLATTIRE => new SolidColorBrush(Color.FromRgb(0x87, 0xCE, 0xEB)),    // SkyBlue: 87=135, CE=206, EB=235
+                    BO.TYPEOFCALL.REDRIVE => new SolidColorBrush(Color.FromRgb(0x90, 0xEE, 0x90)),    // LightGreen: 90=144, EE=238, 90=144
+                    BO.TYPEOFCALL.NONE => new SolidColorBrush(Color.FromRgb(0xFF, 0x63, 0x47)),      // Tomato: FF=255, 63=99, 47=71                    // הוסף כאן מקרים נוספים אם יש לך סוגי קריאות אחרים
+                    _ => new SolidColorBrush(Colors.Transparent) // צבע ברירת מחדל או שקוף
+                };
+            }
+            return new SolidColorBrush(Colors.Transparent); // צבע שקוף אם הקלט אינו תקין
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // המרה הפוכה אינה נחוצה במקרה זה
         }
     }
 }

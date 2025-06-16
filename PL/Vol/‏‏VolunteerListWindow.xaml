@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Vol"
         mc:Ignorable="d"
+        xmlns:converters="clr-namespace:PL.Converters"
         Title="Volunteer List"
         Height="640" Width="850"
         Background="#F0FFF4"
@@ -32,6 +33,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <converters:TypeOfCallToColorConverter x:Key="TypeOfCallToColor"/>
     </Window.Resources>
 
     <Grid Margin="20">
