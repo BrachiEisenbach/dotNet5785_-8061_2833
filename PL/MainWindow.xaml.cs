@@ -53,7 +53,7 @@ namespace PL
                 {
                     if (_adminWindow == null || !_adminWindow.IsVisible)
                     {
-                        _adminWindow = new AdminWindow();
+                        _adminWindow = new AdminWindow(Id);
                         _adminWindow.Show();
                     }
                     else

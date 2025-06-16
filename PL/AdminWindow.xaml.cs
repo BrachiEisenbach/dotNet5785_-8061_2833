@@ -1,4 +1,5 @@
 ﻿using BO;
+using DO;
 using PL.Call;
 using PL.Vol;
 using System;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BO;
 
 namespace PL
 {
@@ -26,6 +28,14 @@ namespace PL
 
         private CallListWindow? _callsWindow;
         private VolunteerListWindow? _volunteersWindow;
+
+        public BO.Volunteer CurrentVolunteer
+        {
+            get { return (BO.Volunteer)GetValue(CurrentVolunteerProperty); }
+            set { SetValue(CurrentVolunteerProperty, value); }
+        }
+        public static readonly DependencyProperty CurrentVolunteerProperty =
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindowVol), new PropertyMetadata(null));
 
 
         public DateTime CurrentTime
@@ -119,7 +129,7 @@ namespace PL
             s_bl.Admin.ClockPromotion(BO.TIMEUNIT.YEAR);
         }
 
-        public AdminWindow()
+        public AdminWindow(int id)
         {
             System.Diagnostics.PresentationTraceSources.Refresh();
             System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
@@ -127,6 +137,7 @@ namespace PL
 
             InitializeComponent();
             this.DataContext = this;
+            this.CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
             UpdateCallStatusCounts();
 
         }
@@ -172,7 +183,7 @@ namespace PL
         {
             if (_callsWindow == null || !_callsWindow.IsVisible)
             {
-                _callsWindow = new CallListWindow();
+                _callsWindow = new CallListWindow(CurrentVolunteer.Id);
                 _callsWindow.Closed += (s, e) => _callsWindow = null;
                 _callsWindow.Show();
             }

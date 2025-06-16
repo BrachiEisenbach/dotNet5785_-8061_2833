@@ -177,16 +177,16 @@ namespace BlImplementation
                 if (assignment == null)
                     throw new BlDoesNotExistException($"Assignment with ID {assiId} .");
 
-                // 2. שליפת המתנדב שמבקש לבטל
+                //  שליפת המתנדב שמבקש לבטל
                 var volunteerFromDAL = _dal.Volunteer.Read(volId);
                 if (volunteerFromDAL == null)
                     throw new BlDoesNotExistException($"The user with ID {volId} not found.");
 
-                // 3. בדיקת הרשאה - רק מנהל או המתנדב עצמו רשאים לבטל
+                //  בדיקת הרשאה - רק מנהל או המתנדב עצמו רשאים לבטל
                 if (volunteerFromDAL.Role != DO.ROLE.ADMIN && volunteerFromDAL.Id != assignment.VolunteerId)
                     throw new BlUnauthorizedException("You do not have permission to cancel the treatment.");
 
-                // 4. בדיקה שההקצאה עדיין פתוחה
+                //  בדיקה שההקצאה עדיין פתוחה
                 var call = _dal.Call.Read(assignment.CallId);
                 if (call == null)
                     throw new BlDoesNotExistException($"Assignment with ID {assignment.CallId} not found.");
@@ -197,7 +197,7 @@ namespace BlImplementation
                 if (call.MaxTimeToFinish != null && call.MaxTimeToFinish < DateTime.Now)
                     throw new BlInvalidOperationException("Treatment cannot be canceled after the call has expired.");
 
-                // 5. עדכון הנתונים
+                //  עדכון הנתונים
                 var updatedAssignment = assignment with
                 {
                     EndTimeOfTreatment = AdminManager.Now,
@@ -206,7 +206,7 @@ namespace BlImplementation
                                       : TYPEOFTREATMENT.CANCELINGANADMINISTRATOR
                 };
 
-                // 6. שמירה לשכבת הנתונים
+                //  שמירה לשכבת הנתונים
                 _dal.Assignment.Update(updatedAssignment);
             }
 
