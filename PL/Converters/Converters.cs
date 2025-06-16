@@ -203,11 +203,38 @@ namespace PL.Converters
                 // הגדר צבעים שונים לכל סוג קריאה
                 return callType switch
                 {
-                    BO.TYPEOFCALL.CARBURGLARY => new SolidColorBrush(Color.FromRgb(0xFF, 0xA0, 0x7A)), // Salmon: FF=255, A0=160, 7A=122
+                    BO.TYPEOFCALL.CARBURGLARY => new SolidColorBrush(Color.FromRgb(0x90, 0xEE, 0x90)), // Salmon: FF=255, A0=160, 7A=122
                     BO.TYPEOFCALL.FLATTIRE => new SolidColorBrush(Color.FromRgb(0x87, 0xCE, 0xEB)),    // SkyBlue: 87=135, CE=206, EB=235
-                    BO.TYPEOFCALL.REDRIVE => new SolidColorBrush(Color.FromRgb(0x90, 0xEE, 0x90)),    // LightGreen: 90=144, EE=238, 90=144
+                    BO.TYPEOFCALL.REDRIVE => new SolidColorBrush(Color.FromRgb(0xFF, 0xA0, 0x7A)),    // LightGreen: 90=144, EE=238, 90=144
                     BO.TYPEOFCALL.NONE => new SolidColorBrush(Color.FromRgb(0xFF, 0x63, 0x47)),      // Tomato: FF=255, 63=99, 47=71                    // הוסף כאן מקרים נוספים אם יש לך סוגי קריאות אחרים
                     _ => new SolidColorBrush(Colors.Transparent) // צבע ברירת מחדל או שקוף
+                };
+            }
+            return new SolidColorBrush(Colors.Transparent); // צבע שקוף אם הקלט אינו תקין
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // המרה הפוכה אינה נחוצה במקרה זה
+        }
+    }
+
+    public class StatusToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is BO.STATUS status)
+            {
+                return status switch
+                {
+                    BO.STATUS.InTreatment => new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50)), // Green - בטיפול (4CAF50)
+                    BO.STATUS.InTreatmentDangerZone => new SolidColorBrush(Color.FromRgb(0xFF, 0xC1, 0x07)), // Amber - בטיפול (אזור סיכון) (FFC107)
+                    BO.STATUS.Open => new SolidColorBrush(Color.FromRgb(0x21, 0x96, 0xF3)), // Blue - פתוח (2196F3)
+                    BO.STATUS.Closed => new SolidColorBrush(Color.FromRgb(0x9E, 0x9E, 0x9E)), // Grey - סגור (9E9E9E)
+                    BO.STATUS.Expired => new SolidColorBrush(Color.FromRgb(0xF4, 0x43, 0x36)), // Red - פג תוקף (F44336)
+                    BO.STATUS.OpenDangerZone => new SolidColorBrush(Color.FromRgb(0xFF, 0x98, 0x00)), // Orange - פתוח (אזור סיכון) (FF9800)
+                    BO.STATUS.none => new SolidColorBrush(Colors.Transparent), // שקוף או צבע ברירת מחדל אחר
+                    _ => new SolidColorBrush(Colors.Transparent)
                 };
             }
             return new SolidColorBrush(Colors.Transparent); // צבע שקוף אם הקלט אינו תקין

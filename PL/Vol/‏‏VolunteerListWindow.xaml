@@ -100,8 +100,20 @@
                     <DataGridTextColumn Binding="{Binding AllCallsThatCanceled}" Header="Canceled" Width="Auto" />
                     <DataGridTextColumn Binding="{Binding AllCallsThatHaveExpired}" Header="Expired" Width="Auto" />
                     <DataGridTextColumn Binding="{Binding CallId}" Header="Call ID" Width="Auto" />
-                    <DataGridTextColumn Binding="{Binding TypeOfCall}" Header="Call Type" Width="*" />
-
+                    <DataGridTemplateColumn Header="Call Type" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding TypeOfCall, Converter={StaticResource TypeOfCallToColor}}"
+                    CornerRadius="3"
+                    Padding="5,2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TypeOfCall}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="Black" />
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Active" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
