@@ -49,58 +49,66 @@ namespace PL
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Id == 0)
+            try
             {
-                MessageBox.Show("Please enter a valid ID.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            BO.ROLE roleA = s_bl.Volunteer.GetUserRole(Username, Password);
-            BO.ROLE roleB = s_bl.Volunteer.GetUserRoleById(Id);
-            BO.ROLE? role = roleA == roleB ? roleA : null;
-            if (role == null)
-            {
-                MessageBox.Show("One of the details entered is incorrect.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (role == BO.ROLE.ADMIN)
-            {
-                MessageBoxResult result = MessageBox.Show(
-                    "Would you like to enter as Admin?\nClick 'Yes' for Admin, 'No' for Volunteer.",
-                    "Select Role",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
+                if (Id == 0)
                 {
-                    if (_adminWindow == null || !_adminWindow.IsVisible)
-                    {
-                        _adminWindow = new AdminWindow(Id);
-                        _adminWindow.Show();
-                    }
-                    else
-                    {
-                        _adminWindow.Activate();
-                    }
+                    MessageBox.Show("Please enter a valid ID.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
-                else if (result == MessageBoxResult.No)
+
+                BO.ROLE roleA = s_bl.Volunteer.GetUserRole(Username, Password);
+                BO.ROLE roleB = s_bl.Volunteer.GetUserRoleById(Id);
+                BO.ROLE? role = roleA == roleB ? roleA : null;
+                if (role == null)
                 {
-                    VolunteerWindowVol userWindow = new Vol.VolunteerWindowVol(Id); 
+                    MessageBox.Show("One of the details entered is incorrect.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (role == BO.ROLE.ADMIN)
+                {
+                    MessageBoxResult result = MessageBox.Show(
+                        "Would you like to enter as Admin?\nClick 'Yes' for Admin, 'No' for Volunteer.",
+                        "Select Role",
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (_adminWindow == null || !_adminWindow.IsVisible)
+                        {
+                            _adminWindow = new AdminWindow(Id);
+                            _adminWindow.Show();
+                        }
+                        else
+                        {
+                            _adminWindow.Activate();
+                        }
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        VolunteerWindowVol userWindow = new Vol.VolunteerWindowVol(Id);
+                        userWindow.Show();
+                    }
+                    // אם Cancel - לא עושים כלום
+                }
+
+                else if (role == BO.ROLE.VOLUNTEER)
+                {
+                    VolunteerWindowVol userWindow = new VolunteerWindowVol(Id); // תמיד נפתח חדש
                     userWindow.Show();
                 }
-                // אם Cancel - לא עושים כלום
+                else
+                {
+                    MessageBox.Show("You are not authorized to access this application.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-
-            else if (role == BO.ROLE.VOLUNTEER)
+            catch (Exception ex)
             {
-                VolunteerWindowVol userWindow = new VolunteerWindowVol(Id); // תמיד נפתח חדש
-                userWindow.Show();
-            }
-            else
-            {
-                MessageBox.Show("You are not authorized to access this application.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+            
 
     }
 }
