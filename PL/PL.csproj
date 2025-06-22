@@ -15,6 +15,16 @@
 
   </PropertyGroup>
 
+
+<Target Name="CopyNuGetDependencies" AfterTargets="Build">
+  <ItemGroup>
+    <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths)" />
+  </ItemGroup>
+  <Copy 
+    SourceFiles="@(ReferenceCopyLocalPaths)" 
+    DestinationFolder="$(OutputPath)" 
+    SkipUnchangedFiles="true" />
+</Target>
 	<ItemGroup>
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
 	</ItemGroup>
