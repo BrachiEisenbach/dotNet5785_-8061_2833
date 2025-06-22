@@ -25,6 +25,7 @@
     DestinationFolder="$(OutputPath)" 
     SkipUnchangedFiles="true" />
 </Target>
+	
 	<ItemGroup>
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
 	</ItemGroup>
