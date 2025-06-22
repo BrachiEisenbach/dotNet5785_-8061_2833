@@ -44,6 +44,14 @@ namespace PL
             s_bl.Admin.InitializeDB();
             InitializeComponent();
             this.DataContext = this;
+            // Debugging code to set default values for testing purposes
+
+#if DEBUG
+            var vol1 = s_bl.Volunteer.GetVolunteerInList(null,0).ToList()[0];   
+            Id= vol1.Id;  
+            Password=s_bl.Volunteer.GetVolunteerDetails(vol1.Id).Password;  
+            Username=s_bl.Volunteer.GetVolunteerDetails(vol1.Id).FullName ;
+#endif
 
         }
 
