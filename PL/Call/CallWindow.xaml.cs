@@ -60,7 +60,7 @@ namespace PL.Call
             DataContext = this;
             IsUpdateMode = id != 0;
             ButtonText = id == 0 ? "Add" : "Update";
-
+            try { 
             if (id != 0)
             {
                 CurrentCall = s_bl.Call.GetCallDetails(id);
@@ -81,6 +81,14 @@ namespace PL.Call
             if (CurrentCall != null && CurrentCall.Id != 0)
             {
                 s_bl.Call.AddObserver(CurrentCall.Id, CallObserver);
+            }
+            }catch(BlDoesNotExistException ex)
+            {
+                MessageBox.Show("Unable to load call details: " + ex.Message);
+
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Unable to load call details: " + ex.Message);
             }
         }
 

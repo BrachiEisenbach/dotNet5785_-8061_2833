@@ -51,6 +51,7 @@ namespace PL.Vol
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;
+            try {
 
             if (id != 0)
             {
@@ -80,6 +81,15 @@ namespace PL.Vol
             if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
             {
                 s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerObserver);
+            }
+            }
+            catch(BlDoesNotExistException ex)
+            {
+                MessageBox.Show("Unable to load volunteer details: " + ex.Message);
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Unable to load volunteer details: " + ex.Message);
+
             }
         }
 
