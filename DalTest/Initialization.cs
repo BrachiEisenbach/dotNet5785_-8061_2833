@@ -290,113 +290,115 @@ public static class Initialization
     52.0, -74.0, 137.0, -115.0, -121.0, 48.0, -59.0, 17.0, -80.0, 115.0,
     -161.0, 71.0, 53.0, -10.0, 34.0, -127.0, 96.0, 26.0, -111.0, 7.0 };
         // Array of timestamps representing the creation time of each call
-        DateTime[] OpenTimeOfCalls =
-{
-    new DateTime(2023, 12, 31, 23, 45, 12),
-    new DateTime(2023, 11, 22, 14, 35, 10),
-    new DateTime(2023, 10, 15, 10, 25, 45),
-    new DateTime(2023, 12, 05, 08, 18, 30),
-    new DateTime(2023, 09, 18, 19, 55, 50),
-    new DateTime(2023, 12, 03, 13, 30, 05),
-    new DateTime(2023, 08, 10, 07, 05, 40),
-    new DateTime(2024, 01, 23, 16, 42, 33),
-    new DateTime(2023, 11, 09, 09, 50, 25),
-    new DateTime(2023, 07, 22, 20, 13, 18),
-    new DateTime(2024, 02, 14, 06, 11, 03),
-    new DateTime(2023, 09, 29, 18, 22, 48),
-    new DateTime(2024, 03, 05, 23, 10, 32),
-    new DateTime(2023, 11, 11, 02, 35, 22),
-    new DateTime(2023, 12, 16, 14, 50, 05),
-    new DateTime(2024, 01, 02, 11, 17, 03),
-    new DateTime(2023, 10, 01, 21, 05, 59),
-    new DateTime(2023, 12, 24, 10, 30, 35),
-    new DateTime(2024, 01, 17, 05, 52, 47),
-    new DateTime(2023, 07, 19, 13, 14, 25),
-    new DateTime(2023, 09, 27, 08, 08, 55),
-    new DateTime(2024, 02, 11, 15, 50, 42),
-    new DateTime(2023, 11, 14, 12, 02, 20),
-    new DateTime(2023, 08, 25, 22, 16, 04),
-    new DateTime(2024, 03, 20, 00, 59, 50),
-    new DateTime(2023, 10, 12, 04, 39, 12),
-    new DateTime(2023, 09, 17, 19, 22, 01),
-    new DateTime(2023, 12, 21, 17, 12, 44),
-    new DateTime(2023, 07, 15, 11, 44, 22),
-    new DateTime(2024, 01, 30, 03, 30, 59),
-    new DateTime(2023, 11, 05, 16, 40, 35),
-    new DateTime(2023, 10, 18, 12, 22, 19),
-    new DateTime(2023, 09, 23, 14, 35, 05),
-    new DateTime(2024, 01, 13, 09, 55, 37),
-    new DateTime(2023, 08, 18, 18, 48, 21),
-    new DateTime(2024, 02, 01, 23, 15, 50),
-    new DateTime(2023, 11, 30, 06, 29, 33),
-    new DateTime(2023, 07, 08, 20, 10, 15),
-    new DateTime(2023, 09, 12, 04, 25, 40),
-    new DateTime(2024, 03, 11, 02, 55, 10),
-    new DateTime(2023, 10, 20, 22, 13, 42),
-    new DateTime(2023, 08, 12, 07, 05, 02),
-    new DateTime(2023, 12, 13, 15, 40, 55),
-    new DateTime(2023, 11, 17, 03, 17, 49),
-    new DateTime(2024, 01, 25, 09, 13, 27),
-    new DateTime(2023, 09, 30, 10, 32, 15),
-    new DateTime(2023, 08, 30, 21, 49, 18),
-    new DateTime(2024, 03, 07, 17, 56, 28),
-    new DateTime(2023, 07, 05, 12, 12, 12),
-    new DateTime(2023, 12, 08, 17, 04, 23)
+        DateTime[] OpenTimeOfCalls = {
+    new DateTime(2025, 06, 25, 14, 32, 10),
+    new DateTime(2025, 06, 18, 09, 47, 35),
+    new DateTime(2025, 06, 11, 16, 15, 42),
+    new DateTime(2025, 06, 04, 11, 08, 23),
+    new DateTime(2025, 05, 28, 17, 29, 05),
+    new DateTime(2025, 05, 21, 08, 55, 12),
+    new DateTime(2025, 05, 14, 12, 40, 51),
+    new DateTime(2025, 05, 07, 15, 18, 44),
+    new DateTime(2025, 04, 30, 07, 22, 19),
+    new DateTime(2025, 04, 23, 19, 33, 37),
+    new DateTime(2025, 04, 16, 06, 15, 00),
+    new DateTime(2025, 04, 09, 13, 12, 09),
+    new DateTime(2025, 04, 02, 10, 44, 55),
+    new DateTime(2025, 03, 26, 18, 03, 28),
+    new DateTime(2025, 03, 19, 14, 25, 13),
+    new DateTime(2025, 03, 12, 09, 38, 47),
+    new DateTime(2025, 03, 05, 11, 10, 59),
+    new DateTime(2025, 02, 26, 08, 48, 33),
+    new DateTime(2025, 02, 19, 12, 27, 41),
+    new DateTime(2025, 02, 12, 17, 45, 18),
+    new DateTime(2025, 02, 05, 10, 53, 26),
+    new DateTime(2025, 01, 29, 07, 15, 32),
+    new DateTime(2025, 01, 22, 13, 44, 09),
+    new DateTime(2025, 01, 15, 16, 11, 00),
+    new DateTime(2025, 01, 08, 09, 59, 05),
+    new DateTime(2025, 01, 01, 11, 35, 47),
+    new DateTime(2024, 12, 25, 08, 20, 31),
+    new DateTime(2024, 12, 18, 15, 25, 13),
+    new DateTime(2024, 12, 11, 14, 44, 22),
+    new DateTime(2024, 12, 04, 07, 53, 39),
+    new DateTime(2024, 11, 27, 10, 32, 14),
+    new DateTime(2024, 11, 20, 17, 18, 59),
+    new DateTime(2024, 11, 13, 12, 04, 45),
+    new DateTime(2024, 11, 06, 13, 59, 06),
+    new DateTime(2024, 10, 30, 06, 35, 11),
+    new DateTime(2024, 10, 23, 16, 13, 03),
+    new DateTime(2024, 10, 16, 09, 42, 27),
+    new DateTime(2024, 10, 09, 18, 00, 00),
+    new DateTime(2024, 10, 02, 11, 12, 38),
+    new DateTime(2024, 09, 25, 08, 29, 21),
+    new DateTime(2024, 09, 18, 14, 57, 12),
+    new DateTime(2024, 09, 11, 13, 13, 45),
+    new DateTime(2024, 09, 04, 10, 36, 53),
+    new DateTime(2024, 08, 28, 15, 09, 34),
+    new DateTime(2024, 08, 21, 07, 44, 16),
+    new DateTime(2024, 08, 14, 12, 00, 00),
+    new DateTime(2024, 08, 07, 17, 29, 48),
+    new DateTime(2024, 07, 31, 16, 11, 29),
+    new DateTime(2024, 07, 24, 13, 33, 08),
+    new DateTime(2024, 07, 17, 09, 26, 40),
+    new DateTime(2024, 07, 10, 08, 55, 52)
 };
+
         // Array of timestamps representing the expected completion time of each call
         DateTime[] MaxTimeToFinishOfCalls ={
-    new DateTime(2026, 12, 31, 04, 45, 12),  // +5 hours
-    new DateTime(2026, 11, 22, 19, 35, 10),  // +5 hours
-    new DateTime(2026, 10, 15, 15, 25, 45),  // +5 hours
-    new DateTime(2026, 12, 05, 13, 18, 30),  // +5 hours
-    new DateTime(2026, 09, 18, 00, 55, 50),  // +5 hours
-    new DateTime(2026, 12, 03, 18, 30, 05),  // +5 hours
-    new DateTime(2026, 08, 10, 12, 05, 40),  // +5 hours
-    new DateTime(2026, 01, 23, 21, 42, 33),  // +5 hours
-    new DateTime(2026, 11, 09, 14, 50, 25),  // +5 hours
-    new DateTime(2026, 07, 22, 01, 13, 18),  // +5 hours
-    new DateTime(2026, 02, 14, 11, 11, 03),  // +5 hours
-    new DateTime(2026, 09, 29, 23, 22, 48),  // +5 hours
-    new DateTime(2026, 03, 05, 04, 10, 32),  // +5 hours
-    new DateTime(2026, 11, 11, 07, 35, 22),  // +5 hours
-    new DateTime(2026, 12, 16, 19, 50, 05),  // +5 hours
-    new DateTime(2024, 01, 02, 16, 17, 03),  // +5 hours
-    new DateTime(2023, 10, 01, 02, 05, 59),  // +5 hours
-    new DateTime(2023, 12, 24, 15, 30, 35),  // +5 hours
-    new DateTime(2024, 01, 17, 10, 52, 47),  // +5 hours
-    new DateTime(2023, 07, 19, 18, 14, 25),  // +5 hours
-    new DateTime(2023, 09, 27, 13, 08, 55),  // +5 hours
-    new DateTime(2024, 02, 11, 20, 50, 42),  // +5 hours
-    new DateTime(2023, 11, 14, 17, 02, 20),  // +5 hours
-    new DateTime(2023, 08, 25, 03, 16, 04),  // +5 hours
-    new DateTime(2024, 03, 20, 05, 59, 50),  // +5 hours
-    new DateTime(2023, 10, 12, 09, 39, 12),  // +5 hours
-    new DateTime(2023, 09, 17, 00, 22, 01),  // +5 hours
-    new DateTime(2023, 12, 21, 22, 12, 44),  // +5 hours
-    new DateTime(2023, 07, 15, 16, 44, 22),  // +5 hours
-    new DateTime(2024, 01, 30, 08, 30, 59),  // +5 hours
-    new DateTime(2023, 11, 05, 21, 40, 35),  // +5 hours
-    new DateTime(2023, 10, 18, 17, 22, 19),  // +5 hours
-    new DateTime(2023, 09, 23, 19, 35, 05),  // +5 hours
-    new DateTime(2024, 01, 13, 14, 55, 37),  // +5 hours
-    new DateTime(2023, 08, 18, 23, 48, 21),  // +5 hours
-    new DateTime(2024, 02, 01, 04, 15, 50),  // +5 hours
-    new DateTime(2023, 11, 30, 11, 29, 33),  // +5 hours
-    new DateTime(2023, 07, 08, 01, 10, 15),  // +5 hours
-    new DateTime(2023, 09, 12, 09, 25, 40),  // +5 hours
-    new DateTime(2024, 03, 11, 07, 55, 10),  // +5 hours
-    new DateTime(2023, 10, 20, 03, 13, 42),  // +5 hours
-    new DateTime(2023, 08, 12, 12, 05, 02),  // +5 hours
-    new DateTime(2023, 12, 13, 20, 40, 55),  // +5 hours
-    new DateTime(2023, 11, 17, 08, 17, 49),  // +5 hours
-    new DateTime(2024, 01, 25, 14, 13, 27),  // +5 hours
-    new DateTime(2023, 09, 30, 15, 32, 15),  // +5 hours
-    new DateTime(2023, 08, 30, 02, 49, 18),  // +5 hours
-    new DateTime(2024, 03, 07, 22, 56, 28),  // +5 hours
-    new DateTime(2023, 07, 05, 17, 12, 12),  // +5 hours
-    new DateTime(2023, 12, 08, 22, 04, 23) // +5 hours
-  
+    new DateTime(2025, 06, 25, 18, 32, 10),
+    new DateTime(2025, 06, 19, 12, 47, 35),
+    new DateTime(2025, 06, 11, 23, 15, 42),
+    new DateTime(2025, 06, 04, 21, 08, 23),
+    new DateTime(2025, 05, 28, 18, 29, 05),
+    new DateTime(2025, 05, 21, 18, 55, 12),
+    new DateTime(2025, 05, 16, 18, 40, 51),
+    new DateTime(2025, 05, 08, 17, 18, 44),
+    new DateTime(2025, 05, 01, 08, 22, 19),
+    new DateTime(2025, 04, 24, 22, 33, 37),
+    new DateTime(2025, 04, 18, 09, 15, 00),
+    new DateTime(2025, 04, 10, 23, 12, 09),
+    new DateTime(2025, 04, 04, 16, 44, 55),
+    new DateTime(2025, 03, 28, 21, 03, 28),
+    new DateTime(2025, 03, 21, 23, 25, 13),
+    new DateTime(2025, 03, 13, 19, 38, 47),
+    new DateTime(2025, 03, 06, 14, 10, 59),
+    new DateTime(2025, 02, 27, 19, 48, 33),
+    new DateTime(2025, 02, 20, 19, 27, 41),
+    new DateTime(2025, 02, 14, 20, 45, 18),
+    new DateTime(2025, 02, 06, 16, 53, 26),
+    new DateTime(2025, 01, 30, 13, 15, 32),
+    new DateTime(2025, 01, 24, 23, 44, 09),
+    new DateTime(2025, 01, 16, 20, 11, 00),
+    new DateTime(2025, 01, 09, 18, 59, 05),
+    new DateTime(2025, 01, 02, 17, 35, 47),
+    new DateTime(2024, 12, 26, 13, 20, 31),
+    new DateTime(2024, 12, 20, 01, 25, 13),
+    new DateTime(2024, 12, 12, 21, 44, 22),
+    new DateTime(2024, 12, 06, 08, 53, 39),
+    new DateTime(2024, 11, 29, 19, 32, 14),
+    new DateTime(2024, 11, 21, 18, 18, 59),
+    new DateTime(2024, 11, 14, 15, 04, 45),
+    new DateTime(2024, 11, 08, 14, 59, 06),
+    new DateTime(2024, 11, 01, 07, 35, 11),
+    new DateTime(2024, 10, 24, 22, 13, 03),
+    new DateTime(2024, 10, 17, 19, 42, 27),
+    new DateTime(2024, 10, 10, 19, 00, 00),
+    new DateTime(2024, 10, 03, 18, 12, 38),
+    new DateTime(2024, 09, 26, 19, 29, 21),
+    new DateTime(2024, 09, 20, 17, 57, 12),
+    new DateTime(2024, 09, 12, 22, 13, 45),
+    new DateTime(2024, 09, 05, 20, 36, 53),
+    new DateTime(2024, 08, 30, 21, 09, 34),
+    new DateTime(2024, 08, 23, 10, 44, 16),
+    new DateTime(2024, 08, 15, 19, 00, 00),
+    new DateTime(2024, 08, 08, 23, 29, 48),
+    new DateTime(2024, 08, 01, 17, 11, 29),
+    new DateTime(2024, 07, 26, 18, 33, 08),
+    new DateTime(2024, 07, 18, 21, 26, 40),
+    new DateTime(2024, 07, 11, 18, 55, 52)
 };
+
 
         for (int i = 0; i < callDescriptions.Length; i++)
         {
