@@ -85,12 +85,24 @@ namespace Helpers
         }
 
 
+        public static void PrintLocationDebugInfo(DO.Volunteer vol, DO.Call call)
+        {
+            Console.WriteLine($"--- DEBUG DISTANCE CHECK ---");
+            Console.WriteLine($"Volunteer Address: {vol.FullAddress}");
+            Console.WriteLine($"→ Latitude: {vol.Latitude}, Longitude: {vol.Longitude}");
+
+            Console.WriteLine($"Call Address: {call.FullAddress}");
+            Console.WriteLine($"→ Latitude: {call.Latitude}, Longitude: {call.Longitude}");
+
+            var distance = GetDistance(vol, call);
+            Console.WriteLine($"Calculated Distance: {distance} km");
+        }
 
 
 
         private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
         private static readonly HttpClient Client = new HttpClient();
-       
+
 
 
 
@@ -100,6 +112,8 @@ namespace Helpers
         /// <param name="volunteer">המתנדב</param>
         /// <param name="call">הקריאה</param>
         /// <returns>המרחק בקילומטרים בין המתנדב לקריאה</returns>
+        // ב-CallManager.cs
+
         internal static double GetDistance(DO.Volunteer volunteer, DO.Call call)
         {
             // רדיוס כדור הארץ בקילומטרים
@@ -116,19 +130,20 @@ namespace Helpers
             double lat2 = DegreesToRadians(call.Latitude);
             double lon2 = DegreesToRadians(call.Longitude);
 
-            // חישוב ההפרש בקווי רוחב ובאורך
+            // חישוב ההפרש בקווי רוחב ובאורך (כעת שניהם כבר ברדיאנים)
             double dLat = lat2 - lat1;
             double dLon = lon2 - lon1;
 
             // חישוב המרחק בעזרת נוסחת Haversine
             double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(lat1) * Math.Cos(lat2) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+                               Math.Cos(lat1) * Math.Cos(lat2) *
+                               Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
             // חישוב המרחק (רדיוס כדור הארץ * זווית הקשת)
             double distance = EarthRadius * c;
-
+            if (distance > 500) // נניח שמרחק מעל 500 ק"מ חשוד
+                PrintLocationDebugInfo(volunteer, call);
             return distance;
         }
 
