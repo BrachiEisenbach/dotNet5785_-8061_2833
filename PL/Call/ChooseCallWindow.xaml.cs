@@ -48,8 +48,6 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.OpenCallInList>), typeof(ChooseCallWindow), new PropertyMetadata(null));
 
-        // נשמר ה-DependencyProperty עבור Type למרות שה-UI עבורו הוסר, כפי שבקשת.
-        // הפרמטר Type נחוץ כעת כפרמטר למתודת ה-BL.
         public BO.TYPEOFCALL Type
         {
             get => (BO.TYPEOFCALL)GetValue(TypeProperty);
@@ -78,9 +76,6 @@ namespace PL.Call
         {
             try
             {
-                // קוראים ישירות למתודה ב-BL שמחזירה את רשימת הקריאות הפתוחות
-                // עבור המתנדב הנוכחי, כולל חישוב המרחק והסינון והמיון הדרושים.
-                // הפרמטרים הם: VolunteerId, TypeOfCall (מאפיין ה-Type של החלון), ו-SortBy (ממיין לפי מרחק כברירת מחדל).
                 CallList = s_bl.Call.GetOpenCallInList(VolunteerId, Type, BO.OpenCallInListField.Distance).ToList();
             }
             catch (Exception ex)
@@ -115,8 +110,10 @@ namespace PL.Call
                     if (result == MessageBoxResult.Yes)
                     {
                         s_bl.Call.chooseCall(CurrentVolunteer.Id, callId);
-                        ChooseCallObserver(); // רענון הרשימה כך שהקריאה שנבחרה תיעלם
-                        MessageBox.Show("Call chosen successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        //ChooseCallObserver(); // רענון הרשימה כך שהקריאה שנבחרה תיעלם
+                        MessageBox.Show("Call chosen successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);                        
+                        this.Close();
+
                     }
                 }
                 catch (BlException ex)

@@ -443,7 +443,7 @@ namespace BlImplementation
                         MaxTimeToFinish = call.MaxTimeToFinish,
                         Distance = CallManager.GetDistance(volunteer, call)
                     };
-
+                openCallsList = openCallsList.Where(call => call.Distance <= volunteer.MaxDistance);
                 openCallsList = sortBy.HasValue
                     ? sortBy.Value switch
                     {
