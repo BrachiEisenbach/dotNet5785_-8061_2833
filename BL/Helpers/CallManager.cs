@@ -85,18 +85,18 @@ namespace Helpers
         }
 
 
-        public static void PrintLocationDebugInfo(DO.Volunteer vol, DO.Call call)
-        {
-            Console.WriteLine($"--- DEBUG DISTANCE CHECK ---");
-            Console.WriteLine($"Volunteer Address: {vol.FullAddress}");
-            Console.WriteLine($"→ Latitude: {vol.Latitude}, Longitude: {vol.Longitude}");
+        //public static void PrintLocationDebugInfo(DO.Volunteer vol, DO.Call call)
+        //{
+        //    Console.WriteLine($"--- DEBUG DISTANCE CHECK ---");
+        //    Console.WriteLine($"Volunteer Address: {vol.FullAddress}");
+        //    Console.WriteLine($"→ Latitude: {vol.Latitude}, Longitude: {vol.Longitude}");
 
-            Console.WriteLine($"Call Address: {call.FullAddress}");
-            Console.WriteLine($"→ Latitude: {call.Latitude}, Longitude: {call.Longitude}");
+        //    Console.WriteLine($"Call Address: {call.FullAddress}");
+        //    Console.WriteLine($"→ Latitude: {call.Latitude}, Longitude: {call.Longitude}");
 
-            var distance = GetDistance(vol, call);
-            Console.WriteLine($"Calculated Distance: {distance} km");
-        }
+        //    var distance = GetDistance(vol, call);
+        //    Console.WriteLine($"Calculated Distance: {distance} km");
+        //}
 
 
 
@@ -142,8 +142,8 @@ namespace Helpers
 
             // חישוב המרחק (רדיוס כדור הארץ * זווית הקשת)
             double distance = EarthRadius * c;
-            if (distance > 500) // נניח שמרחק מעל 500 ק"מ חשוד
-                PrintLocationDebugInfo(volunteer, call);
+            //if (distance > 500) // נניח שמרחק מעל 500 ק"מ חשוד
+            //    PrintLocationDebugInfo(volunteer, call);
             return distance;
         }
 

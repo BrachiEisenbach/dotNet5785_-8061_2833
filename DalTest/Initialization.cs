@@ -117,36 +117,73 @@ public static class Initialization
                        "access1234", "strong2024pass", "ilovechatgpt123", "admin1password", "testpass1234" };
         // Array containing full addresses of volunteers.
         string[] FullAddressesVolunteers = {
-"Rothschild Boulevard 1, Tel Aviv", // ← תוקן
-    "Har 2, Jerusalem", "Independence 45, Haifa", "Galil 12, Petah Tikva",
-    "Harbor 8, Ashdod", "Hadar 34, Ramat Gan", "Zamir 56, Netanya", "Yarkon 10, Holon",
-    "Hameshe 77, Be'er Sheva", "Shalom 100, Rishon Lezion", "Kokhav 33, Kfar Saba", "Meretz 21, Hadera",
-    "Chaim 5, Rehovot", "Egzoz 18, Eilat", "Merkaz 99, Modiin", "Dekel 4, Netivot",
-    "Hahatzav 20, Kiryat Gat", "Hahof 3, Bat Yam", "Hamavak 8, Ashkelon", "Hakikar 12, Ramla",
-    "Arava 25, Afula", "Hayam 30, Tiberias", "Marpe 40, Raanana", "Technology 67, Petah Tikva",
-    "Gefen 22, Be'er Sheva", "Mitzpe 6, Givatayim", "Ogen 75, Azor", "Herpatka 11, Jerusalem",
-    "Sela 58, Tirat Carmel", "Atid 3, Kiryat Shmona", "Kokhavim 25, Haifa", "Hama'arav 9, Acre",
-    "Penina 14, Bnei Brak", "Ir 90, Lod", "Gan 11, Kfar Yona", "Flag 77, Netanya",
-    "Boker 45, Eilat", "Masila 32, Modiin", "Yarden 3, Nahariya", "Ayin 50, Migdal HaEmek",
-    "Dekel 99, Petah Tikva", "Kfar 8, Gedera", "Nof 3, Herzliya", "Geva 60, Ashkelon",
-    "Hok 11, Haifa", "Geshem 15, Safed", "Horef 2, Jerusalem", "Heder 30, Caesarea",
-    "Binyan 7, Ashdod", "Derech 56, Tel Aviv" };     // Array containing latitude coordinates for volunteer addresses.
-        double[] LatitudeVolunteers = {
-    -45.27, 32.41, -12.55, 57.80, 29.82, -20.94, 48.16, -38.69, 53.03, 24.91,
-    -64.39, 71.12, -3.67, 33.56, 12.73, -51.30, -5.64, 40.58, 11.09, -72.96,
-    34.88, -28.14, 61.29, 43.67, -44.51, 37.98, 27.16, -67.89, -1.34, 49.02,
-    50.87, -32.54, 65.72, 21.55, -16.90, 54.03, -55.43, 60.44, 19.92, -9.35,
-    68.78, -14.47, 36.09, 56.47, -3.25, 45.62, -21.88, 11.68, 53.94, 23.77
+    "Rothschild Boulevard 1, Tel Aviv",
+    "Herzl 2, Jerusalem",
+    "HaAtzmaut 45, Haifa",
+    "Galil 12, Petah Tikva",
+    "HaNamal 8, Ashdod",
+    "Hadar 34, Ramat Gan",
+    "Zamir 56, Netanya",
+    "HaYarkon 10, Holon",
+    "HaMashbir 77, Be'er Sheva",
+    "Shalom 100, Rishon Lezion",
+    "Kochav 33, Kfar Saba",
+    "Meretz 21, Hadera",
+    "Chaim 5, Rehovot",
+    "Egoz 18, Eilat",
+    "HaMerkaz 99, Modi'in",
+    "Dekel 4, Netivot",
+    "HaChatzav 20, Kiryat Gat",
+    "HaChof 3, Bat Yam",
+    "HaChatzav 8, Ashkelon",
+    "HaKikar 12, Ramla",
+    "HaArava 25, Afula",
+    "HaYam 30, Tiberias",
+    "Marpe 40, Raanana",
+    "HaTechnology 67, Petah Tikva",
+    "Gefen 22, Be'er Sheva",
+    "Mitzpe 6, Givatayim",
+    "Ogen 75, Azor",
+    "HaChalutz 11, Jerusalem",
+    "HaSela 58, Tirat Carmel",
+    "HaAtid 3, Kiryat Shmona",
+    "HaKochavim 25, Haifa",
+    "HaMa'arav 9, Acre",
+    "Penina 14, Bnei Brak",
+    "HaIr 90, Lod",
+    "HaGan 11, Kfar Yona",
+    "HaDegel 77, Netanya",
+    "HaBoker 45, Eilat",
+    "HaMesila 32, Modi'in",
+    "HaYarden 3, Nahariya",
+    "HaAyin 50, Migdal HaEmek",
+    "Dekel 99, Petah Tikva",
+    "HaKfar 8, Gedera",
+    "HaNof 3, Herzliya",
+    "HaGiv'a 60, Ashkelon",
+    "HaChok 11, Haifa",
+    "HaGeshem 15, Safed",
+    "HaChoref 2, Jerusalem",
+    "HaCheder 30, Caesarea",
+    "Binyan 7, Ashdod",
+    "HaDerech 56, Tel Aviv"
 };
-        // Array containing longitude coordinates for volunteer addresses.
+
+        double[] LatitudeVolunteers = {
+    32.0645, 31.7719, 32.7940, 32.0880, 31.7954, 32.0729, 32.3330, 32.0166, 31.2589, 31.9730,
+    32.1804, 32.4346, 31.8926, 29.5577, 31.9056, 31.3392, 31.6080, 32.0466, 31.6705, 31.9288,
+    36.3262, 32.7925, 32.2045, 32.0880, 31.2589, 32.0718, 32.0125, 31.7719, 32.7107, 33.2081,
+    32.7940, 32.9284, 32.0792, 31.9547, 32.2600, 32.3330, 29.5577, 31.9056, 33.0368, 32.6644,
+    32.0880, 31.8155, 32.1648, 31.6705, 32.7940, 32.9691, 31.7719, 32.5029, 31.7954, 32.0645
+};
+
         double[] LongitudeVolunteers = {
-    13.45, -118.65, 23.53, 89.45, -62.34, 31.22, -15.78, 78.64, -106.83, 45.99,
-    -134.56, 72.88, -50.32, 12.96, -82.42, 10.15, 47.72, -68.09, 134.54, -23.11,
-    39.87, -116.97, 107.33, -3.77, 63.62, 80.11, -131.07, -42.55, 141.08, 24.39,
-    51.61, -73.90, 137.32, -114.98, -120.60, 48.01, -59.37, 16.94, -80.23, 114.79,
-    -160.50, 70.77, 53.20, -9.88, 34.06, -126.77, 96.23, 25.76, -110.89, 6.83
-        };
-        // Array containing roles for volunteers.
+    34.7770, 35.2137, 34.9896, 34.9126, 34.6469, 34.8090, 34.8583, 34.7709, 34.7963, 34.8083,
+    34.9189, 34.9197, 34.8098, 34.9519, 35.0069, 34.6436, 34.7645, 34.7431, 34.6067, 34.8760,
+    35.2933, 35.5312, 34.8752, 34.9126, 34.7963, 34.8143, 34.7972, 35.2137, 34.9575, 35.5724,
+    34.9896, 35.0688, 34.8217, 34.8966, 34.9205, 34.8583, 34.9519, 35.0069, 35.0931, 35.2443,
+    34.9126, 34.7699, 34.8437, 34.6067, 34.9896, 35.4947, 35.2137, 34.9089, 34.6469, 34.7770
+};        // Array containing roles for volunteers.
         ROLE[] RolesVolunteers = { ROLE.ADMIN, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
@@ -167,7 +204,7 @@ public static class Initialization
             // Ensure the generated volunteer ID is unique.
             do
                 id = s_rand.Next(200000000, 400000000);
-            while (s_dal!.Volunteer.Read(id) != null) ;
+            while (s_dal!.Volunteer.Read(id) != null);
             // Create a new volunteer instance with the generated and predefined data.
             string? Password = PasswordsVolunteers[i];
             string? FullAddress = FullAddressesVolunteers[i];
@@ -560,7 +597,7 @@ public static class Initialization
     new DateTime(2026, 07, 19, 19, 30, 25),
     new DateTime(2026, 09, 27, 13, 40, 55),
     new DateTime(2026, 02, 11, 21, 15, 42),
-    new DateTime(2026, 11, 14, 17, 42, 20), 
+    new DateTime(2026, 11, 14, 17, 42, 20),
     new DateTime(2026, 08, 25, 03, 46, 04),
     new DateTime(2026, 03, 20, 06, 50, 50),
     new DateTime(2026, 10, 12, 09, 58, 12),
