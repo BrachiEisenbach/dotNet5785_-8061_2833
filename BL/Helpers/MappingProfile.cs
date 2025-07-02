@@ -8,7 +8,9 @@ public static class MappingProfile
     private static readonly IDal s_dal = Factory.Get;
     static MappingProfile()
     {
-        var config = new MapperConfiguration(cfg =>
+        try
+        {
+            var config = new MapperConfiguration(cfg =>
         {
             // המיפוי בין DO.Call ל-BO.Call
             cfg.CreateMap<DO.Call, BO.Call>()
@@ -26,15 +28,20 @@ public static class MappingProfile
                  .ForMember(dest => dest.AllCallsThatTreated, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatTreated(src.Id)))
                  .ForMember(dest => dest.AllCallsThatCanceled, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatCanceled(src.Id)))
                  .ForMember(dest => dest.AllCallsThatHaveExpired, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatHaveExpired(src.Id)))
-                 .ForMember(dest => dest.CallInTreate, opt => opt.MapFrom(src => VolunteerManager.GetCallInTreatment(src.Id)));
-
+                 .ForMember(dest => dest.CallInTreate, opt => opt.Ignore());
             // המיפוי בין BO.Volunteer ל-DO.Volunteer
             cfg.CreateMap<BO.Volunteer, DO.Volunteer>()
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => VolunteerManager.ConvertToDORole(src.Role)))
                 .ForMember(dest => dest.TypeOfDistance, opt => opt.MapFrom(src => VolunteerManager.ConvertToDOType(src.TypeOfDistance)));
         });
 
-        _mapper = config.CreateMapper();
+            _mapper = config.CreateMapper();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine("AutoMapper static ctor error: " + ex);
+            throw;
+        }
     }
 
     // פונקציה המקבלת  riskRange כפרמטר וממירה DO ל-BO 

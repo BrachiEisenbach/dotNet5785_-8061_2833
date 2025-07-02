@@ -19,7 +19,28 @@ namespace Helpers
 
         public static BO.Volunteer GetVolunteerFromDO(DO.Volunteer doVolunteer)
         {
-            return  MappingProfile.ConvertToBO(doVolunteer);
+            var boVolunteer=  MappingProfile.ConvertToBO(doVolunteer);
+            // בונים אובייקט חדש, ומעתיקים את כל הערכים, ורק CallInTreate מאתחלים ידנית
+            return new BO.Volunteer
+            {
+                Id = boVolunteer.Id,
+                FullName = boVolunteer.FullName,
+                Phone = boVolunteer.Phone,
+                Email = boVolunteer.Email,
+                Password = boVolunteer.Password,
+                FullAddress = boVolunteer.FullAddress,
+                Latitude = boVolunteer.Latitude,
+                Longitude = boVolunteer.Longitude,
+                Role = boVolunteer.Role,
+                Active = boVolunteer.Active,
+                MaxDistance = boVolunteer.MaxDistance,
+                TypeOfDistance = boVolunteer.TypeOfDistance,
+                AllCallsThatTreated = boVolunteer.AllCallsThatTreated,
+                AllCallsThatCanceled = boVolunteer.AllCallsThatCanceled,
+                AllCallsThatHaveExpired = boVolunteer.AllCallsThatHaveExpired,
+                CallInTreate = GetCallInTreatment(doVolunteer.Id), // כאן את מאתחלת את הערך
+                TypeOfCall = boVolunteer.TypeOfCall
+            };
         }
 
         public static DO.Volunteer GetVolunteerFromBO(BO.Volunteer boVolunteer)
@@ -149,14 +170,14 @@ namespace Helpers
             {
                 throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist", dalDoesNotExistException);
             }
-            
+
             catch (Exception ex)
             {
-                throw new BlException("Error while getting message details.");
+                System.Diagnostics.Debug.WriteLine("GetCallInTreatment error: " + ex);
+                throw new BlException("Error while getting message details.", ex);
             }
         }
-        
-
+     
 
 
 
@@ -198,7 +219,7 @@ namespace Helpers
         //פו המקבלת שתי כתובות ומחשבת להן אורך ורוחב ואז שולחת אותן לחישוב המרחק בינהן
         public static double GetDistanceBetweenAddresses(string address1, string address2)
         {
-            
+            System.Diagnostics.Debug.WriteLine($"Trying to fetch coordinates for:'{{address1}}' and '{{address2}}'");
             var coord1 = FetchCoordinates(address1);
             var coord2 = FetchCoordinates(address2);
 
