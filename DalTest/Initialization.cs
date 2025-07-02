@@ -9,6 +9,8 @@ using DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+
 /// <summary>
 /// This class contains the logic for initializing the volunteer data.
 /// </summary>
@@ -118,72 +120,110 @@ public static class Initialization
         // Array containing full addresses of volunteers.
         string[] FullAddressesVolunteers = {
     "Rothschild Boulevard 1, Tel Aviv",
-    "Herzl 2, Jerusalem",
-    "HaAtzmaut 45, Haifa",
-    "Galil 12, Petah Tikva",
-    "HaNamal 8, Ashdod",
-    "Hadar 34, Ramat Gan",
-    "Zamir 56, Netanya",
-    "HaYarkon 10, Holon",
-    "HaMashbir 77, Be'er Sheva",
-    "Shalom 100, Rishon Lezion",
-    "Kochav 33, Kfar Saba",
-    "Meretz 21, Hadera",
-    "Chaim 5, Rehovot",
-    "Egoz 18, Eilat",
-    "HaMerkaz 99, Modi'in",
-    "Dekel 4, Netivot",
-    "HaChatzav 20, Kiryat Gat",
-    "HaChof 3, Bat Yam",
-    "HaChatzav 8, Ashkelon",
-    "HaKikar 12, Ramla",
-    "HaArava 25, Afula",
-    "HaYam 30, Tiberias",
-    "Marpe 40, Raanana",
-    "HaTechnology 67, Petah Tikva",
-    "Gefen 22, Be'er Sheva",
-    "Mitzpe 6, Givatayim",
-    "Ogen 75, Azor",
+    "King George Street 20, Tel Aviv",
+    "Herzl Street 10, Tel Aviv",
+    "Dizengoff Street 50, Tel Aviv",
+    "Allenby Street 99, Tel Aviv",
+    "Shaul HaMelech Blvd 37, Tel Aviv",
+    "HaYarkon Street 100, Tel Aviv",
+    "Jaffa Road 30, Jerusalem",
+    "King David Street 23, Jerusalem",
+    "Emek Refaim 45, Jerusalem",
     "HaChalutz 11, Jerusalem",
-    "HaSela 58, Tirat Carmel",
-    "HaAtid 3, Kiryat Shmona",
-    "HaKochavim 25, Haifa",
-    "HaMa'arav 9, Acre",
-    "Penina 14, Bnei Brak",
-    "HaIr 90, Lod",
-    "HaGan 11, Kfar Yona",
-    "HaDegel 77, Netanya",
-    "HaBoker 45, Eilat",
-    "HaMesila 32, Modi'in",
-    "HaYarden 3, Nahariya",
-    "HaAyin 50, Migdal HaEmek",
-    "Dekel 99, Petah Tikva",
-    "HaKfar 8, Gedera",
-    "HaNof 3, Herzliya",
-    "HaGiv'a 60, Ashkelon",
-    "HaChok 11, Haifa",
-    "HaGeshem 15, Safed",
     "HaChoref 2, Jerusalem",
-    "HaCheder 30, Caesarea",
-    "Binyan 7, Ashdod",
-    "HaDerech 56, Tel Aviv"
+    "Ben Gurion Boulevard 12, Haifa",
+    "Hertzel 48, Haifa",
+    "HaNassi Boulevard 109, Haifa",
+    "HaKochavim 25, Haifa",
+    "HaChok 11, Haifa",
+    "Herzl 15, Netanya",
+    "HaDegel 77, Netanya",
+    "HaAtzmaut 60, Bat Yam",
+    "HaChof 3, Bat Yam",
+    "HaNamal 8, Ashdod",
+    "Sderot Menachem Begin 7, Ashdod",
+    "Moshe Dayan Boulevard 10, Ashdod",
+    "Ben Gurion 11, Ashkelon",
+    "HaGiv'a 60, Ashkelon",
+    "HaMashbir 14, Hadera",
+    "HaSela 58, Tirat Carmel",
+    "HaTzanchanim 9, Lod",
+    "Herzel 90, Lod",
+    "HaRishonim 11, Rishon Lezion",
+    "Rothschild 100, Rishon Lezion",
+    "HaHistadrut 50, Ramat Gan",
+    "HaShalom Road 33, Ramat Gan",
+    "Menachem Begin Blvd 48, Givatayim",
+    "HaShalom Rd 6, Givatayim",
+    "Begin Road 17, Petah Tikva",
+    "HaTechnology 67, Petah Tikva",
+    "Em Hamoshavot Rd 99, Petah Tikva",
+    "HaNasi Weizman 1, Kfar Saba",
+    "HaPalmach 40, Raanana",
+    "Gefen 22, Be'er Sheva",
+    "HaPalmach 5, Be'er Sheva",
+    "HaRav Kook 5, Eilat",
+    "HaBoker 45, Eilat",
+    "HaGalil 3, Safed",
+    "HaYam 7, Tiberias",
+    "HaZionut 3, Kiryat Shmona",
+    "HaHistadrut 80, Kiryat Gat",
+    "HaDekel 8, Netivot"
 };
 
         double[] LatitudeVolunteers = {
-    32.0645, 31.7719, 32.7940, 32.0880, 31.7954, 32.0729, 32.3330, 32.0166, 31.2589, 31.9730,
-    32.1804, 32.4346, 31.8926, 29.5577, 31.9056, 31.3392, 31.6080, 32.0466, 31.6705, 31.9288,
-    36.3262, 32.7925, 32.2045, 32.0880, 31.2589, 32.0718, 32.0125, 31.7719, 32.7107, 33.2081,
-    32.7940, 32.9284, 32.0792, 31.9547, 32.2600, 32.3330, 29.5577, 31.9056, 33.0368, 32.6644,
-    32.0880, 31.8155, 32.1648, 31.6705, 32.7940, 32.9691, 31.7719, 32.5029, 31.7954, 32.0645
+    32.0645, 32.0540, 32.0556, 32.0853, 32.0647, 32.0729, 32.0729, // Tel Aviv
+    31.7780, 31.7717, 31.7780, 31.7776, 31.7817, // Jerusalem
+    32.7940, 32.7940, 32.8140, 32.7900, 32.8000, // Haifa
+    32.3327, 32.3337, // Netanya
+    32.0276, 32.0310, // Bat Yam
+    31.8034, 31.7950, 31.7940, // Ashdod (updated for "Sderot Menachem Begin 7")
+    31.6690, 31.6750, // Ashkelon
+    32.4346, // Hadera
+    32.7090, // Tirat Carmel
+    31.9517, 31.9540, // Lod (updated for "Herzel 90")
+    31.9640, 31.9710, // Rishon Lezion (updated for "Rothschild 100")
+    32.0600, 32.0600, // Ramat Gan
+    32.0730, 32.0730, // Givatayim (updated for "HaShalom Rd 6")
+    32.0820, 32.0900, 32.0950, // Petah Tikva (updated for "Em Hamoshavot Rd 99")
+    32.1670, // Kfar Saba
+    32.1830, // Raanana
+    31.2520, 31.2540, // Be'er Sheva
+    29.5580, 29.5590, // Eilat
+    32.9640, // Safed
+    32.7940, // Tiberias
+    33.2040, // Kiryat Shmona
+    31.6080, // Kiryat Gat
+    31.4220  // Netivot
 };
 
         double[] LongitudeVolunteers = {
-    34.7770, 35.2137, 34.9896, 34.9126, 34.6469, 34.8090, 34.8583, 34.7709, 34.7963, 34.8083,
-    34.9189, 34.9197, 34.8098, 34.9519, 35.0069, 34.6436, 34.7645, 34.7431, 34.6067, 34.8760,
-    35.2933, 35.5312, 34.8752, 34.9126, 34.7963, 34.8143, 34.7972, 35.2137, 34.9575, 35.5724,
-    34.9896, 35.0688, 34.8217, 34.8966, 34.9205, 34.8583, 34.9519, 35.0069, 35.0931, 35.2443,
-    34.9126, 34.7699, 34.8437, 34.6067, 34.9896, 35.4947, 35.2137, 34.9089, 34.6469, 34.7770
-};        // Array containing roles for volunteers.
+    34.7770, 34.7650, 34.7700, 34.7818, 34.7690, 34.7815, 34.7620, // Tel Aviv
+    35.2170, 35.2130, 35.2120, 35.2100, 35.2150, // Jerusalem
+    34.9896, 34.9875, 34.9930, 34.9950, 34.9990, // Haifa
+    34.8500, 34.8500, // Netanya
+    34.7500, 34.7450, // Bat Yam
+    34.6500, 34.6500, 34.6550, // Ashdod (updated for "Sderot Menachem Begin 7")
+    34.5740, 34.5700, // Ashkelon
+    34.9197, // Hadera
+    35.0730, // Tirat Carmel
+    34.8990, 34.8990, // Lod (updated for "Herzel 90")
+    34.9010, 34.8000, // Rishon Lezion (updated for "Rothschild 100")
+    34.8000, 34.7900, // Ramat Gan
+    34.7890, 34.7810, // Givatayim (updated for "HaShalom Rd 6")
+    34.7830, 34.7840, 34.7900, // Petah Tikva (updated for "Em Hamoshavot Rd 99")
+    34.9000, // Kfar Saba
+    34.8700, // Raanana
+    34.7950, 34.7960, // Be'er Sheva
+    34.9519, 34.9510, // Eilat
+    35.4950, // Safed
+    35.5320, // Tiberias
+    35.5700, // Kiryat Shmona
+    34.7600, // Kiryat Gat
+    34.6180  // Netivot
+};
+
+        // Array containing roles for volunteers.
         ROLE[] RolesVolunteers = { ROLE.ADMIN, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER,
     ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.VOLUNTEER, ROLE.DISTRICTMANAGER, ROLE.VOLUNTEER,
@@ -298,34 +338,162 @@ public static class Initialization
 };
         // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
-    "Rehov Ben Yehuda 15, Tel Aviv", "Rothschild Blvd 29, Tel Aviv", "Moshav Maor 14, Central District", "Ein Kerem 21, Jerusalem",
-    "Kiryat Yovel 35, Jerusalem", "Ramat Eshkol 10, Jerusalem", "Hadar 12, Haifa", "Yigal Alon 56, Tel Aviv",
-    "Neve Tzedek 7, Tel Aviv", "Hertzel 9, Be'er Sheva", "Shalva 10, Netanya", "Dizengoff 70, Tel Aviv",
-    "Bialik 18, Herzliya", "Kiryat Moshe 2, Jerusalem", "Rehovot 4, Rehovot", "Sderot 25, Ashkelon",
-    "Jaffa 23, Tel Aviv", "Alon 48, Eilat", "Tzabar 11, Ramat Gan", "Shuk HaCarmel 3, Tel Aviv",
-    "Maayan 25, Raanana", "Zichron Yaakov 12, Haifa", "Tzafon 55, Acre", "Nesher 34, Haifa",
-    "Ramat Aviv 15, Tel Aviv", "Carmel 9, Haifa", "Eshkol 5, Rehovot", "Menahem Begin Blvd 100, Tel Aviv",
-    "Ramat Shlomo 6, Jerusalem", "Bar Ilan 21, Ramat Gan", "Park Hayarkon 20, Tel Aviv", "Binyamina 4, Haifa",
-    "Hamarah 18, Eilat", "Moshav Sde Warburg 22, Center District", "Kikar Hamedina 12, Tel Aviv", "Shaked 8, Ramat Gan",
-    "Sharon 30, Kfar Saba", "Hagolan 12, Ashdod", "Oded 45, Petah Tikva", "Tchernichovsky 30, Tel Aviv",
-    "Lev Ha'ir 19, Tel Aviv", "Zohar 14, Herzliya", "Herzliya Pituach 6, Herzliya", "Negev 24, Be'er Sheva",
-    "Rehovot 11, Rehovot", "Zanvil 3, Petah Tikva", "Jabotinsky 45, Ramat Gan", "Sderot 12, Kiryat Gat",
-    "Shalom Aleichem 4, Rishon Lezion", "Sderot 30, Ashkelon"
-};
-        // Array of latitude coordinates for each call
+    "Jabotinsky 45, Ramat Gan",
+    "Rothschild Blvd 29, Tel Aviv",
+    "Derech HaMakabim 14, Moshav Maor, Menashe", // Specific address in Moshav Maor
+    "Ein Kerem 21, Jerusalem",
+    "Kiryat Yovel 35, Jerusalem",
+    "Ramat Eshkol 10, Jerusalem",
+    "Hadar 12, Haifa", // Hadar HaCarmel neighborhood
+    "Yigal Alon 56, Tel Aviv",
+    "Neve Tzedek 7, Tel Aviv",
+    "Herzl 9, Be'er Sheva",
+    "Shalom 10, Netanya", // "Shalom Street" in Netanya
+    "Dizengoff 70, Tel Aviv",
+    "Bialik 18, Herzliya",
+    "Kiryat Moshe 2, Jerusalem",
+    "Herzl 4, Rehovot", // "Herzl Street" in Rehovot
+    "HaNasi 25, Ashkelon", // "HaNasi Street" in Ashkelon
+    "Jaffa 23, Tel Aviv",
+    "HaAlon 48, Eilat", // "HaAlon Street" in Eilat
+    "HaTzabar 11, Ramat Gan", // "HaTzabar Street" in Ramat Gan
+    "Shuk HaCarmel 3, Tel Aviv",
+    "Maayan 25, Raanana",
+    "Zichron Yaakov 12, Zichron Yaakov", // Corrected to Zichron Yaakov city
+    "Acre Road 55, Acre", // Main road in Acre
+    "HaShita 34, Nesher", // "HaShita Street" in Nesher city
+    "Ramat Aviv 15, Tel Aviv",
+    "HaCarmel 9, Haifa", // "HaCarmel Street" in Haifa
+    "HaTe'ena 5, Rehovot", // "HaTe'ena Street" in Rehovot
+    "Menachem Begin Blvd 100, Tel Aviv",
+    "Ramat Shlomo 6, Jerusalem",
+    "Bar Ilan 21, Ramat Gan",
+    "Yarkon Park, Tel Aviv", // Yarkon Park, no specific number
+    "HaBanim 4, Binyamina", // "HaBanim Street" in Binyamina
+    "HaArava 18, Eilat", // "HaArava Street" in Eilat
+    "HaDagan 22, Moshav Sde Warburg, Sharon", // Specific address in Sde Warburg
+    "Kikar Hamedina 12, Tel Aviv",
+    "HaShaked 8, Ramat Gan",
+    "HaSharon 30, Kfar Saba", // "HaSharon Street" in Kfar Saba
+    "HaGolan 12, Ashdod",
+    "Oded 45, Petah Tikva",
+    "Tchernichovsky 30, Tel Aviv",
+    "Lev Ha'Ir 19, Tel Aviv",
+    "HaZohar 14, Herzliya", // "HaZohar Street" in Herzliya
+    "Herzliya Pituach 6, Herzliya",
+    "HaNegev 24, Be'er Sheva",
+    "HaShizaf 11, Rehovot", // "HaShizaf Street" in Rehovot
+    "Zanvil 3, Petah Tikva",
+    "Jabotinsky 45, Ramat Gan", // Duplicate, kept as a separate call
+    "Sderot 12, Kiryat Gat",
+    "Shalom Aleichem 4, Rishon Lezion",
+    "HaSadot 30, Ashkelon" // "HaSadot Street" in Ashkelon
+};        // Array of latitude coordinates for each call
         double[] LatitudeOfCall ={
-   -45.0, 32.0, -12.0, 58.0, 30.0, -21.0, 48.0, -39.0, 53.0, 25.0,
-    -64.0, 71.0, -4.0, 34.0, 13.0, -51.0, -6.0, 41.0, 11.0, -73.0,
-    35.0, -28.0, 61.0, 44.0, -45.0, 38.0, 27.0, -68.0, -1.0, 49.0,
-    51.0, -33.0, 66.0, 22.0, -17.0, 54.0, -55.0, 60.0, 20.0, -9.0,
-    69.0, -14.0, 36.0, 56.0, -3.0, 46.0, -22.0, 12.0, 54.0, 24.0 };
-        // Array of longitude coordinates for each call
+    32.0722,
+    32.0716,
+    32.4168,
+    31.7686,
+    31.7601,
+    31.7997,
+    32.7937,
+    32.0620,
+    32.0601,
+    31.2514,
+    32.3276,
+    32.0831,
+    32.1643,
+    31.7936,
+    31.8920,
+    31.6660,
+    32.0621,
+    29.5606,
+    32.0726,
+    32.0683,
+    32.1852,
+    32.5599,
+    32.9238,
+    32.7667,
+    32.1009,
+    32.8126,
+    31.8906,
+    32.0700,
+    31.8105,
+    32.0709,
+    32.0910,
+    32.5312,
+    29.5492,
+    32.2227,
+    32.0818,
+    32.0754,
+    32.1764,
+    31.7981,
+    32.0836,
+    32.0784,
+    32.0710,
+    32.1718,
+    32.1648,
+    31.2464,
+    31.8950,
+    32.0967,
+    32.0722,
+    31.6033,
+    31.9680,
+    31.6702
+};
+
         double[] LongitudeOfCall = {
-    13.0, -119.0, 24.0, 89.0, -62.0, 31.0, -16.0, 79.0, -107.0, 46.0,
-    -135.0, 73.0, -50.0, 13.0, -82.0, 10.0, 48.0, -68.0, 135.0, -23.0,
-    40.0, -117.0, 107.0, -4.0, 64.0, 80.0, -131.0, -43.0, 141.0, 24.0,
-    52.0, -74.0, 137.0, -115.0, -121.0, 48.0, -59.0, 17.0, -80.0, 115.0,
-    -161.0, 71.0, 53.0, -10.0, 34.0, -127.0, 96.0, 26.0, -111.0, 7.0 };
+    34.8052,
+    34.7738,
+    35.0355,
+    35.1763,
+    35.1770,
+    35.2227,
+    35.0068,
+    34.7937,
+    34.7645,
+    34.7997,
+    34.8569,
+    34.7770,
+    34.8437,
+    35.1950,
+    34.8090,
+    34.5683,
+    34.7629,
+    34.9452,
+    34.8057,
+    34.7663,
+    34.8789,
+    34.9351,
+    35.0772,
+    35.0483,
+    34.7891,
+    34.9922,
+    34.8098,
+    34.7909,
+    35.2285,
+    34.8105,
+    34.7820,
+    34.9200,
+    34.9547,
+    34.8966,
+    34.7831,
+    34.8037,
+    34.9248,
+    34.6534,
+    34.9125,
+    34.7850,
+    34.7709,
+    34.8690,
+    34.8041,
+    34.7981,
+    34.8085,
+    34.9255,
+    34.8052,
+    34.7675,
+    34.7915,
+    34.5800
+};
         // Array of timestamps representing the creation time of each call
         DateTime[] OpenTimeOfCalls = {
     new DateTime(2025, 06, 25, 14, 32, 10),

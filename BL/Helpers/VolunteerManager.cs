@@ -251,7 +251,7 @@ namespace Helpers
 
 
 
-        private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
+        private const string ApiKey = "pk.81638a7220014e11473f0d2f15120b59";
         private static readonly HttpClient Client = new HttpClient();
 
         /// <summary>
@@ -265,8 +265,7 @@ namespace Helpers
                 throw new BlArgumentException("The address provided is invalid.");
 
             // יצירת כתובת ה-URL לשליפת הנתונים
-            string requestUrl = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key={ApiKey}";
-
+            string requestUrl = $"https://us1.locationiq.com/v1/search.php?key={ApiKey}&q={Uri.EscapeDataString(address)}&format=json";
             try
             {
                 // שליחת בקשה וקבלת תשובה
