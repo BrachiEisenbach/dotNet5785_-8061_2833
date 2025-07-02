@@ -48,7 +48,6 @@ namespace Helpers
             return MappingProfile.ConvertToDO(boVolunteer);
         }
 
-
         //המרת סוג ה ENUM מ BO לDO
         internal static DO.ROLE ConvertToDORole(BO.ROLE boType)
         {
