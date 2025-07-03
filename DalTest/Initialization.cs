@@ -298,7 +298,7 @@ public static class Initialization
 };
         // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
-    "Rehov Ben Yehuda 15, Tel Aviv", "Rothschild Blvd 29, Tel Aviv", "Moshav Maor 14, Central District", "Ein Kerem 21, Jerusalem",
+    "Jabotinsky 45, Ramat Gan", "Rothschild Blvd 29, Tel Aviv", "Moshav Maor 14, Central District", "Ein Kerem 21, Jerusalem",
     "Kiryat Yovel 35, Jerusalem", "Ramat Eshkol 10, Jerusalem", "Hadar 12, Haifa", "Yigal Alon 56, Tel Aviv",
     "Neve Tzedek 7, Tel Aviv", "Hertzel 9, Be'er Sheva", "Shalva 10, Netanya", "Dizengoff 70, Tel Aviv",
     "Bialik 18, Herzliya", "Kiryat Moshe 2, Jerusalem", "Rehovot 4, Rehovot", "Sderot 25, Ashkelon",
