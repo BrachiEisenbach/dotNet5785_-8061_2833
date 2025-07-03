@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DalApi;
 using Helpers;
+using System.Diagnostics;
 
 public static class MappingProfile
 {
@@ -25,10 +26,10 @@ public static class MappingProfile
             cfg.CreateMap<DO.Volunteer, BO.Volunteer>()
                  .ForMember(dest => dest.Role, opt => opt.MapFrom(src => VolunteerManager.ConvertToBORole(src.Role)))
                  .ForMember(dest => dest.TypeOfDistance, opt => opt.MapFrom(src => VolunteerManager.ConvertToBOType(src.TypeOfDistance)))
-                 .ForMember(dest => dest.AllCallsThatTreated, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatTreated(src.Id)))
-                 .ForMember(dest => dest.AllCallsThatCanceled, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatCanceled(src.Id)))
-                 .ForMember(dest => dest.AllCallsThatHaveExpired, opt => opt.MapFrom(src => VolunteerManager.GetAllCallsThatHaveExpired(src.Id)))
-                 .ForMember(dest => dest.CallInTreate, opt => opt.Ignore());
+                  .ForMember(dest => dest.AllCallsThatTreated, opt => opt.Ignore())
+                  .ForMember(dest => dest.AllCallsThatCanceled, opt => opt.Ignore())
+                  .ForMember(dest => dest.AllCallsThatHaveExpired, opt => opt.Ignore())
+                  .ForMember(dest => dest.CallInTreate, opt => opt.Ignore());
             // המיפוי בין BO.Volunteer ל-DO.Volunteer
             cfg.CreateMap<BO.Volunteer, DO.Volunteer>()
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => VolunteerManager.ConvertToDORole(src.Role)))
@@ -36,6 +37,7 @@ public static class MappingProfile
         });
 
             _mapper = config.CreateMapper();
+            Debug.WriteLine("Mapper created!");
         }
         catch (Exception ex)
         {
@@ -63,7 +65,15 @@ public static class MappingProfile
     // פונקציה להמיר DO ל-BO של מתנדב
     public static BO.Volunteer ConvertToBO(DO.Volunteer volunteer)
     {
-        return _mapper.Map<BO.Volunteer>(volunteer);
+        try
+        {
+            return _mapper.Map<BO.Volunteer>(volunteer);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("❌ Mapping failed: " + ex);
+            throw;
+        }
     }
 
     // פונקציה להמיר BO ל-DO של מתנדב

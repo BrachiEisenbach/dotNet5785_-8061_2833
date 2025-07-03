@@ -264,7 +264,7 @@ namespace BlImplementation
             try
             {
                 var DOvolunteers = VolunteerManager.GetIsActiveVolunteers(isActive);
-                var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol));
+                var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
 
                 IEnumerable<BO.Volunteer> sortedVolunteers = sort switch
                 {
@@ -284,7 +284,7 @@ namespace BlImplementation
             }
             catch (Exception ex)
             {
-                throw new BlException("Error while accepting volunteers on the list");
+                throw new BlException("Error while accepting volunteers on the list",ex);
             }
         }
 

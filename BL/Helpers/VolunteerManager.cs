@@ -20,6 +20,10 @@ namespace Helpers
         public static BO.Volunteer GetVolunteerFromDO(DO.Volunteer doVolunteer)
         {
             var boVolunteer=  MappingProfile.ConvertToBO(doVolunteer);
+            if (boVolunteer == null)
+            {
+                System.Diagnostics.Debug.WriteLine("boVolunteer is null");
+            }
             // בונים אובייקט חדש, ומעתיקים את כל הערכים, ורק CallInTreate מאתחלים ידנית
             return new BO.Volunteer
             {
@@ -35,9 +39,9 @@ namespace Helpers
                 Active = boVolunteer.Active,
                 MaxDistance = boVolunteer.MaxDistance,
                 TypeOfDistance = boVolunteer.TypeOfDistance,
-                AllCallsThatTreated = boVolunteer.AllCallsThatTreated,
-                AllCallsThatCanceled = boVolunteer.AllCallsThatCanceled,
-                AllCallsThatHaveExpired = boVolunteer.AllCallsThatHaveExpired,
+                AllCallsThatTreated = GetAllCallsThatTreated(boVolunteer.Id),
+                AllCallsThatCanceled = GetAllCallsThatCanceled(boVolunteer.Id),
+                AllCallsThatHaveExpired = GetAllCallsThatHaveExpired(boVolunteer.Id),
                 CallInTreate = GetCallInTreatment(doVolunteer.Id), // כאן את מאתחלת את הערך
                 TypeOfCall = boVolunteer.TypeOfCall
             };
@@ -60,8 +64,14 @@ namespace Helpers
         //המרת סוג ה ENUM מ DO ל BO
         internal static BO.ROLE ConvertToBORole(DO.ROLE doType)
         {
-            if (Enum.TryParse<BO.ROLE>(doType.ToString(), out var boRole))
+            if (Enum.TryParse<BO.ROLE>(doType.ToString(), ignoreCase: true, out var boRole))
+            {
+                System.Diagnostics.Debug.WriteLine($"success to parse role: {doType}");
                 return boRole;
+            }
+
+            
+            System.Diagnostics.Debug.WriteLine($"Failed to parse role: {doType}");
             throw new ArgumentException($"No matching BO.ROLE for {doType}");
         }
 
@@ -70,7 +80,13 @@ namespace Helpers
         internal static BO.TYPEOFDISTANCE ConvertToBOType(DO.TYPEOFDISTANCE doType)
         {
             if (Enum.TryParse<BO.TYPEOFDISTANCE>(doType.ToString(), out var boType))
+            {
+                System.Diagnostics.Debug.WriteLine($"success to parse type d: {doType}");
                 return boType;
+            }
+
+
+            System.Diagnostics.Debug.WriteLine($"Failed to parse type d: {doType}");
             throw new ArgumentException($"No matching BO.TYPEOFDISTANCE for {doType}");
         }
 
@@ -87,8 +103,13 @@ namespace Helpers
         internal static DO.TYPEOFTREATMENT ConvertToDOTypeFinish(BO.FINISHTYPE finishType)
         {
             if (Enum.TryParse(finishType.ToString(), out DO.TYPEOFTREATMENT result))
+            {
+                System.Diagnostics.Debug.WriteLine($"success to parse type f: {result}");
                 return result;
+            }
 
+
+            System.Diagnostics.Debug.WriteLine($"Failed to parse type f: {result}");
             throw new ArgumentException($"No matching DO.TYPEOFTREATMENT for {finishType}");
         }
 
@@ -149,7 +170,8 @@ namespace Helpers
 
                 // שליפת כתובת המתנדב לחישוב מרחק בינו לכתובת הקריאה(distance) 
                 var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
-                var volAdrress = vol.FullAddress ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't address"); 
+                var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
+                var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
 
                 return new BO.CallInProgress
                 {
@@ -161,7 +183,7 @@ namespace Helpers
                     OpenTime = call.OpenTime,
                     MaxTimeToFinish = call.MaxTimeToFinish,
                     EnterTime = assignment.EntryTimeForTreatment,
-                    Distance = GetDistanceBetweenAddresses(call.FullAddress, volAdrress),
+                    Distance = CalculateHaversineDistance(call.Latitude, call.Longitude, volLatitude, volLongitude),
                     Status = CallManager.CalculateStatus(call, riskRange)
                 };
             }
@@ -220,6 +242,7 @@ namespace Helpers
         {
             System.Diagnostics.Debug.WriteLine($"Trying to fetch coordinates for:'{{address1}}' and '{{address2}}'");
             var coord1 = FetchCoordinates(address1);
+
             var coord2 = FetchCoordinates(address2);
 
             return CalculateHaversineDistance(coord1.Latitude, coord1.Longitude, coord2.Latitude, coord2.Longitude);
@@ -232,6 +255,8 @@ namespace Helpers
 
         private static double CalculateHaversineDistance(double lat1, double lon1, double lat2, double lon2)
         {
+            //if (lat2 == null || lon2 == null)
+            //    throw new BlArgumentException("The coordinates provided are invalid.");
             const double EarthRadius = 6371;
 
             double dLat = CallManager.DegreesToRadians(lat2 - lat1);
@@ -251,7 +276,7 @@ namespace Helpers
 
 
 
-        private const string ApiKey = "pk.81638a7220014e11473f0d2f15120b59";
+        private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
         private static readonly HttpClient Client = new HttpClient();
 
         /// <summary>
@@ -265,7 +290,8 @@ namespace Helpers
                 throw new BlArgumentException("The address provided is invalid.");
 
             // יצירת כתובת ה-URL לשליפת הנתונים
-            string requestUrl = $"https://us1.locationiq.com/v1/search.php?key={ApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+            string requestUrl = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key={ApiKey}";
+
             try
             {
                 // שליחת בקשה וקבלת תשובה

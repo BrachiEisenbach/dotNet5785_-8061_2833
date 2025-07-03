@@ -35,7 +35,7 @@ namespace PL
             set { SetValue(CurrentVolunteerProperty, value); }
         }
         public static readonly DependencyProperty CurrentVolunteerProperty =
-            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindowVol), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(AdminWindow), new PropertyMetadata(null));
 
 
         public DateTime CurrentTime

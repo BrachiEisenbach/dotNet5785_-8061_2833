@@ -247,7 +247,7 @@ namespace DalTest
             double? MaxDistance = double.Parse(maxDistanceInput);
 
 
-            Console.WriteLine("role (0: ADMIN , 1: DISTRICTMANAGER, 2: VOLUNTEER):");
+            Console.WriteLine("role (0: ADMIN 1: VOLUNTEER):");
             ROLE Role;
             string roleStr = Console.ReadLine();
             if (Enum.TryParse(roleStr, true, out ROLE role))

@@ -6,7 +6,6 @@ namespace DO;
 public enum ROLE
 {
     ADMIN=0,
-    DISTRICTMANAGER,
     VOLUNTEER
 }
 

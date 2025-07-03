@@ -13,7 +13,6 @@ namespace BO
     public enum ROLE
     {
         ADMIN = 0,
-        DISTRICTMANAGER,
         VOLUNTEER
     }
     /// <summary>

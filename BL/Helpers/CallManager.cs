@@ -39,39 +39,36 @@ namespace Helpers
         }
 
 
-        internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
-        {
+internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
+{
+    DateTime currentTime = DateTime.Now;
+    var assignments = s_dal.Assignment.ReadAll().ToList();
 
-            DateTime currentTime = DateTime.Now;
-            var assignments = s_dal.Assignment.ReadAll().ToList();
+    var lastAssignment = assignments
+        .Where(a => a.CallId == call.Id)
+        .OrderByDescending(a => a.EntryTimeForTreatment)
+        .FirstOrDefault();
 
-            var lastAssignment = assignments
-                    .Where(a => a.CallId == call.Id)
-                    .OrderByDescending(a => a.EntryTimeForTreatment)
-                    .FirstOrDefault();
+    if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
+    {
+        if (call.MaxTimeToFinish < currentTime)
+            return BO.STATUS.Expired;
 
-            if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
-            {
-                if (call.MaxTimeToFinish < currentTime)
-                    return BO.STATUS.Expired;
+        if (call.MaxTimeToFinish - currentTime <= riskRange)
+            return BO.STATUS.OpenDangerZone;
 
-                if (call.MaxTimeToFinish - currentTime <= riskRange)
-                    return BO.STATUS.OpenDangerZone;
+        return BO.STATUS.Open;
+    }
 
-                return BO.STATUS.Open;
-            }
+    // כאן היא עדיין בטיפול פעיל
+    if (call.MaxTimeToFinish < currentTime)
+        return BO.STATUS.Expired;
 
-            if (lastAssignment.TypeOfTreatment.ToString() == BO.FINISHTYPE.TREATE.ToString())
-                return BO.STATUS.Closed;
+    if (call.MaxTimeToFinish - currentTime <= riskRange)
+        return BO.STATUS.InTreatmentDangerZone;
 
-            if (call.MaxTimeToFinish < currentTime)
-                return BO.STATUS.Expired;
-
-            if (call.MaxTimeToFinish - currentTime <= riskRange)
-                return BO.STATUS.InTreatmentDangerZone;
-
-            return BO.STATUS.InTreatment;
-        }
+    return BO.STATUS.InTreatment;
+}
 
         internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
         {

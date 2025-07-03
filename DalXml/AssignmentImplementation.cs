@@ -10,18 +10,20 @@ internal class AssignmentImplementation : IAssignment
 {
     static Assignment getAssignment(XElement a)
     {
-
+        System.Diagnostics.Debug.WriteLine($"Entry: '{a.Element("EntryTimeForTreatment")?.Value}'");
         return new DO.Assignment()
         {
             Id = a.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
             CallId = a.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
             VolunteerId = a.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
+
             EntryTimeForTreatment = (DateTime)a.Element("EntryTimeForTreatment"),
-            EndTimeOfTreatment = (DateTime)a.Element("EndTimeOfTreatment"),
+            EndTimeOfTreatment = DateTime.TryParse(a.Element("EndTimeOfTreatment")?.Value, out var endTime)
+            ? endTime
+            : null,
             TypeOfTreatment = a.ToEnumNullable<TYPEOFTREATMENT>("TypeOfTreatment") ?? TYPEOFTREATMENT.TREATE
-
-
         };
+
     }
 
     public void Create(Assignment item)

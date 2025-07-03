@@ -519,7 +519,7 @@ namespace BlTest
                                 : DateTime.Parse(maxFinishStr);
 
                             // נמשוך את הקואורדינטות מחדש לפי הכתובת
-                            var (latitude1, longitude1) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
+                            //var (latitude1, longitude1) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
 
 
                             // יצירת ישות BO מעודכנת
@@ -529,8 +529,8 @@ namespace BlTest
                                 TypeOfCall = typeOfCall,
                                 VerbalDescription = verbalDescription,
                                 FullAddress = fullAddress,
-                                Latitude = latitude1,
-                                Longitude = longitude1,
+                                Latitude = null,
+                                Longitude = null,
                                 OpenTime = openTime,
                                 MaxTimeToFinish = maxTimeToFinish,
                                 Status = BO.STATUS.Open
@@ -580,7 +580,7 @@ namespace BlTest
                             DateTime? maxTimeToFinish = string.IsNullOrWhiteSpace(maxTimeStr) ? null : DateTime.Parse(maxTimeStr);
 
                             // קבלת קואורדינטות מהכתובת
-                            (double latitude, double longitude) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
+                            //(double latitude, double longitude) = Helpers.VolunteerManager.FetchCoordinates(fullAddress);
 
                             // יצירת אובייקט BO.Call
                             BO.Call newCall = new BO.Call
@@ -589,8 +589,8 @@ namespace BlTest
                                 TypeOfCall = typeOfCall,
                                 VerbalDescription = string.IsNullOrWhiteSpace(verbalDescription) ? null : verbalDescription,
                                 FullAddress = fullAddress,
-                                Latitude = latitude,
-                                Longitude = longitude,
+                                Latitude = null,
+                                Longitude = null,
                                 OpenTime = openTime,
                                 MaxTimeToFinish = maxTimeToFinish,
                                 Status = BO.STATUS.Open
