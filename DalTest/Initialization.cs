@@ -339,56 +339,56 @@ public static class Initialization
         // Array of full addresses for each call
         string[] FullAddressesOfCalls = {
     "Jabotinsky 45, Ramat Gan",
-    "Rothschild Blvd 29, Tel Aviv",
-    "Derech HaMakabim 14, Moshav Maor, Menashe", // Specific address in Moshav Maor
+    "Rothschild 29, Tel Aviv",
+    "Derech HaMakabim 14, Moshav Maor",
     "Ein Kerem 21, Jerusalem",
     "Kiryat Yovel 35, Jerusalem",
     "Ramat Eshkol 10, Jerusalem",
-    "Hadar 12, Haifa", // Hadar HaCarmel neighborhood
+    "Hillel 12, Haifa",
     "Yigal Alon 56, Tel Aviv",
     "Neve Tzedek 7, Tel Aviv",
     "Herzl 9, Be'er Sheva",
-    "Shalom 10, Netanya", // "Shalom Street" in Netanya
+    "Shalom Aleichem 10, Netanya", // Corrected - instead of "Shalom Ash"
     "Dizengoff 70, Tel Aviv",
     "Bialik 18, Herzliya",
     "Kiryat Moshe 2, Jerusalem",
-    "Herzl 4, Rehovot", // "Herzl Street" in Rehovot
-    "HaNasi 25, Ashkelon", // "HaNasi Street" in Ashkelon
+    "Herzl 4, Rehovot",
+    "HaNasi 25, Ashkelon",
     "Jaffa 23, Tel Aviv",
-    "HaAlon 48, Eilat", // "HaAlon Street" in Eilat
-    "HaTzabar 11, Ramat Gan", // "HaTzabar Street" in Ramat Gan
+    "HaAlon 48, Eilat",
+    "HaTzabar 11, Ramat Gan",
     "Shuk HaCarmel 3, Tel Aviv",
     "Maayan 25, Raanana",
-    "Zichron Yaakov 12, Zichron Yaakov", // Corrected to Zichron Yaakov city
-    "Acre Road 55, Acre", // Main road in Acre
-    "HaShita 34, Nesher", // "HaShita Street" in Nesher city
+    "Zichron Yaakov 12, Zichron Yaakov",
+    "Derech Akko 55, Acre", // Corrected - instead of "Acre Road"
+    "HaShita 34, Nesher",
     "Ramat Aviv 15, Tel Aviv",
-    "HaCarmel 9, Haifa", // "HaCarmel Street" in Haifa
-    "HaTe'ena 5, Rehovot", // "HaTe'ena Street" in Rehovot
+    "HaCarmel 9, Haifa",
+    "HaTe'ena 5, Rehovot",
     "Menachem Begin Blvd 100, Tel Aviv",
     "Ramat Shlomo 6, Jerusalem",
     "Bar Ilan 21, Ramat Gan",
-    "Yarkon Park, Tel Aviv", // Yarkon Park, no specific number
-    "HaBanim 4, Binyamina", // "HaBanim Street" in Binyamina
-    "HaArava 18, Eilat", // "HaArava Street" in Eilat
-    "HaDagan 22, Moshav Sde Warburg, Sharon", // Specific address in Sde Warburg
+    "Gan HaYarkon, Tel Aviv", // Corrected - instead of "Yarkon Park"
+    "HaBanim 4, Binyamina",
+    "HaArava 18, Eilat",
+    "HaDagan 22, Moshav Sde Warburg",
     "Kikar Hamedina 12, Tel Aviv",
     "HaShaked 8, Ramat Gan",
-    "HaSharon 30, Kfar Saba", // "HaSharon Street" in Kfar Saba
+    "HaSharon 30, Kfar Saba",
     "HaGolan 12, Ashdod",
     "Oded 45, Petah Tikva",
     "Tchernichovsky 30, Tel Aviv",
     "Lev Ha'Ir 19, Tel Aviv",
-    "HaZohar 14, Herzliya", // "HaZohar Street" in Herzliya
+    "HaZohar 14, Herzliya",
     "Herzliya Pituach 6, Herzliya",
     "HaNegev 24, Be'er Sheva",
-    "HaShizaf 11, Rehovot", // "HaShizaf Street" in Rehovot
+    "HaShizaf 11, Rehovot",
     "Zanvil 3, Petah Tikva",
-    "Jabotinsky 40, Ramat Gan", // Duplicate, kept as a separate call
+    "Jabotinsky 40, Ramat Gan",
     "Sderot 12, Kiryat Gat",
     "Shalom Aleichem 4, Rishon Lezion",
-    "HaSadot 30, Ashkelon" // "HaSadot Street" in Ashkelon
-};        // Array of latitude coordinates for each call
+    "HaSadot 30, Ashkelon"
+};
         double[] LatitudeOfCall ={
     32.0722,
     32.0716,
