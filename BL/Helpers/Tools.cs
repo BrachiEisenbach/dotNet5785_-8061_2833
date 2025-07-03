@@ -11,9 +11,11 @@ namespace Helpers
     {
         public static void ValidateVolunteerFormat(BO.Volunteer volunteer)
         {
-            // 📱 Phone validation – must be 9 or 10 digits
-            if (string.IsNullOrWhiteSpace(volunteer.Phone) || !Regex.IsMatch(volunteer.Phone, @"^\d{9,10}$"))
-                throw new ArgumentException("Invalid phone number format. Must be 9 or 10 digits.");
+            // 📱 Phone validation – allow digits and one optional hyphen, must have 9 or 10 digits total
+            if (string.IsNullOrWhiteSpace(volunteer.Phone) ||
+                !Regex.IsMatch(volunteer.Phone, @"^[0-9\-]+$") ||  // רק ספרות ומקף אחד מותר
+                !(volunteer.Phone.Count(char.IsDigit) == 9 || volunteer.Phone.Count(char.IsDigit) == 10))
+                throw new ArgumentException("Invalid phone number format. Must contain 9 or 10 digits (excluding hyphen).");
 
             // 📧 Email validation – basic format
             if (!string.IsNullOrWhiteSpace(volunteer.Email) &&
@@ -32,7 +34,6 @@ namespace Helpers
             if (string.IsNullOrWhiteSpace(volunteer.Password))
                 throw new ArgumentException("Password cannot be empty.");
         }
-
 
         public static void ValidateVolunteerLogic(BO.Volunteer volunteer)
         {

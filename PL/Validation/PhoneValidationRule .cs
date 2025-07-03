@@ -14,10 +14,23 @@ namespace PL.Validation
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             var phone = value?.ToString();
-            if (!string.IsNullOrWhiteSpace(phone) && Regex.IsMatch(phone, @"^0\d{1,2}-?\d{7}$"))
-                return ValidationResult.ValidResult;
+
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                // לבדוק שהמחרוזת מכילה רק ספרות ומקפים
+                if (Regex.IsMatch(phone, @"^[0-9\-]+$"))
+                {
+                    // לספור רק את הספרות
+                    int digitCount = phone.Count(char.IsDigit);
+
+                    // לבדוק אם יש 9 או 10 ספרות
+                    if (digitCount == 9 || digitCount == 10)
+                        return ValidationResult.ValidResult;
+                }
+            }
 
             return new ValidationResult(false, "Invalid phone number.");
         }
     }
 }
+
