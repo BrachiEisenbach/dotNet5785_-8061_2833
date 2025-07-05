@@ -14,7 +14,7 @@
     <Id>1</Id>
     <TypeOfCall>REDRIVE</TypeOfCall>
     <VerbalDescription>A woman in her 30s is calling for help because her car won't start, she thinks it's due to the battery.</VerbalDescription>
-    <FullAddress>Rothschild Blvd 29, Tel Aviv</FullAddress>
+    <FullAddress>Rothschild 29, Tel Aviv</FullAddress>
     <Latitude>32.0716</Latitude>
     <Longitude>34.7738</Longitude>
     <OpenTime>2025-06-18T09:47:35</OpenTime>
@@ -24,7 +24,7 @@
     <Id>2</Id>
     <TypeOfCall>CARBURGLARY</TypeOfCall>
     <VerbalDescription>A man in his 50s reports a car break-in. The car was stolen from a shopping mall parking lot. He needs help securing the vehicle.</VerbalDescription>
-    <FullAddress>Derech HaMakabim 14, Moshav Maor, Menashe</FullAddress>
+    <FullAddress>Derech HaMakabim 14, Moshav Maor</FullAddress>
     <Latitude>32.4168</Latitude>
     <Longitude>35.0355</Longitude>
     <OpenTime>2025-06-11T16:15:42</OpenTime>
@@ -64,7 +64,7 @@
     <Id>6</Id>
     <TypeOfCall>REDRIVE</TypeOfCall>
     <VerbalDescription>A young man in his 20s reports a car break-in that happened while the car was parked near his friend's house. He needs help securing the vehicle.</VerbalDescription>
-    <FullAddress>Hadar 12, Haifa</FullAddress>
+    <FullAddress>Hillel 12, Haifa</FullAddress>
     <Latitude>32.7937</Latitude>
     <Longitude>35.0068</Longitude>
     <OpenTime>2025-05-14T12:40:51</OpenTime>
@@ -104,7 +104,7 @@
     <Id>10</Id>
     <TypeOfCall>FLATTIRE</TypeOfCall>
     <VerbalDescription>A man in his 30s calls for help because his car won't start. It seems like a battery issue.</VerbalDescription>
-    <FullAddress>Shalom 10, Netanya</FullAddress>
+    <FullAddress>Shalom Aleichem 10, Netanya</FullAddress>
     <Latitude>32.3276</Latitude>
     <Longitude>34.8569</Longitude>
     <OpenTime>2025-04-16T06:15:00</OpenTime>
@@ -224,7 +224,7 @@
     <Id>22</Id>
     <TypeOfCall>FLATTIRE</TypeOfCall>
     <VerbalDescription>A man in his 60s calls for help after discovering that his car was stolen from in front of his house. He needs assistance securing the car.</VerbalDescription>
-    <FullAddress>Acre Road 55, Acre</FullAddress>
+    <FullAddress>Derech Akko 55, Acre</FullAddress>
     <Latitude>32.9238</Latitude>
     <Longitude>35.0772</Longitude>
     <OpenTime>2025-01-22T13:44:09</OpenTime>
@@ -304,7 +304,7 @@
     <Id>30</Id>
     <TypeOfCall>CARBURGLARY</TypeOfCall>
     <VerbalDescription>A man in his 40s calls for help after his car's battery died. He needs immediate help to start the car.</VerbalDescription>
-    <FullAddress>Yarkon Park, Tel Aviv</FullAddress>
+    <FullAddress>Gan HaYarkon, Tel Aviv</FullAddress>
     <Latitude>32.091</Latitude>
     <Longitude>34.782</Longitude>
     <OpenTime>2024-11-27T10:32:14</OpenTime>
@@ -334,7 +334,7 @@
     <Id>33</Id>
     <TypeOfCall>CARBURGLARY</TypeOfCall>
     <VerbalDescription>A man in his 30s calls for help because his car won’t start. The engine is not turning on, and he needs urgent assistance.</VerbalDescription>
-    <FullAddress>HaDagan 22, Moshav Sde Warburg, Sharon</FullAddress>
+    <FullAddress>HaDagan 22, Moshav Sde Warburg</FullAddress>
     <Latitude>32.2227</Latitude>
     <Longitude>34.8966</Longitude>
     <OpenTime>2024-11-06T13:59:06</OpenTime>
