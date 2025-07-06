@@ -156,7 +156,7 @@ public static class Initialization
     "Menachem Begin Blvd 48, Givatayim",
     "HaShalom Rd 6, Givatayim",
     "Begin Road 17, Petah Tikva",
-    "HaTechnology 67, Petah Tikva",
+    "Katamon 14, Jerusalem",
     "Em Hamoshavot Rd 99, Petah Tikva",
     "HaNasi Weizman 1, Kfar Saba",
     "HaPalmach 40, Raanana",
