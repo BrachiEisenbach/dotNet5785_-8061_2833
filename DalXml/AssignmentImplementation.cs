@@ -4,6 +4,7 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 internal class AssignmentImplementation : IAssignment
@@ -26,6 +27,7 @@ internal class AssignmentImplementation : IAssignment
 
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         int id = Config.NextAssignmentId;
@@ -35,6 +37,8 @@ internal class AssignmentImplementation : IAssignment
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
 
     }
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -46,7 +50,7 @@ internal class AssignmentImplementation : IAssignment
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
     }
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -56,6 +60,8 @@ internal class AssignmentImplementation : IAssignment
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
     }
 
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(int id)
     {
         XElement? assignmentElem =
@@ -63,19 +69,20 @@ internal class AssignmentImplementation : IAssignment
         return assignmentElem is null ? null : getAssignment(assignmentElem);
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a)).FirstOrDefault(filter);
     }
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a));
     }
 
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);

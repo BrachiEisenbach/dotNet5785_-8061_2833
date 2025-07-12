@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.CompilerServices;
+
 /// <summary>
 /// This class contains configuration values and settings for the system.
 /// It manages identifiers for calls and assignments, as well as system clock and risk range.
@@ -34,6 +36,7 @@ internal static class Config
     /// Gets the next available assignment identifier, and increments it automatically.
     /// This property ensures that each assignment identifier is unique and sequential.
     /// </summary>
+   
     internal static int S_NextAssignmentId { get => s_nextAssignmentId++; }
     /// <summary>
     /// The system clock, representing the current time.
@@ -49,6 +52,8 @@ internal static class Config
     /// Resets all configuration values to their initial state. This includes resetting
     /// the next available call and assignment identifiers, as well as the system clock and risk range.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     internal static void Reset()
     {
         s_nextCallId = StartCallId;

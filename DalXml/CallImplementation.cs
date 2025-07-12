@@ -4,9 +4,12 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 internal class CallImplementation : ICall
 {
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Call item)
     {
 
@@ -17,6 +20,7 @@ internal class CallImplementation : ICall
         XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml);
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
 
@@ -31,6 +35,7 @@ internal class CallImplementation : ICall
         XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml);
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call Read(int id)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -38,7 +43,7 @@ internal class CallImplementation : ICall
         return calls.Find(it => it.Id == id);
     }
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call Read(Func<Call, bool> filter)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -47,6 +52,8 @@ internal class CallImplementation : ICall
                ?? throw new DalDoesNotExistException("Call", "No call matches the given filter");
     }
 
+    
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -56,7 +63,7 @@ internal class CallImplementation : ICall
         return calls.Where(filter);
     }
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Call item)
     {
 

@@ -3,6 +3,7 @@ namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// A class for implementing the volunteer's interface.
@@ -14,7 +15,7 @@ internal class VolunteerImplementation : IVolunteer
     /// A function to add a newly created Volunteer to the Volunteer list.
     /// </summary>
     /// <param name="item">Gets a Volunteer created in the main program.</param>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Volunteer item)
 
     {
@@ -31,7 +32,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">Gets a Volunteer ID.</param>
     /// <exception cref="Exception">Throws an error in case of empty input.</exception>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         if (Read(id) == null)
@@ -45,7 +46,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <summary>
     /// A function to delete the entire list of data present in Volunteer type memory.
     /// </summary>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         DataSource.Volunteers.Clear();
@@ -56,9 +57,11 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">Volunteer ID.</param>
     /// <returns>Returns the requested assignment.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(Func<Volunteer, bool> filter) =>
     DataSource.Volunteers.FirstOrDefault(filter);
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(int id)
     {
         var v=DataSource.Volunteers.Find(i => i.Id == id);
@@ -76,7 +79,7 @@ internal class VolunteerImplementation : IVolunteer
     //    List<Volunteer?> v_Volunteers = DataSource.Volunteers;
     //    return new List<Volunteer?>(v_Volunteers);
     //}
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
    => filter == null
         ? DataSource.Volunteers.Select(item => item)
@@ -87,7 +90,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="item">An existing Volunteer.</param>
     /// <exception cref="Exception">Returns an error in case of empty input.</exception>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Volunteer item)
     {
         if (Read(item.Id) == null)

@@ -3,6 +3,7 @@ namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// A class for implementing the assignment's interface.
@@ -13,6 +14,7 @@ internal class AssignmentImplementation : IAssignment
     /// A function to add a newly created assignment to the assignment list.
     /// </summary>
     /// <param name="item">Gets a assignment created in the main program.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         int id = Config.S_NextAssignmentId;
@@ -25,6 +27,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">Gets a assignment ID.</param>
     /// <exception cref="Exception">Throws an error in case of empty input.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         if (Read(id) == null)
@@ -39,6 +42,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// A function to delete the entire list of data present in assignment type memory.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         DataSource.Assignments.Clear();
@@ -54,7 +58,7 @@ internal class AssignmentImplementation : IAssignment
     //    return DataSource.Assignments.Find(item => item.Id == id);//stage 1
 
     //}
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter) =>
         DataSource.Assignments.FirstOrDefault(filter);
     public Assignment? Read(int id)
@@ -75,6 +79,7 @@ internal class AssignmentImplementation : IAssignment
     //    return new List<Assignment?>(c_Assignments);
     //}
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     { 
     var results = filter == null
@@ -88,6 +93,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="item">An existing assignment.</param>
     /// <exception cref="Exception">Returns an error in case of empty input.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         if (Read(item.Id) == null)

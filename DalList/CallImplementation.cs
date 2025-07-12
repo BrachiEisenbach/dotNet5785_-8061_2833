@@ -3,6 +3,7 @@ namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// A class for implementing the call's interface.
@@ -15,7 +16,7 @@ internal class CallImplementation : ICall
     /// A function to add a newly created call to the call list.
     /// </summary>
     /// <param name="item">Gets a call created in the main program.</param>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Call item)
     {
         int id = Config.S_NextCallId;
@@ -28,7 +29,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">Gets a call ID.</param>
     /// <exception cref="Exception">Throws an error in case of empty input.</exception>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         if (Read(id) == null) {
@@ -42,7 +43,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// A function to delete the entire list of data present in call type memory.
     /// </summary>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         DataSource.Calls.Clear();
@@ -53,9 +54,12 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">call ID.</param>
     /// <returns>Returns the requested call.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(Func<Call, bool> filter) =>
     DataSource.Calls.FirstOrDefault(filter);
 
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(int id)
     {
         return DataSource.Calls.Find(item => item.Id == id);
@@ -66,7 +70,7 @@ internal class CallImplementation : ICall
     /// A function that returns a list of all call type data present in memory.
     /// </summary>
     /// <returns>Returns a list of data of the requested type.</returns>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
            => filter == null
                 ? DataSource.Calls.Select(item => item)
@@ -76,7 +80,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="item">An existing call.</param>
     /// <exception cref="Exception">Returns an error in case of empty input.</exception>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Call item)
     {
         if (Read(item.Id) == null)
