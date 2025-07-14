@@ -233,7 +233,8 @@ namespace Helpers
                 AllCallsThatTreated = volunteer.AllCallsThatTreated,
                 AllCallsThatCanceled = volunteer.AllCallsThatCanceled,
                 AllCallsThatHaveExpired = volunteer.AllCallsThatHaveExpired,
-                CallId = volunteer.CallInTreate?.CallId
+                CallId = volunteer.CallInTreate?.CallId,
+                TypeOfCall = volunteer.CallInTreate?.TypeOfCall ?? BO.TYPEOFCALL.NONE
             };
         }
 

@@ -26,8 +26,10 @@ namespace BlImplementation
         {
             try
             {
-                var calls = _dal.Call.ReadAll().ToList();
-                var riskRange = _dal.Config.RiskRange;
+                IEnumerable<DO.Call> calls;
+                lock (AdminManager.BlMutex) //stage 7
+                    calls = _dal.Call.ReadAll().ToList();
+                var riskRange = AdminManager.RiskRange;
 
                 // 1️⃣ קיבוץ – השארת הקריאה האחרונה לכל CallId
                 calls = calls.GroupBy(call => call.Id)
@@ -74,14 +76,19 @@ namespace BlImplementation
 
         public BO.Call GetCallDetails(int callId)
         {
+            
             try
             {
-                var callDO = _dal.Call.Read(callId);
+                DO.Call? callDO;
+                lock (AdminManager.BlMutex) //stage 7
+                    callDO = _dal.Call.Read(callId);
                 if (callDO == null)
                 {
                     throw new BlDoesNotExistException($"Call with ID {callId} not found .");
                 }
-                var callAssignments = _dal.Assignment.ReadAll()
+                IEnumerable<BO.CallAssignInList> callAssignments;
+                lock (AdminManager.BlMutex) //stage 7
+                    callAssignments = _dal.Assignment.ReadAll()
                               .Where(assign => assign.CallId == callId)
                               .Select(assign => new BO.CallAssignInList
                               {
@@ -92,7 +99,7 @@ namespace BlImplementation
                                   TypeOfTreatment = (BO.FINISHTYPE?)assign.TypeOfTreatment
                               }).ToList();
 
-                var riskRange = _dal.Config.RiskRange;
+                var riskRange = AdminManager.RiskRange;
 
                 return MappingProfile.ConvertToBO(callDO, riskRange);
             }
@@ -116,6 +123,7 @@ namespace BlImplementation
 
         public void AddCall(BO.Call call)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             if (string.IsNullOrWhiteSpace(call.FullAddress))
                 throw new BlArgumentException("Address cannot be empty.");
 
@@ -148,7 +156,8 @@ namespace BlImplementation
             );
             try
             {
-                _dal.Call.Create(newCall);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Call.Create(newCall);
                 CallManager.Observers.NotifyListUpdated();
             }
             catch (DalAlreadyExistException dalAlreadyExistException) { throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException); }
@@ -171,14 +180,19 @@ namespace BlImplementation
 
         public void cancelTreat(int volId, int assiId)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
             {
-                var assignment = _dal.Assignment.Read(assiId);
+                DO.Assignment? assignment;
+                lock (AdminManager.BlMutex) //stage 7
+                    assignment = _dal.Assignment.Read(assiId);
                 if (assignment == null)
                     throw new BlDoesNotExistException($"Assignment with ID {assiId} .");
 
                 //  שליפת המתנדב שמבקש לבטל
-                var volunteerFromDAL = _dal.Volunteer.Read(volId);
+                DO.Volunteer? volunteerFromDAL;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteerFromDAL = _dal.Volunteer.Read(volId);
                 if (volunteerFromDAL == null)
                     throw new BlDoesNotExistException($"The user with ID {volId} not found.");
 
@@ -187,7 +201,9 @@ namespace BlImplementation
                     throw new BlUnauthorizedException("You do not have permission to cancel the treatment.");
 
                 //  בדיקה שההקצאה עדיין פתוחה
-                var call = _dal.Call.Read(assignment.CallId);
+                DO.Call? call;
+                lock (AdminManager.BlMutex) //stage 7
+                    call = _dal.Call.Read(assignment.CallId);
                 if (call == null)
                     throw new BlDoesNotExistException($"Assignment with ID {assignment.CallId} not found.");
 
@@ -207,7 +223,8 @@ namespace BlImplementation
                 };
 
                 //  שמירה לשכבת הנתונים
-                _dal.Assignment.Update(updatedAssignment);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Assignment.Update(updatedAssignment);
             }
 
             catch (DalDoesNotExistException dalDoesNotExistException)
@@ -229,13 +246,18 @@ namespace BlImplementation
         /// <param name="callId">The ID of the call to be assigned to the volunteer.</param>
         public void chooseCall(int volId, int callId)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
             {
-                var call = _dal.Call.Read(callId);
+                DO.Call? call;
+                lock (AdminManager.BlMutex) //stage 7
+                    call = _dal.Call.Read(callId);
                 if (call == null)
                     throw new BlDoesNotExistException($"Call with ID {callId} not found.");
                 // 2. בדיקה שהקריאה לא טופלה ושאין הקצאה פתוחה
-                var existingAssignments = _dal.Assignment.ReadAll(a => a.CallId == callId);
+                IEnumerable<DO.Assignment> existingAssignments;
+                lock (AdminManager.BlMutex) //stage 7
+                    existingAssignments = _dal.Assignment.ReadAll(a => a.CallId == callId);
 
                 if (existingAssignments.Any(a => a.EndTimeOfTreatment == null))
                     throw new BlInvalidOperationException("You cannot select a call that is already in progress.");
@@ -245,7 +267,9 @@ namespace BlImplementation
                     throw new BlInvalidOperationException("Cannot select an expired call.");
 
                 // 4. שליפת המתנדב מה-DAL
-                var volunteer = _dal.Volunteer.Read(volId);
+                DO.Volunteer? volunteer;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteer = _dal.Volunteer.Read(volId);
                 if (volunteer == null)
                     throw new BlDoesNotExistException($"The user with ID {volId} not found.");
 
@@ -259,8 +283,8 @@ namespace BlImplementation
                     TypeOfTreatment: null
                 );
                 // 6. שמירת ההקצאה החדשה
-                _dal.Assignment.Create(newAssignment);
-                //?????????????
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Assignment.Create(newAssignment);
                 CallManager.Observers.NotifyListUpdated();
 
             }
@@ -287,19 +311,25 @@ namespace BlImplementation
 
         public void DeleteCall(int callId)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
             {
                 //  שליפת הקריאה מהמאגר
                 var call = GetCallDetails(callId);
+                if(call==null)
+                    throw new BlDoesNotExistException($"Call with ID {callId} not found.");
                 if (call.Status != STATUS.Open)
                     throw new BlInvalidOperationException("A call that is not in open status cannot be deleted.");
 
-                //  בדיקה שלא קיימות הקצאות לקריאה זו
-                var assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
+                //בדיקה שלא קיימות הקצאות לקריאה זו
+                IEnumerable<Assignment> assignments;
+                lock (AdminManager.BlMutex) //stage 7
+                    assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
                 if (assignments.Any())
                     throw new BlInvalidOperationException("A call previously assigned to volunteers cannot be deleted.");
-
-                _dal.Call.Delete(callId);
+                
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Call.Delete(callId);
                  
                 CallManager.Observers.NotifyListUpdated();
             }
@@ -353,9 +383,11 @@ namespace BlImplementation
         {
             try
             {
-                var riskRange = _dal.Config.RiskRange;
+                var riskRange = AdminManager.RiskRange;
 
-                var closedCalls = _dal.Assignment.ReadAll()
+                IEnumerable<BO.ClosedCallInList?> closedCalls;
+                lock (AdminManager.BlMutex) //stage 7
+                    closedCalls = _dal.Assignment.ReadAll()
                     .Where(a => a.VolunteerId == volId && a.EndTimeOfTreatment != null) // רק קריאות שטופלו
                     .Select(a =>
                     {
@@ -376,7 +408,8 @@ namespace BlImplementation
                     })
                     .Where(c => c != null) // סינון קריאות ריקות
                     .ToList();
-
+                if(closedCalls== null)
+                    throw new BlDoesNotExistException($"No closed calls found for volunteer with ID {volId}.");
                 // סינון לפי סוג קריאה אם נדרש
                 if (tOfCall.HasValue)
                 {
@@ -394,7 +427,7 @@ namespace BlImplementation
                     _ => closedCalls.OrderBy(c => c.Id).ToList()
                 };
 
-                return closedCalls;
+                return closedCalls!;
             }
             catch (DalDoesNotExistException dalEx)
             {
@@ -419,11 +452,15 @@ namespace BlImplementation
         {
             try
             {
-                var riskRange = _dal.Config.RiskRange;
-                var volunteer = _dal.Volunteer.Read(volId)
+                var riskRange = AdminManager.RiskRange;
+                DO.Volunteer? volunteer;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteer = _dal.Volunteer.Read(volId)
                     ?? throw new BlDoesNotExistException($"Volunteer with ID {volId} not found.");
 
-                var openCalls = _dal.Call.ReadAll()
+                IEnumerable<DO.Call> openCalls;
+                lock (AdminManager.BlMutex) //stage 7
+                    openCalls = _dal.Call.ReadAll()
                     .Where(call =>
                     {
                         var status = CallManager.CalculateStatus(call, riskRange);
@@ -473,6 +510,7 @@ namespace BlImplementation
 
         public void UpdateCallDetails(BO.Call call)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
             {
                 // 1️⃣ בדיקות תקינות נתונים
@@ -493,8 +531,12 @@ namespace BlImplementation
                 catch (Exception ex)
                 {
                     throw new BlException("Error retrieving coordinates: " + ex.Message);
-                }                // 3️⃣ חיפוש הקריאה בשכבת הנתונים
-                var existingCall = _dal.Call.Read(call.Id);
+                }
+
+                // 3️⃣ חיפוש הקריאה בשכבת הנתונים
+                DO.Call? existingCall;
+                lock (AdminManager.BlMutex) //stage 7
+                    existingCall = _dal.Call.Read(call.Id);
                 if (existingCall == null)
                     throw new BlException($"No call found with ID {call.Id}");
 
@@ -502,7 +544,8 @@ namespace BlImplementation
                 var riskRange = _dal.Config.RiskRange;
 
                 var updatedCall = MappingProfile.ConvertToDO(call);
-                _dal.Call.Update(updatedCall);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Call.Update(updatedCall);
                 CallManager.Observers.NotifyItemUpdated(updatedCall.Id);  //stage 5
                 CallManager.Observers.NotifyListUpdated();  //stage 5
 
@@ -522,10 +565,13 @@ namespace BlImplementation
 
         public void updateFinishTreat(int volId, int callId)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
             {
                 // שלב 1: שליפת ההקצאה המתאימה משכבת הנתונים
-                var assignment = _dal.Assignment.Read(callId)
+                DO.Assignment? assignment;
+                lock (AdminManager.BlMutex) //stage 7
+                    assignment = _dal.Assignment.Read(callId)
                     ?? throw new BO.BlDoesNotExistException("No assignment found with the given ID.");
 
                 // שלב 2: בדיקה שהמתנדב אכן מוקצה לקריאה זו
@@ -544,7 +590,8 @@ namespace BlImplementation
                     TypeOfTreatment = TYPEOFTREATMENT.TREATE
                 };
                 // שלב 5: ניסיון עדכון בשכבת הנתונים
-                _dal.Assignment.Update(assignment);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Assignment.Update(assignment);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {

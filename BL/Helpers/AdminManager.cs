@@ -74,7 +74,7 @@ internal static TimeSpan  RiskRange
 
         //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
         if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => VolunteerManager.PeriodicStudentsUpdates(oldClock, newClock)); 
+            _periodicTask = Task.Run(() => CallManager.UpdateExpiredOpenCalls(oldClock, newClock)); 
         //etc ...
 
         //Calling all the observers of clock update

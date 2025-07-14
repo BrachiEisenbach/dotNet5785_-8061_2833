@@ -53,6 +53,7 @@ namespace BlImplementation
 
         public void ClockPromotion(TIMEUNIT unit)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             DateTime newTime = unit switch
             {
                 BO.TIMEUNIT.MINUTE => AdminManager.Now.AddMinutes(1),
@@ -108,14 +109,20 @@ namespace BlImplementation
 
         public void SetClock(DateTime currentTime)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             AddClockObserver(() => AdminManager.UpdateClock(currentTime));
         }
 
-        
-
-
 
         #endregion Stage 5
+
+        public void StartSimulator(int interval) //stage 7
+        { 
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+            AdminManager.Start(interval); //stage 7
+        }
+
+        public void StopSimulator() => AdminManager.Stop(); //stage 7
     }
 
 }

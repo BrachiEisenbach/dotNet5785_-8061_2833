@@ -24,5 +24,7 @@ namespace BlApi
         void SetClock(DateTime currentTime);
         #endregion Stage 5
 
+        void StartSimulator(int interval); //stage 7
+        void StopSimulator(); //stage 7
     }
 }

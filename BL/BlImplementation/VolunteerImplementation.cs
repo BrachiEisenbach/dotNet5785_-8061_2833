@@ -20,7 +20,9 @@ namespace BlImplementation
         {
             try
             {
-                var volunteers = _dal.Volunteer.ReadAll();
+                IEnumerable<DO.Volunteer> volunteers;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteers = _dal.Volunteer.ReadAll();
                 var user = volunteers.FirstOrDefault(v => v.FullName == userName && v.Password == password);
 
                 if (user == null)
@@ -49,8 +51,10 @@ namespace BlImplementation
         {
             try
             {
-                var volunteer = _dal.Volunteer.ReadAll();
-                var user = volunteer.FirstOrDefault(v => v.Id == id);
+                IEnumerable<DO.Volunteer> volunteers;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteers = _dal.Volunteer.ReadAll().ToList();
+                var user = volunteers.FirstOrDefault(v => v.Id == id);
                 if (user == null)
                 {
                     throw new BlDoesNotExistException("The user isn't exist.");
@@ -75,10 +79,16 @@ namespace BlImplementation
         /// <param name="boVolunteer">The volunteer object containing updated details.</param>
         public void UpdateVolunteerDetails(int id, BO.Volunteer boVolunteer)
         {
-            var vol = _dal.Volunteer.Read(boVolunteer.Id) ??
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+
+            DO.Volunteer? vol;
+            lock (AdminManager.BlMutex) //stage 7
+                vol = _dal.Volunteer.Read(boVolunteer.Id) ??
             throw new BO.BlDoesNotExistException($"The Volunteer with ID={boVolunteer.Id} does not exist");
 
-            var requester = _dal.Volunteer.Read(id) ??
+            DO.Volunteer? requester;
+            lock (AdminManager.BlMutex) //stage 7
+                requester = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"Requester with ID={id} does not exist");
             if (requester.Role != (DO.ROLE)BO.ROLE.ADMIN && requester.Id != boVolunteer.Id)
             {
@@ -120,7 +130,8 @@ namespace BlImplementation
 
             try
             {
-                _dal.Volunteer.Update(doVolunteer);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Update(doVolunteer);
                 VolunteerManager.Observers.NotifyItemUpdated(doVolunteer.Id);
                 VolunteerManager.Observers.NotifyListUpdated();
             }
@@ -140,10 +151,16 @@ namespace BlImplementation
         /// <param name="id">The ID of the volunteer to delete.</param>
         public void DeleteVolunteerDetails(int id)
         {
-            var vol = _dal.Volunteer.Read(id) ??
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+
+            DO.Volunteer? vol;
+            lock (AdminManager.BlMutex) //stage 7
+                vol = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"The Volunteer with ID={id} does not exist");
 
-            var assignments = _dal.Assignment.ReadAll(a => a.Id == id);
+            IEnumerable<Assignment?> assignments;
+            lock (AdminManager.BlMutex) //stage 7
+                assignments = _dal.Assignment.ReadAll(a => a.Id == id);
             if (vol.Active == true)
             {
                 throw new BO.BlVolunteerInProgressException($"Volunteer with ID={id} is currently handling a call and cannot be deleted.");
@@ -155,7 +172,8 @@ namespace BlImplementation
 
             try
             {
-                _dal.Volunteer.Delete(id);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Delete(id);
                 VolunteerManager.Observers.NotifyListUpdated();
             }
             catch (DO.DalDoesNotExistException ex)
@@ -174,6 +192,8 @@ namespace BlImplementation
         /// <param name="boVolunteer">The volunteer object to add.</param>
         public void AddVolunteer(BO.Volunteer boVolunteer)
         {
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+
             if (boVolunteer == null)
                 throw new ArgumentNullException("No volunteer entered.");
             Tools.ValidateVolunteerFormat(boVolunteer);
@@ -209,7 +229,8 @@ namespace BlImplementation
 
             try
             {
-                _dal.Volunteer.Create(doVolunteer);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Create(doVolunteer);
                 VolunteerManager.Observers.NotifyListUpdated();
             }
             catch (DO.DalDoesNotExistException ex)
@@ -233,7 +254,9 @@ namespace BlImplementation
             {
                 if (id > 0)
                 {
-                    var vol = _dal.Volunteer.Read(id) ??
+                    DO.Volunteer? vol;
+                    lock (AdminManager.BlMutex) //stage 7
+                        vol = _dal.Volunteer.Read(id) ??
                         throw new BO.BlDoesNotExistException($"The Volunteer with ID={id} does not exist");
 
                     return VolunteerManager.GetVolunteerFromDO(vol);
@@ -266,17 +289,21 @@ namespace BlImplementation
                 var DOvolunteers = VolunteerManager.GetIsActiveVolunteers(isActive);
                 var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
 
-                IEnumerable<BO.Volunteer> sortedVolunteers = sort switch
+                var VolunteersInList = BOvolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
+
+
+
+                IEnumerable<BO.VolunteerInList> sortedVolunteersInList = sort switch
                 {
-                    VOLUNTEERFIELDSORT.CALLTYPE => BOvolunteers.OrderBy(v => v.TypeOfCall),
-                    VOLUNTEERFIELDSORT.FULLNAME => BOvolunteers.OrderBy(v => v.FullName),
-                    VOLUNTEERFIELDSORT.SUMTREATED => BOvolunteers.OrderByDescending(v => v.AllCallsThatTreated),
-                    VOLUNTEERFIELDSORT.SUMCANCELED => BOvolunteers.OrderByDescending(v => v.AllCallsThatCanceled),
-                    VOLUNTEERFIELDSORT.SUMEXPIRED => BOvolunteers.OrderByDescending(v => v.AllCallsThatHaveExpired),
-                    _ => BOvolunteers.OrderBy(v => v.Id)
+                    VOLUNTEERFIELDSORT.CALLTYPE => VolunteersInList.OrderBy(v => v.TypeOfCall),
+                    VOLUNTEERFIELDSORT.FULLNAME => VolunteersInList.OrderBy(v => v.FullName),
+                    VOLUNTEERFIELDSORT.SUMTREATED => VolunteersInList.OrderByDescending(v => v.AllCallsThatTreated),
+                    VOLUNTEERFIELDSORT.SUMCANCELED => VolunteersInList.OrderByDescending(v => v.AllCallsThatCanceled),
+                    VOLUNTEERFIELDSORT.SUMEXPIRED => VolunteersInList.OrderByDescending(v => v.AllCallsThatHaveExpired),
+                    _ => VolunteersInList.OrderBy(v => v.Id)
                 };
 
-                return sortedVolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
+                return sortedVolunteersInList;
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
@@ -284,10 +311,9 @@ namespace BlImplementation
             }
             catch (Exception ex)
             {
-                throw new BlException("Error while accepting volunteers on the list",ex);
+                throw new BlException("Error while accepting volunteers on the list", ex);
             }
         }
-
         public void AddObserver(Action listObserver)
         {
             VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
