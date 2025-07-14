@@ -39,7 +39,76 @@ namespace Helpers
         }
 
 
-internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
+
+
+        /// <summary>
+        /// מתודה המעדכנת את כל הקריאות הפתוחות שפג תוקפן.
+        /// יש לזמן אותה מ-ClockManager בכל עדכון שעון.
+        /// </summary>
+        internal static void UpdateExpiredOpenCalls()
+        {
+            // מאחזר את רדיוס הסיכון כדי לחשב סטטוס נוכחי
+            var riskRange = s_dal.Config.RiskRange;
+            DateTime now = AdminManager.Now; // קבל את השעה הנוכחית מה-AdminManager שלך
+
+            // עובר על כל הקריאות ב-DAL
+            var allCalls = s_dal.Call.ReadAll().ToList(); // ToList כדי שלא תהיה בעיה עם שינוי תוך כדי איטרציה
+
+            foreach (var call in allCalls)
+            {
+                // חשב את הסטטוס הנוכחי של הקריאה
+                var currentStatus = CalculateStatus(call, riskRange);
+
+                // תנאי: זמן הסיום המקסימלי עבר (MaxTimeToFinish אינו null ובעבר)
+                // וגם הקריאה עדיין בסטטוס 'פתוחה' או 'פתוחה בסיכון' (כלומר, לא סיימו לטפל בה עדיין)
+                if (call.MaxTimeToFinish.HasValue && call.MaxTimeToFinish.Value < now &&
+                    (currentStatus == BO.STATUS.Open || currentStatus == BO.STATUS.OpenDangerZone))
+                {
+                    DO.Assignment oldAssignment = null; // נשנה את השם כדי להבהיר
+
+                    // נסה למצוא הקצאה קיימת עבור הקריאה שזמן הטיפול שלה עדיין לא הסתיים
+                    var existingAssignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id && a.EndTimeOfTreatment == null).ToList();
+
+                    if (existingAssignments.Any())
+                    {
+                        // קיימת הקצאה פתוחה - יש לעדכן אותה.
+                        // מכיוון שהמאפיינים הם init-only, ניצור אובייקט חדש עם הנתונים המעודכנים.
+                        oldAssignment = existingAssignments.First(); // קח את ההקצאה הפתוחה הראשונה
+
+                        // *** התיקון כאן: צור אובייקט חדש עם הנתונים המעודכנים ***
+                        DO.Assignment newAssignment = oldAssignment with // השתמש ב-`with` expression אם BO.Assignment הוא record
+                        {
+                            EndTimeOfTreatment = now,
+                            TypeOfTreatment = DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
+                        };
+                        s_dal.Assignment.Update(newAssignment); // עדכן את ה-DAL עם האובייקט החדש
+                    }
+                    else
+                    {
+                        // אין הקצאה פתוחה - צור הקצאה חדשה מסוג "פג תוקף"
+                        DO.Assignment newAssignment = new DO.Assignment(
+                            Id: 0, // DAL אמור להקצות ID חדש
+                            CallId: call.Id,
+                            VolunteerId: 0, // ת.ז מתנדב שהוא 0 כפי שנדרש
+                            EntryTimeForTreatment: now,
+                            EndTimeOfTreatment: now,
+                            TypeOfTreatment: DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
+                        );
+                        s_dal.Assignment.Create(newAssignment);
+                    }
+                    // שלב 5 (א): שליחת הודעה למשקיפים על עדכון הקריאה הספציפית
+                    CallManager.Observers.NotifyListUpdated();
+
+                }
+            }
+
+            // שלב 5 (ב): לאחר השלמת המעבר על כל הקריאות, "תישלח הודעה" למשקיפים על עדכון רשימת הקריאות
+            Observers.NotifyListUpdated(); // זה כבר קיים אצלך, מפעיל את Observer שמפעיל את GetOpenCallInList
+        }
+
+
+
+        internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
 {
     DateTime currentTime = DateTime.Now;
     var assignments = s_dal.Assignment.ReadAll().ToList();

@@ -73,11 +73,8 @@ namespace BlImplementation
 
         public void InitializeDB()
         {
-            ResetDB();
-            AdminManager.InitializeDB();
-            AdminManager.UpdateClock(AdminManager.Now);
-            Console.WriteLine("The Data Base was initialized");
-            
+            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+            AdminManager.InitializeDB(); //stage 7            
         }
 
         /// <summary>
@@ -88,11 +85,8 @@ namespace BlImplementation
         {
             try
             {
-                //_dal.Config.Reset();
-                //_dal.Volunteer.DeleteAll();
-                //_dal.Call.DeleteAll();
-                //_dal.Assignment.DeleteAll();
-                AdminManager.ResetDB();
+                AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+                AdminManager.ResetDB(); //stage 7
                 Console.WriteLine("The Data Base was reseted");
 
             }

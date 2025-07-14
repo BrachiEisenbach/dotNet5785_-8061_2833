@@ -3,6 +3,7 @@
 namespace Dal;
 using DalApi;
 using System;
+using System.Runtime.CompilerServices;
 
 
 /// <summary>
@@ -27,7 +28,9 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     public DateTime Clock
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         get => Config.Clock;
+        [MethodImpl(MethodImplOptions.Synchronized)]
         set => Config.Clock = value;
     }
 
@@ -36,7 +39,9 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     public TimeSpan RiskRange
     {
+        [MethodImpl(MethodImplOptions.Synchronized)]
         get => Config.RiskRange;
+        [MethodImpl(MethodImplOptions.Synchronized)]
         set => Config.RiskRange = value;
     }
 
@@ -44,6 +49,7 @@ internal class ConfigImplementation : IConfig
     /// Resets the configuration settings to their default values.
     /// This includes resetting the clock and risk range.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Reset()
     {
         Config.Reset();

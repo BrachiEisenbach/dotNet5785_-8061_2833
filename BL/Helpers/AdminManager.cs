@@ -74,7 +74,7 @@ internal static TimeSpan  RiskRange
 
         //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
         if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => StudentManager.PeriodicStudentsUpdates(oldClock, newClock)); 
+            _periodicTask = Task.Run(() => VolunteerManager.PeriodicStudentsUpdates(oldClock, newClock)); 
         //etc ...
 
         //Calling all the observers of clock update
@@ -146,7 +146,7 @@ internal static TimeSpan  RiskRange
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
         if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-            _simulateTask = Task.Run(() => StudentManager.SimulateCourseRegistrationAndGrade());
+            _simulateTask = Task.Run(() => VolunteerManager.SimulateCourseRegistrationAndGrade());
 
             //etc...
 
