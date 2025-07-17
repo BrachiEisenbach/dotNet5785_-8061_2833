@@ -127,10 +127,9 @@ namespace BlImplementation
             if (string.IsNullOrWhiteSpace(call.FullAddress))
                 throw new BlArgumentException("Address cannot be empty.");
 
-            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
 
-            call.Latitude = latitude;
-            call.Longitude = longitude;
+            call.Latitude = null;
+            call.Longitude = null;
             if (!call.Latitude.HasValue || !call.Longitude.HasValue)
                 throw new BlArgumentException("Latitude and Longitude must be provided.");
 
@@ -165,7 +164,7 @@ namespace BlImplementation
             {
                 throw new BlInvalidOperationException("Error adding the call to the system", ex);
             }
-
+            _ = CallManager.UpdateCoordinatesAsync(call);
         }
 
 
@@ -522,16 +521,6 @@ namespace BlImplementation
 
                 if (string.IsNullOrWhiteSpace(call.FullAddress))
                     throw new ArgumentException("Invalid or empty address");
-                try
-                {
-                    var (latitude, longitude) = VolunteerManager.FetchCoordinates(call.FullAddress);
-                    call.Latitude = latitude;
-                    call.Longitude = longitude;
-                }
-                catch (Exception ex)
-                {
-                    throw new BlException("Error retrieving coordinates: " + ex.Message);
-                }
 
                 // 3️⃣ חיפוש הקריאה בשכבת הנתונים
                 DO.Call? existingCall;
@@ -554,6 +543,7 @@ namespace BlImplementation
             {
                 throw new BlException("Error while updating reading", ex);
             }
+            _ = CallManager.UpdateCoordinatesAsync(call);
         }
 
 

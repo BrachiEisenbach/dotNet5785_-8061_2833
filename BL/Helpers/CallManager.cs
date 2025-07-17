@@ -1,4 +1,4 @@
-﻿ using DalApi;
+﻿using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,41 +47,48 @@ namespace Helpers
         /// </summary>
         internal static void UpdateExpiredOpenCalls()
         {
-            // מאחזר את רדיוס הסיכון כדי לחשב סטטוס נוכחי
-            var riskRange = s_dal.Config.RiskRange;
-            DateTime now = AdminManager.Now; // קבל את השעה הנוכחית מה-AdminManager שלך
+            var riskRange = AdminManager.RiskRange;
+            DateTime now = AdminManager.Now;
 
-            // עובר על כל הקריאות ב-DAL
-            var allCalls = s_dal.Call.ReadAll().ToList(); // ToList כדי שלא תהיה בעיה עם שינוי תוך כדי איטרציה
+            // רשימה לאיסוף ה-IDs של הקריאות שעודכנו לצורך שליחת הודעות ספציפיות בסוף
+            List<int> updatedCallIds = new List<int>();
+
+            // קריאת כל הקריאות:
+            IEnumerable<DO.Call> allCalls;
+            lock (AdminManager.BlMutex) 
+                allCalls = s_dal.Call.ReadAll().ToList(); // ToList() inside lock - GOOD!
+            
 
             foreach (var call in allCalls)
             {
-                // חשב את הסטטוס הנוכחי של הקריאה
                 var currentStatus = CalculateStatus(call, riskRange);
 
-                // תנאי: זמן הסיום המקסימלי עבר (MaxTimeToFinish אינו null ובעבר)
-                // וגם הקריאה עדיין בסטטוס 'פתוחה' או 'פתוחה בסיכון' (כלומר, לא סיימו לטפל בה עדיין)
                 if (call.MaxTimeToFinish.HasValue && call.MaxTimeToFinish.Value < now &&
                     (currentStatus == BO.STATUS.Open || currentStatus == BO.STATUS.OpenDangerZone))
                 {
-                    DO.Assignment oldAssignment = null; // נשנה את השם כדי להבהיר
+                    DO.Assignment oldAssignment = null;
 
-                    // נסה למצוא הקצאה קיימת עבור הקריאה שזמן הטיפול שלה עדיין לא הסתיים
-                    var existingAssignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id && a.EndTimeOfTreatment == null).ToList();
+                    // מציאת הקצאות קיימות:
+                    IEnumerable<DO.Assignment> existingAssignments;
+                    lock (AdminManager.BlMutex) // Lock for ReadAll (Assignments)
+                    {
+                        existingAssignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id && a.EndTimeOfTreatment == null).ToList();
+                    }
 
                     if (existingAssignments.Any())
                     {
-                        // קיימת הקצאה פתוחה - יש לעדכן אותה.
-                        // מכיוון שהמאפיינים הם init-only, ניצור אובייקט חדש עם הנתונים המעודכנים.
-                        oldAssignment = existingAssignments.First(); // קח את ההקצאה הפתוחה הראשונה
-
-                        // *** התיקון כאן: צור אובייקט חדש עם הנתונים המעודכנים ***
-                        DO.Assignment newAssignment = oldAssignment with // השתמש ב-`with` expression אם BO.Assignment הוא record
+                        oldAssignment = existingAssignments.First();
+                        DO.Assignment newAssignment = oldAssignment with
                         {
                             EndTimeOfTreatment = now,
                             TypeOfTreatment = DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
                         };
-                        s_dal.Assignment.Update(newAssignment); // עדכן את ה-DAL עם האובייקט החדש
+
+                        // עדכון הקצאה קיימת: - MUST BE INSIDE A LOCK!
+                        lock (AdminManager.BlMutex)
+                        {
+                            s_dal.Assignment.Update(newAssignment); // NOW THIS IS PROTECTED
+                        }
                     }
                     else
                     {
@@ -94,50 +101,62 @@ namespace Helpers
                             EndTimeOfTreatment: now,
                             TypeOfTreatment: DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
                         );
-                        s_dal.Assignment.Create(newAssignment);
+                        // יצירת הקצאה חדשה: - GOOD (already had lock)
+                        lock (AdminManager.BlMutex)
+                            s_dal.Assignment.Create(newAssignment);
                     }
-                    // שלב 5 (א): שליחת הודעה למשקיפים על עדכון הקריאה הספציפית
-                    CallManager.Observers.NotifyListUpdated();
 
+                    // שלב 5 (א): שליחת הודעה למשקיפים על עדכון הקריאה הספציפית
+                    // נאסוף את ה-ID לרשימה כדי לשלוח את ההודעות מחוץ ל-lock
+                    updatedCallIds.Add(call.Id);
                 }
             }
 
+            // שלב 5 (א) סופי: לאחר סיום הלולאה, נשלח הודעות על קריאות ספציפיות שעודכנו
+            // פעולות ה-Observer צריכות להיות מחוץ ל-lock, כפי שצוין בהוראות
+            foreach (var id in updatedCallIds.Distinct()) // השתמש ב-Distinct כדי למנוע כפילויות אם קריאה טופלה מספר פעמים (פחות סביר כאן)
+            {
+                Observers.NotifyItemUpdated(id);
+            }
+
             // שלב 5 (ב): לאחר השלמת המעבר על כל הקריאות, "תישלח הודעה" למשקיפים על עדכון רשימת הקריאות
-            Observers.NotifyListUpdated(); // זה כבר קיים אצלך, מפעיל את Observer שמפעיל את GetOpenCallInList
+            // (ההוראות אומרות שזה צריך להיות מחוץ ל-lock)
+            Observers.NotifyListUpdated();
         }
 
 
-
         internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
-{
-    DateTime currentTime = DateTime.Now;
-    var assignments = s_dal.Assignment.ReadAll().ToList();
+        {
+            DateTime currentTime = DateTime.Now;
+            IEnumerable<DO.Assignment> assignments;
+            lock (AdminManager.BlMutex) //stage 7
+                assignments = s_dal.Assignment.ReadAll().ToList();
 
-    var lastAssignment = assignments
-        .Where(a => a.CallId == call.Id)
-        .OrderByDescending(a => a.EntryTimeForTreatment)
-        .FirstOrDefault();
+            var lastAssignment = assignments
+                .Where(a => a.CallId == call.Id)
+                .OrderByDescending(a => a.EntryTimeForTreatment)
+                .FirstOrDefault();
 
-    if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
-    {
-        if (call.MaxTimeToFinish < currentTime)
-            return BO.STATUS.Expired;
+            if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
+            {
+                if (call.MaxTimeToFinish < currentTime)
+                    return BO.STATUS.Expired;
 
-        if (call.MaxTimeToFinish - currentTime <= riskRange)
-            return BO.STATUS.OpenDangerZone;
+                if (call.MaxTimeToFinish - currentTime <= riskRange)
+                    return BO.STATUS.OpenDangerZone;
 
-        return BO.STATUS.Open;
-    }
+                return BO.STATUS.Open;
+            }
 
-    // כאן היא עדיין בטיפול פעיל
-    if (call.MaxTimeToFinish < currentTime)
-        return BO.STATUS.Expired;
+            // כאן היא עדיין בטיפול פעיל
+            if (call.MaxTimeToFinish < currentTime)
+                return BO.STATUS.Expired;
 
-    if (call.MaxTimeToFinish - currentTime <= riskRange)
-        return BO.STATUS.InTreatmentDangerZone;
+            if (call.MaxTimeToFinish - currentTime <= riskRange)
+                return BO.STATUS.InTreatmentDangerZone;
 
-    return BO.STATUS.InTreatment;
-}
+            return BO.STATUS.InTreatment;
+        }
 
         internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
         {
@@ -222,5 +241,39 @@ namespace Helpers
         {
             return degrees * (Math.PI / 180);
         }
+
+
+
+        internal static async Task UpdateCoordinatesAsync(BO.Call call)
+        {
+            try
+            {
+                var (lat, lon) = await VolunteerManager.FetchCoordinates(call.FullAddress);
+                call.Latitude = lat;
+                call.Longitude = lon;
+
+                // עדכון הקואורדינטות במסד
+                DO.Call updatedCall = new DO.Call(
+                    Id: call.Id,
+                    TypeOfCall: (DO.TYPEOFCALL)call.TypeOfCall,
+                    VerbalDescription: call.VerbalDescription,
+                    FullAddress: call.FullAddress,
+                    Latitude: lat,
+                    Longitude: lon,
+                    MaxTimeToFinish: call.MaxTimeToFinish
+                );
+
+                lock (AdminManager.BlMutex)
+                    s_dal.Call.Update(updatedCall);
+
+                CallManager.Observers.NotifyListUpdated();
+            }
+            catch (Exception ex)
+            {
+                // כאן אפשר לתעד שגיאות או לסמן את הישות בממשק כאדומה
+                // לדוגמה: call.HasCoordinateError = true;
+            }
+        }
+
     }
 }

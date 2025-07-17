@@ -103,10 +103,9 @@ namespace BlImplementation
             Tools.ValidateVolunteerFormat(boVolunteer);
             Tools.ValidateVolunteerLogic(boVolunteer);
 
-            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(boVolunteer.FullAddress);
 
-            boVolunteer.Latitude = latitude;
-            boVolunteer.Longitude = longitude;
+            boVolunteer.Latitude = null;
+            boVolunteer.Longitude = null;
 
             if (requester.Role.ToString() != BO.ROLE.ADMIN.ToString() && vol.Role.ToString() != boVolunteer.Role.ToString())
             {
@@ -120,8 +119,8 @@ namespace BlImplementation
                 boVolunteer.Email,
                 boVolunteer.Password,
                 boVolunteer.FullAddress,
-                latitude,
-                longitude,
+                boVolunteer.Latitude,
+                boVolunteer.Longitude,
                 (DO.ROLE)boVolunteer.Role,
                 boVolunteer.Active,
                 boVolunteer.MaxDistance,
@@ -143,6 +142,8 @@ namespace BlImplementation
             {
                 throw new BlException("Error while updating volunteer", ex);
             }
+            _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+
         }
 
         /// <summary>
@@ -199,13 +200,9 @@ namespace BlImplementation
             Tools.ValidateVolunteerFormat(boVolunteer);
             Tools.ValidateVolunteerLogic(boVolunteer);
 
-            (double latitude, double longitude) = VolunteerManager.FetchCoordinates(boVolunteer.FullAddress);
 
-            boVolunteer.Latitude = latitude;
-            boVolunteer.Longitude = longitude;
-            // 📍 Latitude & Longitude validation – must exist and be within range
-            if (!boVolunteer.Latitude.HasValue || !boVolunteer.Longitude.HasValue)
-                throw new BlArgumentException("Latitude and Longitude must be provided.");
+            boVolunteer.Latitude = null;
+            boVolunteer.Longitude = null;
 
             if (boVolunteer.Latitude is < -90 or > 90)
                 throw new BlArgumentException("Latitude must be between -90 and 90.");
@@ -219,8 +216,8 @@ namespace BlImplementation
                 boVolunteer.Email,
                 boVolunteer.Password,
                 boVolunteer.FullAddress,
-                latitude,
-                longitude,
+                boVolunteer.Latitude ?? 0,
+                boVolunteer.Longitude = 0,
                 (DO.ROLE)boVolunteer.Role,
                 boVolunteer.Active,
                 boVolunteer.MaxDistance,
@@ -241,6 +238,8 @@ namespace BlImplementation
             {
                 throw new BlException("Error while adding volunteer", ex);
             }
+            _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+
         }
 
         /// <summary>

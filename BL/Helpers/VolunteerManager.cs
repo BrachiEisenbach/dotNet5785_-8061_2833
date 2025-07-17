@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BlImplementation;
 
 namespace Helpers
 {
@@ -19,7 +20,7 @@ namespace Helpers
 
         public static BO.Volunteer GetVolunteerFromDO(DO.Volunteer doVolunteer)
         {
-            var boVolunteer=  MappingProfile.ConvertToBO(doVolunteer);
+            var boVolunteer = MappingProfile.ConvertToBO(doVolunteer);
             if (boVolunteer == null)
             {
                 System.Diagnostics.Debug.WriteLine("boVolunteer is null");
@@ -70,7 +71,7 @@ namespace Helpers
                 return boRole;
             }
 
-            
+
             System.Diagnostics.Debug.WriteLine($"Failed to parse role: {doType}");
             throw new ArgumentException($"No matching BO.ROLE for {doType}");
         }
@@ -130,7 +131,8 @@ namespace Helpers
         public static int GetAllCallsThatTreated(int volunteerId)
         {
             var finishType = ConvertToDOTypeFinish(BO.FINISHTYPE.TREATE);
-            return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
+            lock (AdminManager.BlMutex) //stage 7
+                return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
         }
 
 
@@ -138,14 +140,16 @@ namespace Helpers
         public static int GetAllCallsThatCanceled(int volunteerId)
         {
             var finishType = ConvertToDOTypeFinish(BO.FINISHTYPE.SELFCANCELLATION); // או כל אחד שמתאים לך
-            return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
+            lock (AdminManager.BlMutex) //stage 7
+                return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
         }
 
         // פונקציה לחישוב מספר הקריאות שפג תוקפן
         public static int GetAllCallsThatHaveExpired(int volunteerId)
         {
             var finishType = ConvertToDOTypeFinish(BO.FINISHTYPE.CANCELLATIONHASEXPIRED);
-            return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
+            lock (AdminManager.BlMutex) //stage 7
+                return s_dal.Assignment.ReadAll().Count(a => a.VolunteerId == volunteerId && a.TypeOfTreatment == finishType);
         }
 
         // פונקציה שמחזירה את הקריאה האחרונה שנמצאת בטיפול על ידי מתנדב, כאובייקט מסוג CallInProgress
@@ -153,7 +157,9 @@ namespace Helpers
         {
             try
             {
-                var assignment = s_dal.Assignment.ReadAll()
+                DO.Assignment? assignment;
+                lock (AdminManager.BlMutex) //stage 7
+                    assignment = s_dal.Assignment.ReadAll()
                     .Where(a => a.VolunteerId == volunteerId && !a.EndTimeOfTreatment.HasValue)
                     .OrderByDescending(a => a.EntryTimeForTreatment)
                     .FirstOrDefault();
@@ -161,15 +167,19 @@ namespace Helpers
                 if (assignment == null)
                     return null;
 
-                var call = s_dal.Call.Read(assignment.CallId);
+                DO.Call? call;
+                lock (AdminManager.BlMutex) //stage 7
+                    call = s_dal.Call.Read(assignment.CallId);
                 if (call == null)
                     return null;
 
                 //שליפת הטווח סיכון כדי שישלח לפו החישוב סטטוס
-                var riskRange = s_dal.Config.RiskRange;
+                var riskRange = AdminManager.RiskRange;
 
-                // שליפת כתובת המתנדב לחישוב מרחק בינו לכתובת הקריאה(distance) 
-                var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
+                // שליפת כתובת המתנדב לחישוב מרחק בינו לכתובת הקריאה(distance)
+                DO.Volunteer? vol;
+                lock (AdminManager.BlMutex) //stage 7
+                    vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
                 var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
                 var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
 
@@ -198,7 +208,7 @@ namespace Helpers
                 throw new BlException("Error while getting message details.", ex);
             }
         }
-     
+
 
 
 
@@ -213,12 +223,16 @@ namespace Helpers
         {
             if (Act.HasValue)
             {
-                var volunteers = s_dal.Volunteer.ReadAll().Where(v => (v.Active == Act.Value));
+                IEnumerable<DO.Volunteer> volunteers;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteers = s_dal.Volunteer.ReadAll().Where(v => (v.Active == Act.Value));
                 return volunteers;
             }
             else
             {
-                var volunteers = s_dal.Volunteer.ReadAll();
+                IEnumerable<DO.Volunteer> volunteers;
+                lock (AdminManager.BlMutex) //stage 7
+                    volunteers = s_dal.Volunteer.ReadAll();
                 return volunteers;
             }
         }
@@ -285,7 +299,7 @@ namespace Helpers
         /// </summary>
         /// <param name="address">כתובת לחיפוש</param>
         /// <returns>זוג ערכים: קו רוחב וקו אורך</returns>
-        public static (double Latitude, double Longitude) FetchCoordinates(string address)
+        public static async Task<(double Latitude, double Longitude)> FetchCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
                 throw new BlArgumentException("The address provided is invalid.");
@@ -296,12 +310,10 @@ namespace Helpers
             try
             {
                 // שליחת בקשה וקבלת תשובה
-                var responseTask = Client.GetAsync(requestUrl);
-                HttpResponseMessage response = responseTask.Result;
+                HttpResponseMessage response = await Client.GetAsync(requestUrl);
                 response.EnsureSuccessStatusCode();
 
-                // קריאת תוכן התגובה
-                string jsonResult = response.Content.ReadAsStringAsync().Result;
+                string jsonResult = await response.Content.ReadAsStringAsync();
 
                 // המרת ה-JSON לאובייקטים
                 var locationData = JsonSerializer.Deserialize<GeoResponse[]>(jsonResult, new JsonSerializerOptions
@@ -348,7 +360,143 @@ namespace Helpers
         }
 
 
-    
+        public static async Task UpdateVolunteerCoordinatesAsync(BO.Volunteer volunteer)
+        {
+            try
+            {
+                var (lat, lon) = await FetchCoordinates(volunteer.FullAddress);
+                volunteer.Latitude = lat;
+                volunteer.Longitude = lon;
+
+                DO.Volunteer updatedVolunteer = new DO.Volunteer(
+                    volunteer.Id,
+                    volunteer.FullName,
+                    volunteer.Phone,
+                    volunteer.Email,
+                    volunteer.Password,
+                    volunteer.FullAddress,
+                    volunteer.Latitude ?? 0,
+                    volunteer.Longitude ?? 0,
+                    (DO.ROLE)volunteer.Role,
+                    volunteer.Active,
+                    volunteer.MaxDistance,
+                    (DO.TYPEOFDISTANCE)volunteer.TypeOfDistance
+                );
+
+                lock (AdminManager.BlMutex)
+                    s_dal.Volunteer.Update(updatedVolunteer);
+
+                Observers.NotifyItemUpdated(updatedVolunteer.Id);
+                Observers.NotifyListUpdated();
+            }
+            catch (Exception ex)
+            {
+                // טיפול בשגיאות - אפשר לוג, סימון בממשק, וכו'
+            }
+        }
+
+        private static Random s_rand = new Random();
+
+
+        internal static void SimulateCourseRegistrationAndGrade()
+        {
+            Thread.CurrentThread.Name = "Volunteers Simulator";
+
+            LinkedList<int> volunteersToUpdate = new();
+            List<DO.Volunteer> activeVolunteers;
+
+            // שליפת כל המתנדבים הפעילים
+            lock (AdminManager.BlMutex)
+                activeVolunteers = s_dal.Volunteer.ReadAll(v => v.Active).ToList();
+
+            foreach (var volunteer in activeVolunteers)
+            {
+                int volunteerId = volunteer.Id;
+
+                // בדיקה אם יש למתנדב קריאה בטיפול
+                DO.Assignment? currentAssignment;
+                lock (AdminManager.BlMutex) 
+                    currentAssignment = s_dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId && !a.EndTimeOfTreatment.HasValue).FirstOrDefault();
+
+                if (currentAssignment == null)
+                {
+                        // אין קריאה בטיפול – 20% סיכוי לבחירת קריאה חדשה
+                        int randomNum = s_rand.Next(1, 11);
+                    // 1 to 10 inclusive
+                    if (randomNum == 1 || randomNum == 2)
+                        {
+                        List<DO.Call> calls;
+                        List<DO.Assignment> allAssignments;
+
+                        // שליפת כל הקריאות הפתוחות וכל ההקצאות הפעילות
+                        lock (AdminManager.BlMutex)
+                        {
+                            calls = s_dal.Call.ReadAll().ToList();
+                            allAssignments = s_dal.Assignment.ReadAll().ToList();
+                        }
+
+                        var assignedCallIds = allAssignments.Select(a => a.CallId).ToHashSet();
+
+                        // סינון הקריאות: כאלו שלא הוקצו אף פעם וגם בטווח המרחק של המתנדב
+                        var availableCalls = calls
+                            .Where(c =>
+                                !assignedCallIds.Contains(c.Id) &&
+                                CallManager.GetDistance(volunteer, c) <= volunteer.MaxDistance)
+                            .ToList();
+
+                        // אם קיימות קריאות זמינות – בחר אחת רנדומלית
+                        if (availableCalls.Any())
+                        {
+                            var selectedCall = availableCalls[s_rand.Next(availableCalls.Count)];
+
+                            var newAssignment = new DO.Assignment(
+                                      Id: 0,
+                                      CallId: selectedCall.Id,
+                                      VolunteerId: volunteerId,
+                                      EntryTimeForTreatment: AdminManager.Now,
+                                      EndTimeOfTreatment: null,
+                                      TypeOfTreatment: null
+                                     );
+                            s_dal.Assignment.Create(newAssignment);
+                            volunteersToUpdate.AddLast(volunteerId);
+                        }
+                    }
+                }
+                else
+                {
+                    // יש קריאה בטיפול – בדיקת זמן שחלף
+                    DO.Call call;
+                    lock (AdminManager.BlMutex)
+                        call = s_dal.Call.Read(currentAssignment.CallId);
+
+                    double distance = CallManager.GetDistance(volunteer, call);
+                    TimeSpan expectedTime = TimeSpan.FromMinutes(distance / 10 + s_rand.Next(5, 15));
+                    TimeSpan actualTime = AdminManager.Now - currentAssignment.EntryTimeForTreatment;
+
+                    if (actualTime >= expectedTime)
+                    {
+                        // סיום טיפול
+                        lock (AdminManager.BlMutex)
+                            s_dal.Call.(volunteerId, call.Id);
+                        volunteersToUpdate.AddLast(volunteerId);
+                    }
+                    else if (s_rand.NextDouble() <= 0.1)
+                    {
+                        // ביטול טיפול
+                        lock (AdminManager.BlMutex)
+                            //s_dal.Call.CanselTreat(volunteerId, call.Id);
+                            cancelTreat(volunteerId, call.Id);
+
+                        volunteersToUpdate.AddLast(volunteerId);
+                    }
+                }
+            }
+
+            // שליחת עדכון לצופים
+            foreach (int id in volunteersToUpdate)
+                Observers.NotifyItemUpdated(id);
+        }
+
     }
 
 
