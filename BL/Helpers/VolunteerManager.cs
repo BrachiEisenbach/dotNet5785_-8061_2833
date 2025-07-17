@@ -253,17 +253,23 @@ namespace Helpers
         }
 
         //פו המקבלת שתי כתובות ומחשבת להן אורך ורוחב ואז שולחת אותן לחישוב המרחק בינהן
-        public static double GetDistanceBetweenAddresses(string address1, string address2)
+        //public static double GetDistanceBetweenAddresses(string address1, string address2)
+        //{
+        //    System.Diagnostics.Debug.WriteLine($"Trying to fetch coordinates for:'{{address1}}' and '{{address2}}'");
+        //    var coord1 = FetchCoordinates(address1);
+
+        //    var coord2 = FetchCoordinates(address2);
+
+        //    return CalculateHaversineDistance(coord1.Latitude, coord1.Longitude, coord2.Latitude, coord2.Longitude);
+        //}
+
+
+        public static async Task<double> CalculateDistanceBetweenAddressesAsync(string address1, string address2)
         {
-            System.Diagnostics.Debug.WriteLine($"Trying to fetch coordinates for:'{{address1}}' and '{{address2}}'");
-            var coord1 = FetchCoordinates(address1);
-
-            var coord2 = FetchCoordinates(address2);
-
+            var coord1 = await FetchCoordinates(address1);
+            var coord2 = await FetchCoordinates(address2);
             return CalculateHaversineDistance(coord1.Latitude, coord1.Longitude, coord2.Latitude, coord2.Longitude);
         }
-
-
 
 
         //פו המקבלת קווי אורך ורוחב של 2 כתובות ומחזירה מרחק בינהן
@@ -473,22 +479,22 @@ namespace Helpers
                     TimeSpan expectedTime = TimeSpan.FromMinutes(distance / 10 + s_rand.Next(5, 15));
                     TimeSpan actualTime = AdminManager.Now - currentAssignment.EntryTimeForTreatment;
 
-                    if (actualTime >= expectedTime)
-                    {
-                        // סיום טיפול
-                        lock (AdminManager.BlMutex)
-                            s_dal.Call.(volunteerId, call.Id);
-                        volunteersToUpdate.AddLast(volunteerId);
-                    }
-                    else if (s_rand.NextDouble() <= 0.1)
-                    {
-                        // ביטול טיפול
-                        lock (AdminManager.BlMutex)
-                            //s_dal.Call.CanselTreat(volunteerId, call.Id);
-                            cancelTreat(volunteerId, call.Id);
+                    //if (actualTime >= expectedTime)
+                    //{
+                    //    // סיום טיפול
+                    //    lock (AdminManager.BlMutex)
+                    //        s_dal.Call.(volunteerId, call.Id);
+                    //    volunteersToUpdate.AddLast(volunteerId);
+                    //}
+                    //else if (s_rand.NextDouble() <= 0.1)
+                    //{
+                    //    // ביטול טיפול
+                    //    lock (AdminManager.BlMutex)
+                    //        //s_dal.Call.CanselTreat(volunteerId, call.Id);
+                    //        cancelTreat(volunteerId, call.Id);
 
-                        volunteersToUpdate.AddLast(volunteerId);
-                    }
+                    //    volunteersToUpdate.AddLast(volunteerId);
+                    //}
                 }
             }
 

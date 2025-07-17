@@ -45,19 +45,16 @@ namespace Helpers
         /// מתודה המעדכנת את כל הקריאות הפתוחות שפג תוקפן.
         /// יש לזמן אותה מ-ClockManager בכל עדכון שעון.
         /// </summary>
-        internal static void UpdateExpiredOpenCalls()
+        internal static void UpdateExpiredOpenCalls(DateTime oldClock, DateTime newClock)
         {
             var riskRange = AdminManager.RiskRange;
-            DateTime now = AdminManager.Now;
+            DateTime now = newClock; // השעה החדשה היא הרלוונטית לבדיקה
 
-            // רשימה לאיסוף ה-IDs של הקריאות שעודכנו לצורך שליחת הודעות ספציפיות בסוף
-            List<int> updatedCallIds = new List<int>();
+            List<int> updatedCallIds = new();
 
-            // קריאת כל הקריאות:
             IEnumerable<DO.Call> allCalls;
-            lock (AdminManager.BlMutex) 
-                allCalls = s_dal.Call.ReadAll().ToList(); // ToList() inside lock - GOOD!
-            
+            lock (AdminManager.BlMutex)
+                allCalls = s_dal.Call.ReadAll().ToList();
 
             foreach (var call in allCalls)
             {
@@ -68,11 +65,12 @@ namespace Helpers
                 {
                     DO.Assignment oldAssignment = null;
 
-                    // מציאת הקצאות קיימות:
                     IEnumerable<DO.Assignment> existingAssignments;
-                    lock (AdminManager.BlMutex) // Lock for ReadAll (Assignments)
+                    lock (AdminManager.BlMutex)
                     {
-                        existingAssignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id && a.EndTimeOfTreatment == null).ToList();
+                        existingAssignments = s_dal.Assignment
+                            .ReadAll(a => a.CallId == call.Id && a.EndTimeOfTreatment == null)
+                            .ToList();
                     }
 
                     if (existingAssignments.Any())
@@ -84,47 +82,35 @@ namespace Helpers
                             TypeOfTreatment = DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
                         };
 
-                        // עדכון הקצאה קיימת: - MUST BE INSIDE A LOCK!
                         lock (AdminManager.BlMutex)
                         {
-                            s_dal.Assignment.Update(newAssignment); // NOW THIS IS PROTECTED
+                            s_dal.Assignment.Update(newAssignment);
                         }
                     }
                     else
                     {
-                        // אין הקצאה פתוחה - צור הקצאה חדשה מסוג "פג תוקף"
                         DO.Assignment newAssignment = new DO.Assignment(
-                            Id: 0, // DAL אמור להקצות ID חדש
+                            Id: 0,
                             CallId: call.Id,
-                            VolunteerId: 0, // ת.ז מתנדב שהוא 0 כפי שנדרש
+                            VolunteerId: 0,
                             EntryTimeForTreatment: now,
                             EndTimeOfTreatment: now,
                             TypeOfTreatment: DO.TYPEOFTREATMENT.CANCELLATIONHASEXPIRED
                         );
-                        // יצירת הקצאה חדשה: - GOOD (already had lock)
+
                         lock (AdminManager.BlMutex)
                             s_dal.Assignment.Create(newAssignment);
                     }
 
-                    // שלב 5 (א): שליחת הודעה למשקיפים על עדכון הקריאה הספציפית
-                    // נאסוף את ה-ID לרשימה כדי לשלוח את ההודעות מחוץ ל-lock
                     updatedCallIds.Add(call.Id);
                 }
             }
 
-            // שלב 5 (א) סופי: לאחר סיום הלולאה, נשלח הודעות על קריאות ספציפיות שעודכנו
-            // פעולות ה-Observer צריכות להיות מחוץ ל-lock, כפי שצוין בהוראות
-            foreach (var id in updatedCallIds.Distinct()) // השתמש ב-Distinct כדי למנוע כפילויות אם קריאה טופלה מספר פעמים (פחות סביר כאן)
-            {
+            foreach (var id in updatedCallIds.Distinct())
                 Observers.NotifyItemUpdated(id);
-            }
 
-            // שלב 5 (ב): לאחר השלמת המעבר על כל הקריאות, "תישלח הודעה" למשקיפים על עדכון רשימת הקריאות
-            // (ההוראות אומרות שזה צריך להיות מחוץ ל-lock)
             Observers.NotifyListUpdated();
         }
-
-
         internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
         {
             DateTime currentTime = DateTime.Now;
