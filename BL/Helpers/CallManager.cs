@@ -1,4 +1,4 @@
-﻿ using DalApi;
+﻿using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +14,11 @@ namespace Helpers
     internal static class CallManager
     {
         internal static ObserverManager Observers = new(); //stage 5 
-        public static BO.Call GetCallFromDO(DO.Call doCall)
-        {
-            return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
-        }
+
+        //public static BO.Call GetCallFromDO(DO.Call doCall)
+        //{
+        //    return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
+        //}
 
         public static DO.Call GetCallFromBO(BO.Call boCall)
         {
@@ -39,37 +40,67 @@ namespace Helpers
         }
 
 
-internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
-{
-    DateTime currentTime = DateTime.Now;
-    var assignments = s_dal.Assignment.ReadAll().ToList();
+        internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
+        {
+            DateTime currentTime = DateTime.Now;
 
-    var lastAssignment = assignments
-        .Where(a => a.CallId == call.Id)
-        .OrderByDescending(a => a.EntryTimeForTreatment)
-        .FirstOrDefault();
+            var assignments = s_dal.Assignment.ReadAll()
+                .Where(a => a.CallId == call.Id)
+                .OrderByDescending(a => a.EntryTimeForTreatment)
+                .ToList();
 
-    if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
-    {
-        if (call.MaxTimeToFinish < currentTime)
-            return BO.STATUS.Expired;
+            var lastAssignment = assignments.FirstOrDefault();
 
-        if (call.MaxTimeToFinish - currentTime <= riskRange)
-            return BO.STATUS.OpenDangerZone;
+            // -------- 1. אין הקצאה בכלל --------
+            if (lastAssignment == null)
+            {
+                if (call.MaxTimeToFinish < currentTime)
+                    return BO.STATUS.Expired;
 
-        return BO.STATUS.Open;
-    }
+                if (call.MaxTimeToFinish - currentTime <= riskRange)
+                    return BO.STATUS.OpenDangerZone;
 
-    // כאן היא עדיין בטיפול פעיל
-    if (call.MaxTimeToFinish < currentTime)
-        return BO.STATUS.Expired;
+                return BO.STATUS.Open;
+            }
 
-    if (call.MaxTimeToFinish - currentTime <= riskRange)
-        return BO.STATUS.InTreatmentDangerZone;
+            // -------- 2. הייתה הקצאה – נבדוק אם הסתיים בזמן => CLOSED --------
+            if (lastAssignment.EntryTimeForTreatment > call.OpenTime &&
+                lastAssignment.EndTimeOfTreatment.HasValue &&
+                lastAssignment.EndTimeOfTreatment <= call.MaxTimeToFinish)
+            {
+                return BO.STATUS.Closed;
+            }
 
-    return BO.STATUS.InTreatment;
-}
+            // -------- 3. בדיקה אם היא EXPIRED – למרות שהייתה הקצאה --------
+            if (
+                // התחיל באיחור משמעותי
+                lastAssignment.EntryTimeForTreatment > call.MaxTimeToFinish ||
+                // או סיים באיחור משמעותי
+                (lastAssignment.EndTimeOfTreatment.HasValue &&
+                 lastAssignment.EndTimeOfTreatment > call.MaxTimeToFinish)
+            )
+            {
+                return BO.STATUS.Expired;
+            }
 
+            // -------- 4. בתהליך טיפול – עדיין בתוך זמן --------
+            if (!lastAssignment.EndTimeOfTreatment.HasValue)
+            {
+                if (call.MaxTimeToFinish < currentTime)
+                    return BO.STATUS.Expired;
+
+                if (call.MaxTimeToFinish - currentTime <= riskRange)
+                    return BO.STATUS.InTreatmentDangerZone;
+
+                return BO.STATUS.InTreatment;
+            }
+
+            // -------- 5. כל מה שלא נכנס להגדרות הקודמות – עדיין פתוח --------
+            if (call.MaxTimeToFinish - currentTime <= riskRange)
+                return BO.STATUS.OpenDangerZone;
+
+            return BO.STATUS.Open;
+        }
         internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
         {
             return typeOfTreatment switch
@@ -94,11 +125,6 @@ internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
         //    var distance = GetDistance(vol, call);
         //    Console.WriteLine($"Calculated Distance: {distance} km");
         //}
-
-
-
-        private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
-        private static readonly HttpClient Client = new HttpClient();
 
 
 

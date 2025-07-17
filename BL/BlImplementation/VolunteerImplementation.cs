@@ -140,14 +140,26 @@ namespace BlImplementation
         /// <param name="id">The ID of the volunteer to delete.</param>
         public void DeleteVolunteerDetails(int id)
         {
+            System.Diagnostics.Debug.WriteLine(id);
             var vol = _dal.Volunteer.Read(id) ??
             throw new BO.BlDoesNotExistException($"The Volunteer with ID={id} does not exist");
 
-            var assignments = _dal.Assignment.ReadAll(a => a.Id == id);
+            var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            //if (vol != null)
+            //{
+            //    throw new BO.BlVolunteerInProgressException("בדיקה ידנית");
+            //}
             if (vol.Active == true)
             {
-                throw new BO.BlVolunteerInProgressException($"Volunteer with ID={id} is currently handling a call and cannot be deleted.");
+                System.Diagnostics.Debug.WriteLine("נזרקת החריגה מסוג BlVolunteerInProgressException");
+                throw new BlVolunteerInProgressException($"Volunteer with ID={id} is currently handling a call and cannot be deleted.");
             }
+            // בדיקה אם יש משימות פתוחות לולנטר
+            foreach (var a in assignments)
+            {
+                System.Diagnostics.Debug.WriteLine($"Assignment found: Id={a.Id}, VolunteerId={a.VolunteerId}");
+            }
+
             if (assignments.Any())
             {
                 throw new BO.BlVolunteerInProgressException($"Volunteer with ID={id} has handled assignments and cannot be deleted.");
@@ -156,7 +168,16 @@ namespace BlImplementation
             try
             {
                 _dal.Volunteer.Delete(id);
-                VolunteerManager.Observers.NotifyListUpdated();
+
+                try
+                {
+                    VolunteerManager.Observers.NotifyListUpdated();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"שגיאה בתוך NotifyListUpdated: {ex.GetType().Name} - {ex.Message}");
+                    
+                }
             }
             catch (DO.DalDoesNotExistException ex)
             {
@@ -166,6 +187,7 @@ namespace BlImplementation
             {
                 throw new BO.BlException("Error while deleting volunteer.", ex);
             }
+
         }
 
         /// <summary>
@@ -266,17 +288,22 @@ namespace BlImplementation
                 var DOvolunteers = VolunteerManager.GetIsActiveVolunteers(isActive);
                 var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
 
-                IEnumerable<BO.Volunteer> sortedVolunteers = sort switch
+                var VolunteersInList = BOvolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
+                   
+
+
+                IEnumerable<BO.VolunteerInList> sortedVolunteersInList = sort switch
                 {
-                    VOLUNTEERFIELDSORT.CALLTYPE => BOvolunteers.OrderBy(v => v.TypeOfCall),
-                    VOLUNTEERFIELDSORT.FULLNAME => BOvolunteers.OrderBy(v => v.FullName),
-                    VOLUNTEERFIELDSORT.SUMTREATED => BOvolunteers.OrderByDescending(v => v.AllCallsThatTreated),
-                    VOLUNTEERFIELDSORT.SUMCANCELED => BOvolunteers.OrderByDescending(v => v.AllCallsThatCanceled),
-                    VOLUNTEERFIELDSORT.SUMEXPIRED => BOvolunteers.OrderByDescending(v => v.AllCallsThatHaveExpired),
-                    _ => BOvolunteers.OrderBy(v => v.Id)
+                    VOLUNTEERFIELDSORT.CALLTYPE => VolunteersInList.OrderBy(v => v.TypeOfCall),
+                    VOLUNTEERFIELDSORT.FULLNAME => VolunteersInList.OrderBy(v => v.FullName),
+                    VOLUNTEERFIELDSORT.SUMTREATED => VolunteersInList.OrderByDescending(v => v.AllCallsThatTreated),
+                    VOLUNTEERFIELDSORT.SUMCANCELED => VolunteersInList.OrderByDescending(v => v.AllCallsThatCanceled),
+                    VOLUNTEERFIELDSORT.SUMEXPIRED => VolunteersInList.OrderByDescending(v => v.AllCallsThatHaveExpired),
+                    VOLUNTEERFIELDSORT.NONE or null => VolunteersInList, // בלי מיון
+                    _ => VolunteersInList.OrderBy(v => v.Id)
                 };
 
-                return sortedVolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
+                return sortedVolunteersInList;
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {

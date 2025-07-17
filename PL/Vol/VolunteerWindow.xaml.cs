@@ -8,6 +8,7 @@ using DO;
 using System.Windows.Data;
 using System.Windows.Media;
 
+
 namespace PL.Vol
 {
     /// <summary>
@@ -16,7 +17,7 @@ namespace PL.Vol
     public partial class VolunteerWindow : Window
     { 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        private int adminId;
         public string ButtonText
         {
             get => (string)GetValue(ButtonTextProperty);
@@ -44,13 +45,14 @@ namespace PL.Vol
             DependencyProperty.Register("IsUpdateMode", typeof(bool), typeof(VolunteerWindow), new PropertyMetadata(false));
 
 
-        public VolunteerWindow(int id)
+        public VolunteerWindow(int AdminId,int id)
         {
             
             IsUpdateMode = id != 0; // כאן נשתמש בזה בבינדינג ל-IsReadOnly
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
             DataContext = this;
+            adminId= AdminId;
             try {
 
             if (id != 0)
@@ -74,7 +76,7 @@ namespace PL.Vol
                     AllCallsThatCanceled=0,
                     AllCallsThatHaveExpired = 0,
                     Active=false,
-                    TypeOfCall= BO.TYPEOFCALL.NONE,
+                    
                 };
             }
 
@@ -96,18 +98,22 @@ namespace PL.Vol
 
         private void VolunteerObserver()
         {
-
-
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                if (CurrentVolunteer != null)
+                try
                 {
-                    int id = CurrentVolunteer.Id;
-                    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                    if (CurrentVolunteer != null)
+                    {
+                        int id = CurrentVolunteer.Id;
+                        CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error refreshing volunteer data: " + ex.Message);
                 }
             });
         }
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentVolunteer == null)
@@ -143,7 +149,7 @@ namespace PL.Vol
                         MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
                         return;
                     }
-                    s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
+                    s_bl.Volunteer.UpdateVolunteerDetails(adminId, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully");
                     this.Close(); // סגירת החלון
                 }
@@ -200,24 +206,46 @@ namespace PL.Vol
                 }
             }
         }
+ 
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
+            try
             {
-                try
+                if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
                 {
-                    var result = MessageBox.Show("Are you sure you want to delete volunteer?", "Confirm Delete", MessageBoxButton.YesNo);
+                    var result = MessageBox.Show(
+                        "Are you sure you want to delete this volunteer?",
+                        "Confirm Delete",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
                     if (result == MessageBoxResult.Yes)
                     {
+
                         s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
                         this.Close(); // סגירת החלון
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Cannot delete volunteer: " + ex.Message);
-                }
             }
+            catch (BlVolunteerInProgressException ex)
+            {
+                Console.WriteLine("נכנסתי ל catch המתאים");
+                MessageBox.Show(
+                    ex.Message,
+                    "Cannot Delete Volunteer",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("נכנסתי ל catch ברירת מחדל");
+                MessageBox.Show(
+                    $"Unexpected error: {ex.GetType().Name}\n{ex.Message}",
+                    "Unexpected Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }     
+            
         }
 
 

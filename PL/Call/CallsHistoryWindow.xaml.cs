@@ -65,14 +65,19 @@ namespace PL.Call
         private int volId { get; set; } = 0;
         public CallsHistoryWindow(int VId)
         {
+            try
+            {
+                ClosedCallsList = s_bl.Call.GetClosedCallInList(VId, null, null)!;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load closed calls list: " + ex.Message);
+            }
 
-            //לשלוח תעודת זהות של המתנדב כשלוחצים על כפתור היסטוריית הקריאות הסגורות שלו
-            ClosedCallsList = s_bl.Call.GetClosedCallInList(VId, null, null)!;
             volId = VId;
             InitializeComponent();
             this.Loaded += Window_Loaded;
             this.Closed += Window_Closed;
-
         }
         private static void OnSelectedCallTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -97,20 +102,54 @@ namespace PL.Call
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        => s_bl.Call.AddObserver(closedCallListObserver);
+        {
+            try
+            {
+                s_bl.Call.AddObserver(closedCallListObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to initialize closed calls observer: " + ex.Message);
+            }
+        }
 
         private void Window_Closed(object sender, EventArgs e)
-        => s_bl.Call.RemoveObserver(closedCallListObserver);
+        {
+            try
+            {
+                s_bl.Call.RemoveObserver(closedCallListObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to remove closed calls observer: " + ex.Message);
+            }
+        }
         //לוודא שה TYPE מתעדכן
         private void queryClosedCallList()
         {
-            BO.TYPEOFCALL? filteredType = type == BO.TYPEOFCALL.NONE ? null : type;
-            ClosedCallsList = s_bl?.Call.GetClosedCallInList(volId, filteredType, sort);
+            try
+            {
+                BO.TYPEOFCALL? filteredType = type == BO.TYPEOFCALL.NONE ? null : type;
+                ClosedCallsList = s_bl?.Call.GetClosedCallInList(volId, filteredType, sort);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to query closed calls: " + ex.Message);
+            }
         }
 
 
         private void closedCallListObserver()
-        => queryClosedCallList();
+        {
+            try
+            {
+                queryClosedCallList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to refresh closed calls: " + ex.Message);
+            }
+        }
 
     }
 }

@@ -32,6 +32,7 @@ namespace BO
             sb.AppendLine($"Open Time: {OpenTime}");
             sb.AppendLine($"Max Time To Finish {(MaxTimeToFinish != null ? MaxTimeToFinish : "None")}");
             sb.AppendLine($"Status: {Status}");
+            sb.AppendLine($"Call Assign In List: {(listOfCallAssign != null ? listOfCallAssign.ToString() : "None")}");
 
             return sb.ToString();
         }

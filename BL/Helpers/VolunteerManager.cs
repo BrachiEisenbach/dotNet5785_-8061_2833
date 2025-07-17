@@ -42,8 +42,8 @@ namespace Helpers
                 AllCallsThatTreated = GetAllCallsThatTreated(boVolunteer.Id),
                 AllCallsThatCanceled = GetAllCallsThatCanceled(boVolunteer.Id),
                 AllCallsThatHaveExpired = GetAllCallsThatHaveExpired(boVolunteer.Id),
-                CallInTreate = GetCallInTreatment(doVolunteer.Id), // כאן את מאתחלת את הערך
-                TypeOfCall = boVolunteer.TypeOfCall
+                CallInTreate = GetCallInTreatment(doVolunteer.Id) // כאן מאתחלת את הערך
+              
             };
         }
 
@@ -153,58 +153,55 @@ namespace Helpers
         {
             try
             {
-                var assignment = s_dal.Assignment.ReadAll()
+                var assignments = s_dal.Assignment.ReadAll()
                     .Where(a => a.VolunteerId == volunteerId && !a.EndTimeOfTreatment.HasValue)
-                    .OrderByDescending(a => a.EntryTimeForTreatment)
-                    .FirstOrDefault();
+                    .OrderByDescending(a => a.EntryTimeForTreatment);
 
-                if (assignment == null)
-                    return null;
-
-                var call = s_dal.Call.Read(assignment.CallId);
-                if (call == null)
-                    return null;
-
-                //שליפת הטווח סיכון כדי שישלח לפו החישוב סטטוס
-                var riskRange = s_dal.Config.RiskRange;
-
-                // שליפת כתובת המתנדב לחישוב מרחק בינו לכתובת הקריאה(distance) 
-                var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
-                var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
-                var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
-
-                return new BO.CallInProgress
+                foreach (var assignment in assignments)
                 {
-                    Id = assignment.Id,
-                    CallId = assignment.CallId,
-                    TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
-                    VerbalDescription = call.VerbalDescription,
-                    FullAddress = call.FullAddress,
-                    OpenTime = call.OpenTime,
-                    MaxTimeToFinish = call.MaxTimeToFinish,
-                    EnterTime = assignment.EntryTimeForTreatment,
-                    Distance = CalculateHaversineDistance(call.Latitude, call.Longitude, volLatitude, volLongitude),
-                    Status = CallManager.CalculateStatus(call, riskRange)
-                };
+                    var call = s_dal.Call.Read(assignment.CallId);
+                    if (call == null)
+                        continue;
+
+                    var riskRange = s_dal.Config.RiskRange;
+                    var status = CallManager.CalculateStatus(call, riskRange);
+
+                    // בודק שהסטטוס הוא בדיוק InTreatment (או סטטוס שרוצים)
+                    if (status == STATUS.InTreatment)  // נניח שזה enum עם ערכים
+                    {
+                        var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
+                        var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
+                        var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
+
+                        return new BO.CallInProgress
+                        {
+                            Id = assignment.Id,
+                            CallId = assignment.CallId,
+                            TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                            VerbalDescription = call.VerbalDescription,
+                            FullAddress = call.FullAddress,
+                            OpenTime = call.OpenTime,
+                            MaxTimeToFinish = call.MaxTimeToFinish,
+                            EnterTime = assignment.EntryTimeForTreatment,
+                            Distance = CalculateHaversineDistance(call.Latitude, call.Longitude, volLatitude, volLongitude),
+                            Status = status
+                        };
+                    }
+                }
+
+                // אם לא נמצאה קריאה במצב InTreatment
+                return null;
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
                 throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist", dalDoesNotExistException);
             }
-
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("GetCallInTreatment error: " + ex);
                 throw new BlException("Error while getting message details.", ex);
             }
         }
-     
-
-
-
-
-
-
 
 
         //פונקציה להחזיר רשימה של מתנדבים על פי סטטוס פעילות
@@ -233,7 +230,8 @@ namespace Helpers
                 AllCallsThatTreated = volunteer.AllCallsThatTreated,
                 AllCallsThatCanceled = volunteer.AllCallsThatCanceled,
                 AllCallsThatHaveExpired = volunteer.AllCallsThatHaveExpired,
-                CallId = volunteer.CallInTreate?.CallId
+                CallId = volunteer.CallInTreate?.CallId,
+                TypeOfCall = volunteer.CallInTreate?.TypeOfCall ?? BO.TYPEOFCALL.NONE
             };
         }
 
@@ -276,68 +274,124 @@ namespace Helpers
 
 
 
-        private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
-        private static readonly HttpClient Client = new HttpClient();
+        //private const string ApiKey = "6873bc416eea5543811152dmhaff213";
+        //private static readonly HttpClient Client = new HttpClient();
 
         /// <summary>
         /// מקבלת כתובת ומחזירה את הקואורדינטות (קו רוחב וקו אורך) שלה באמצעות API.
         /// </summary>
         /// <param name="address">כתובת לחיפוש</param>
         /// <returns>זוג ערכים: קו רוחב וקו אורך</returns>
+        //    public static (double Latitude, double Longitude) FetchCoordinates(string address)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine(address); 
+
+        //        if (string.IsNullOrWhiteSpace(address))
+        //            throw new BlArgumentException("The address provided is invalid.");
+
+        //        // יצירת כתובת ה-URL לשליפת הנתונים
+        //        string requestUrl = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key={ApiKey}";
+        //        System.Diagnostics.Debug.WriteLine(requestUrl);
+
+        //        try
+        //        {
+        //            // שליחת בקשה וקבלת תשובה
+        //            var responseTask = Client.GetAsync(requestUrl);
+        //            HttpResponseMessage response = responseTask.Result;
+        //            response.EnsureSuccessStatusCode();
+
+        //            // קריאת תוכן התגובה
+        //            string jsonResult = response.Content.ReadAsStringAsync().Result;
+        //            System.Diagnostics.Debug.WriteLine(jsonResult); 
+
+        //            // המרת ה-JSON לאובייקטים
+        //            var locationData = JsonSerializer.Deserialize<GeoResponse[]>(jsonResult, new JsonSerializerOptions
+        //            {
+        //                PropertyNameCaseInsensitive = true
+        //            });
+        //            System.Diagnostics.Debug.WriteLine(locationData);
+
+        //            if (locationData == null || locationData.Length == 0)
+        //            {
+        //                Console.WriteLine(jsonResult); // הדפס את התוכן כדי לבדוק
+        //                throw new BlException("No location data found for this address.");
+        //            }
+
+        //            if (!double.TryParse(locationData[0].Lat, out double lat) ||
+        //                !double.TryParse(locationData[0].Lon, out double lon))
+        //            {
+        //                throw new BlException("Error converting numeric data.");
+        //            }
+
+        //            return (lat, lon);
+        //        }
+        //        catch (HttpRequestException httpEx)
+        //        {
+        //            throw new BlException("Error connecting to the map server: " + httpEx.Message);
+        //        }
+        //        catch (JsonException jsonEx)
+        //        {
+        //            throw new BlException("Data processing error: " + jsonEx.Message);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new BlException("General error while retrieving location: " + ex.Message);
+        //        }
+        //    }
+
+        //    // מחלקת עזר לפענוח התשובה מה-API
+        //    private class GeoResponse
+        //    {
+        //        [JsonPropertyName("lat")]
+        //        public string Lat { get; set; }
+
+        //        [JsonPropertyName("lon")]
+        //        public string Lon { get; set; }
+        //    }
+
         public static (double Latitude, double Longitude) FetchCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
-                throw new BlArgumentException("The address provided is invalid.");
+                throw new ArgumentException("The address provided is invalid.");
 
-            // יצירת כתובת ה-URL לשליפת הנתונים
-            string requestUrl = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key={ApiKey}";
+            string requestUrl = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(address)}&format=json&limit=1";
+            System.Diagnostics.Debug.WriteLine("Requesting: " + requestUrl);
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "MyGeoApp/1.0 (youremail@example.com)");
 
             try
             {
-                // שליחת בקשה וקבלת תשובה
-                var responseTask = Client.GetAsync(requestUrl);
-                HttpResponseMessage response = responseTask.Result;
+                var response = client.GetAsync(requestUrl).GetAwaiter().GetResult();
                 response.EnsureSuccessStatusCode();
 
-                // קריאת תוכן התגובה
-                string jsonResult = response.Content.ReadAsStringAsync().Result;
+                var jsonResult = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                System.Diagnostics.Debug.WriteLine("Response: " + jsonResult);
 
-                // המרת ה-JSON לאובייקטים
-                var locationData = JsonSerializer.Deserialize<GeoResponse[]>(jsonResult, new JsonSerializerOptions
+                var locationData = JsonSerializer.Deserialize<List<NominatimResponse>>(jsonResult, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
 
-                if (locationData == null || locationData.Length == 0)
-                {
-                    Console.WriteLine(jsonResult); // הדפס את התוכן כדי לבדוק
-                    throw new BlException("No location data found for this address.");
-                }
+                if (locationData == null || locationData.Count == 0)
+                    throw new Exception("No location data found for this address.");
 
                 if (!double.TryParse(locationData[0].Lat, out double lat) ||
                     !double.TryParse(locationData[0].Lon, out double lon))
                 {
-                    throw new BlException("Error converting numeric data.");
+                    throw new Exception("Error converting coordinates to double.");
                 }
 
                 return (lat, lon);
             }
-            catch (HttpRequestException httpEx)
-            {
-                throw new BlException("Error connecting to the map server: " + httpEx.Message);
-            }
-            catch (JsonException jsonEx)
-            {
-                throw new BlException("Data processing error: " + jsonEx.Message);
-            }
             catch (Exception ex)
             {
-                throw new BlException("General error while retrieving location: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine($"Error fetching coordinates: {ex.Message}");
+                throw;
             }
         }
 
-        // מחלקת עזר לפענוח התשובה מה-API
-        private class GeoResponse
+        private class NominatimResponse
         {
             [JsonPropertyName("lat")]
             public string Lat { get; set; }
@@ -347,7 +401,6 @@ namespace Helpers
         }
 
 
-    
     }
 
 

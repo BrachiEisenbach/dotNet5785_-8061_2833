@@ -58,11 +58,12 @@ namespace BO
 
     public enum VOLUNTEERFIELDSORT
     {
-        CALLTYPE,
-        FULLNAME,
-        SUMTREATED,
-        SUMCANCELED,
-        SUMEXPIRED
+        NONE = -1,
+        CALLTYPE = 0,
+        FULLNAME = 1,
+        SUMTREATED = 2,
+        SUMCANCELED = 3,
+        SUMEXPIRED = 4
     }
 
     public enum CallFieldSort

@@ -35,9 +35,11 @@ internal class CallImplementation : ICall
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
 
-        return calls.Find(it => it.Id == id);
+        var call = calls.Find(it => it.Id == id);
+        if (call == null)
+            throw new DalDoesNotExistException("Call", $"Call with ID={id} does not exist");
+        return call;
     }
-
 
     public Call Read(Func<Call, bool> filter)
     {

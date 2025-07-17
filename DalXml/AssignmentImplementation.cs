@@ -1,5 +1,4 @@
-﻿
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System;
@@ -10,20 +9,24 @@ internal class AssignmentImplementation : IAssignment
 {
     static Assignment getAssignment(XElement a)
     {
-        System.Diagnostics.Debug.WriteLine($"Entry: '{a.Element("EntryTimeForTreatment")?.Value}'");
+        
+
         return new DO.Assignment()
         {
             Id = a.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
             CallId = a.ToIntNullable("CallId") ?? throw new FormatException("can't convert id"),
             VolunteerId = a.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert id"),
 
-            EntryTimeForTreatment = (DateTime)a.Element("EntryTimeForTreatment"),
+            EntryTimeForTreatment = DateTime.TryParse(a.Element("EntryTimeForTreatment")?.Value, out var entryTime)
+                ? entryTime
+                : throw new FormatException("can't convert EntryTimeForTreatment"),
+
             EndTimeOfTreatment = DateTime.TryParse(a.Element("EndTimeOfTreatment")?.Value, out var endTime)
-            ? endTime
-            : null,
+                ? endTime
+                : null,
+
             TypeOfTreatment = a.ToEnumNullable<TYPEOFTREATMENT>("TypeOfTreatment") ?? TYPEOFTREATMENT.TREATE
         };
-
     }
 
     public void Create(Assignment item)
@@ -33,8 +36,8 @@ internal class AssignmentImplementation : IAssignment
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
         assignmentRootElem.Add(createAssignmentElement(newAssignment));
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
-
     }
+
     public void Delete(int id)
     {
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -45,7 +48,6 @@ internal class AssignmentImplementation : IAssignment
 
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
     }
-
 
     public void DeleteAll()
     {
@@ -59,7 +61,7 @@ internal class AssignmentImplementation : IAssignment
     public Assignment? Read(int id)
     {
         XElement? assignmentElem =
-        XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
+            XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
         return assignmentElem is null ? null : getAssignment(assignmentElem);
     }
 
@@ -68,30 +70,26 @@ internal class AssignmentImplementation : IAssignment
         return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a)).FirstOrDefault(filter);
     }
 
-
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
-        return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a));
+        var allAssignments = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(a => getAssignment(a));
+        return filter == null ? allAssignments : allAssignments.Where(filter);
     }
-
-
 
     public void Update(Assignment item)
     {
         XElement assignmentRootElem = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
 
         (assignmentRootElem.Elements().FirstOrDefault(ass => (int?)ass.Element("Id") == item.Id)
-        ?? throw new DO.DalDoesNotExistException("Assignment", $"Assignment with ID={item.Id} does Not exist"))
+         ?? throw new DO.DalDoesNotExistException("Assignment", $"Assignment with ID={item.Id} does Not exist"))
             .Remove();
 
-        assignmentRootElem.Add(new XElement("Assignment", createAssignmentElement(item)));
+        assignmentRootElem.Add(createAssignmentElement(item));  // תוקן כאן - בלי עטיפה כפולה
 
         XMLTools.SaveListToXMLElement(assignmentRootElem, Config.s_assignments_xml);
-
-
     }
 
-    //A function that converts a assignment object into XElement
+    // פונקציה שממירה אובייקט assignment ל-XElement
     private XElement createAssignmentElement(Assignment item)
     {
         return new XElement("Assignment",
@@ -99,10 +97,8 @@ internal class AssignmentImplementation : IAssignment
             new XElement("CallId", item.CallId),
             new XElement("VolunteerId", item.VolunteerId),
             new XElement("EntryTimeForTreatment", item.EntryTimeForTreatment),
-            new XElement("EndTimeOfTreatment", item.EndTimeOfTreatment?.ToString("o")), 
-            new XElement("TypeOfTreatment", item.TypeOfTreatment?.ToString())
+            new XElement("EndTimeOfTreatment", item.EndTimeOfTreatment?.ToString("o")),
+            new XElement("TypeOfTreatment", item.TypeOfTreatment.ToString())
         );
     }
-
-
 }
