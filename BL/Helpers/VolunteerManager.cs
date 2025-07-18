@@ -388,7 +388,7 @@ namespace Helpers
         private static Random s_rand = new Random();
 
 
-        internal static void SimulateCourseRegistrationAndGrade()
+        internal static void SimulateVolunteerAndCallLifecycle()
         {
             Thread.CurrentThread.Name = "Volunteers Simulator";
 

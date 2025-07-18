@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Vol
 {
@@ -24,6 +25,7 @@ namespace PL.Vol
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private int id;
+        private volatile bool _isVolunteerListUpdating = false;
         public BO.VolunteerInList? SelectesVolunteer { get; set; }
         public VolunteerListWindow(int AdminId)
         {
@@ -72,8 +74,31 @@ namespace PL.Vol
             }
         }
         private void volunteerListObserver()
-        => queryVolunteerList();
+        {
+            if (_isVolunteerListUpdating)
+            {
+                return; // התעלם אם עדכון קודם עדיין בעיצומו
+            }
 
+            _isVolunteerListUpdating = true; // הדלק את הדגל
+
+            // עטוף את קוד עדכון התצוגה ב-Dispatcher.BeginInvoke
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                try
+                {
+                    queryVolunteerList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error refreshing volunteer list: " + ex.Message);
+                }
+                finally
+                {
+                    _isVolunteerListUpdating = false; // כבה את הדגל בסיום פעולת ה-Dispatcher
+                }
+            }));
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try

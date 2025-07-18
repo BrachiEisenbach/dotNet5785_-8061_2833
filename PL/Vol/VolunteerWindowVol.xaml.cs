@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 namespace PL.Vol
 {
     public partial class VolunteerWindowVol : Window, INotifyPropertyChanged
@@ -15,6 +16,7 @@ namespace PL.Vol
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private static readonly IBl s_bl = Factory.Get();
+        private volatile bool _isVolunteerDataUpdating = false;
 
         public BO.Volunteer? CurrentVolunteer
         {
@@ -56,28 +58,39 @@ namespace PL.Vol
         #region Observer Pattern
         private void VolunteerDataObserver()
         {
-            try
+            if (_isVolunteerDataUpdating)
             {
-                if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+                return; // התעלם אם עדכון קודם עדיין בעיצומו
+            }
+
+            _isVolunteerDataUpdating = true; // הדלק את הדגל
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                try
                 {
-                    var localChanges = this.CurrentVolunteer;
-                    var freshData = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
-
-                    this.CurrentVolunteer = freshData;
-                    OnPropertyChanged(nameof(CurrentVolunteer));
+                    if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+                    {
+                        var freshData = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+                        this.CurrentVolunteer = freshData;
+                        OnPropertyChanged(nameof(CurrentVolunteer));
+                    }
                 }
-            }
-            catch (BO.BlDoesNotExistException)
-            {
-                MessageBox.Show("Volunteer no longer exists. Closing window.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error refreshing volunteer data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                catch (BO.BlDoesNotExistException)
+                {
+                    MessageBox.Show("Volunteer no longer exists. Closing window.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error refreshing volunteer data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    _isVolunteerDataUpdating = false; // כבה את הדגל בסיום פעולת ה-Dispatcher
+                }
+            }));
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try

@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using DO;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Application = System.Windows.Application;
 
 
 namespace PL.Vol
@@ -18,6 +20,7 @@ namespace PL.Vol
     { 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private int adminId;
+        private volatile bool _isVolunteerUpdating = false;
         public string ButtonText
         {
             get => (string)GetValue(ButtonTextProperty);
@@ -98,7 +101,14 @@ namespace PL.Vol
 
         private void VolunteerObserver()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            if (_isVolunteerUpdating)
+            {
+                return; // התעלם אם עדכון קודם עדיין בעיצומו
+            }
+
+            _isVolunteerUpdating = true; // הדלק את הדגל
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
                 try
                 {
@@ -112,7 +122,11 @@ namespace PL.Vol
                 {
                     MessageBox.Show("Error refreshing volunteer data: " + ex.Message);
                 }
-            });
+                finally
+                {
+                    _isVolunteerUpdating = false; // כבה את הדגל בסיום פעולת ה-Dispatcher
+                }
+            }));
         }
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
