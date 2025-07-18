@@ -202,21 +202,11 @@
                         </CheckBox>
                     </Grid>
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Type Of Call (Preferred):" VerticalAlignment="Center" Grid.Column="0"/>
-                        <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfCallCollectionKey}}"
-                                  SelectedValue="{Binding CurrentVolunteer.TypeOfCall, Mode=TwoWay}" Grid.Column="1" Width="200"/>
-                    </Grid>
-
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
 
-        <ContentControl Grid.Column="2" Margin="5" DataContext="{Binding CurrentVolunteer.CallInTreate}">
+        <ContentControl Grid.Column="2" Margin="5" Content="{Binding CurrentVolunteer.CallInTreate}">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
                     <Setter Property="ContentTemplate">
@@ -227,18 +217,25 @@
                                         <StackPanel Margin="10">
                                             <Label Content="Call Id"/>
                                             <TextBox Text="{Binding CallId}" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Verbal Description"/>
                                             <TextBox Text="{Binding VerbalDescription}" IsReadOnly="True" Width="200" TextWrapping="Wrap" Height="60"/>
+
                                             <Label Content="Full Address"/>
                                             <TextBox Text="{Binding FullAddress}" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Open Time"/>
                                             <xctk:TimePicker Value="{Binding OpenTime}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Max Time To Finish"/>
                                             <xctk:TimePicker Value="{Binding MaxTimeToFinish}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Enter Time"/>
                                             <xctk:TimePicker Value="{Binding EnterTime}" Format="Custom" FormatString="dd/MM/yyyy HH:mm" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Distance"/>
                                             <TextBox Text="{Binding Distance, StringFormat={}{0:F2} km}" IsReadOnly="True" Width="200"/>
+
                                             <Label Content="Status"/>
                                             <TextBox Text="{Binding Status}" IsReadOnly="True" Width="200"/>
 
@@ -252,18 +249,19 @@
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
+
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding CurrentVolunteer.CallInTreate}" Value="{x:Null}">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
                                         <Border BorderBrush="#A5D6A7" BorderThickness="1" CornerRadius="10" Background="White" Padding="10">
                                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <TextBlock Text="There is no call in treatment now." 
-                                                           FontSize="18" FontWeight="SemiBold" Foreground="#388E3C" 
-                                                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                                   FontSize="18" FontWeight="SemiBold" Foreground="#388E3C" 
+                                                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                                 <TextBlock Text="You can choose a new call from the list." 
-                                                           FontSize="14" Foreground="#757575" TextWrapping="Wrap" TextAlignment="Center"/>
+                                                   FontSize="14" Foreground="#757575" TextWrapping="Wrap" TextAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
@@ -274,6 +272,7 @@
                 </Style>
             </ContentControl.Style>
         </ContentControl>
+
 
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="79,10,0,10" Grid.Column="1">
             <Button Content="Update Details" Click="btnUpdate_Click" Width="150" Margin="5" FontWeight="Bold"/>

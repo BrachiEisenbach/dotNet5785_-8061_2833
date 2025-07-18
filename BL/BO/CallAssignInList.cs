@@ -15,6 +15,14 @@ namespace BO
         public DateTime? EndTimeOfTreatment { get; init; }
         public FINISHTYPE? TypeOfTreatment { get; init; }
 
+        public override string ToString()
+        {
+            return $"Volunteer ID: {VolunteerId?.ToString() ?? "N/A"}, " +
+                   $"Name: {VolunteerName ?? "N/A"}, " +
+                   $"Entry: {EntryTimeForTreatment:g}, " +
+                   $"End: {(EndTimeOfTreatment.HasValue ? EndTimeOfTreatment.Value.ToString("g") : "Still in treatment")}, " +
+                   $"Finish Type: {TypeOfTreatment?.ToString() ?? "N/A"}";
+        }
 
 
     }

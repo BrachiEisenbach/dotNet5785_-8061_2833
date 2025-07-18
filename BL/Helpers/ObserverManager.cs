@@ -70,7 +70,23 @@ class ObserverManager //stage 5
     /// Notify all the observers that there is a change for one or more entities in the list
     /// that may affect the whole list presentation
     /// </summary>
-    internal void NotifyListUpdated() => _listObservers?.Invoke();
+    internal void NotifyListUpdated()
+    {
+        if (_listObservers == null) return;
+
+        foreach (var handler in _listObservers.GetInvocationList())
+        {
+            try
+            {
+                handler.DynamicInvoke();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"שגיאה בצופה: {ex.GetType().Name} - {ex.Message}");
+                
+            }
+        }
+    }
 
     /// <summary>
     /// Notify observers of an e specific entity  that there was some change in the entity

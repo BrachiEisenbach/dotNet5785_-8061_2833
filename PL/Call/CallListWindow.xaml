@@ -18,6 +18,7 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:TypeOfCallToColorConverter x:Key="TypeOfCallToColor"/>
         <converters:StatusToColorConverter x:Key="StatusToColor"/>
+        <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
 
         <!-- סגנון כפתור מעוגל -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
@@ -129,11 +130,13 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding TimeLeft}" Header="Time Left" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding TimeTaken}" Header="Time Taken" Width="Auto"/>
+                    <DataGridTextColumn Header="Time Left" Width="Auto" 
+                      Binding="{Binding TimeLeft, Converter={StaticResource TimeSpanToStringConverter}}"/>
+   
+                    <DataGridTextColumn Header="Time Taken" Width="Auto" 
+                     Binding="{Binding TimeTaken, Converter={StaticResource TimeSpanToStringConverter}}"/>
                     <DataGridTextColumn Binding="{Binding NameOfLastVolunteer}" Header="Volunteer Name" Width="*" />
                     <DataGridTextColumn Binding="{Binding SumOfAssigned}" Header="Sum Assignment" Width="Auto"/>
-
                     <DataGridTemplateColumn Header="Actions" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

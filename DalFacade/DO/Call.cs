@@ -24,7 +24,7 @@ public record Call
     string FullAddress="",
     double Latitude=0,
     double Longitude=0,
-    DateTime OpenTime=default(DateTime) ,
+    DateTime OpenTime=default(DateTime),
     DateTime? MaxTimeToFinish=null
 
 )

@@ -14,10 +14,11 @@ namespace Helpers
     internal static class CallManager
     {
         internal static ObserverManager Observers = new(); //stage 5 
-        public static BO.Call GetCallFromDO(DO.Call doCall)
-        {
-            return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
-        }
+
+        //public static BO.Call GetCallFromDO(DO.Call doCall)
+        //{
+        //    return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
+        //}
 
         public static DO.Call GetCallFromBO(BO.Call boCall)
         {
@@ -118,12 +119,15 @@ namespace Helpers
             lock (AdminManager.BlMutex) //stage 7
                 assignments = s_dal.Assignment.ReadAll().ToList();
 
-            var lastAssignment = assignments
+            var assignments = s_dal.Assignment.ReadAll()
                 .Where(a => a.CallId == call.Id)
                 .OrderByDescending(a => a.EntryTimeForTreatment)
-                .FirstOrDefault();
+                .ToList();
 
-            if (lastAssignment == null || lastAssignment.EndTimeOfTreatment.HasValue)
+            var lastAssignment = assignments.FirstOrDefault();
+
+            // -------- 1. אין הקצאה בכלל --------
+            if (lastAssignment == null)
             {
                 if (call.MaxTimeToFinish < currentTime)
                     return BO.STATUS.Expired;
@@ -134,16 +138,44 @@ namespace Helpers
                 return BO.STATUS.Open;
             }
 
-            // כאן היא עדיין בטיפול פעיל
-            if (call.MaxTimeToFinish < currentTime)
+            // -------- 2. הייתה הקצאה – נבדוק אם הסתיים בזמן => CLOSED --------
+            if (lastAssignment.EntryTimeForTreatment > call.OpenTime &&
+                lastAssignment.EndTimeOfTreatment.HasValue &&
+                lastAssignment.EndTimeOfTreatment <= call.MaxTimeToFinish)
+            {
+                return BO.STATUS.Closed;
+            }
+
+            // -------- 3. בדיקה אם היא EXPIRED – למרות שהייתה הקצאה --------
+            if (
+                // התחיל באיחור משמעותי
+                lastAssignment.EntryTimeForTreatment > call.MaxTimeToFinish ||
+                // או סיים באיחור משמעותי
+                (lastAssignment.EndTimeOfTreatment.HasValue &&
+                 lastAssignment.EndTimeOfTreatment > call.MaxTimeToFinish)
+            )
+            {
                 return BO.STATUS.Expired;
+            }
 
+            // -------- 4. בתהליך טיפול – עדיין בתוך זמן --------
+            if (!lastAssignment.EndTimeOfTreatment.HasValue)
+            {
+                if (call.MaxTimeToFinish < currentTime)
+                    return BO.STATUS.Expired;
+
+                if (call.MaxTimeToFinish - currentTime <= riskRange)
+                    return BO.STATUS.InTreatmentDangerZone;
+
+                return BO.STATUS.InTreatment;
+            }
+
+            // -------- 5. כל מה שלא נכנס להגדרות הקודמות – עדיין פתוח --------
             if (call.MaxTimeToFinish - currentTime <= riskRange)
-                return BO.STATUS.InTreatmentDangerZone;
+                return BO.STATUS.OpenDangerZone;
 
-            return BO.STATUS.InTreatment;
+            return BO.STATUS.Open;
         }
-
         internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
         {
             return typeOfTreatment switch

@@ -16,17 +16,6 @@ namespace PL.Call
     {
         private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public ChooseCallWindow(int id)
-        {
-            InitializeComponent();
-            VolunteerId = id; // שמירת ה-ID של המתנדב
-            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-            ChooseCallObserver();
-            this.Loaded += Window_Loaded;
-            this.Closed += Window_Closed;
-
-        }
-
         // שמירת ה-ID של המתנדב כחבר מחלקה (לא Dependency Property)
         public int VolunteerId { get; set; }
 
@@ -66,6 +55,27 @@ namespace PL.Call
         public static readonly DependencyProperty SelectedCallProperty =
             DependencyProperty.Register("SelectedCall", typeof(BO.OpenCallInList), typeof(ChooseCallWindow), new PropertyMetadata(null));
 
+        public ChooseCallWindow(int id)
+        {
+            InitializeComponent();
+            VolunteerId = id;
+
+            try
+            {
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading volunteer details: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+                return;
+            }
+
+            ChooseCallObserver();
+            this.Loaded += Window_Loaded;
+            this.Closed += Window_Closed;
+        }
+
         private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var window = d as ChooseCallWindow;
@@ -86,21 +96,21 @@ namespace PL.Call
 
         private void Updete_click(object sender, RoutedEventArgs e)
         {
-            try {
-
+            try
+            {
                 s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                 MessageBox.Show("Volunteer updated successfully");
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(VolunteerId);
-                ChooseCallObserver(); 
+                ChooseCallObserver();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Failed to update volunteer: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
-       private void Choose_click(object sender, RoutedEventArgs e)
+        private void Choose_click(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is Button button && button.CommandParameter is int callId)
             {
@@ -131,11 +141,28 @@ namespace PL.Call
          => queryCallListChooseCall();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        => s_bl.Call.AddObserver(ChooseCallObserver);
+        {
+            try
+            {
+                s_bl.Call.AddObserver(ChooseCallObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error attaching observer: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void Window_Closed(object sender, EventArgs e)
-        => s_bl.Volunteer.RemoveObserver(ChooseCallObserver);
-
+        {
+            try
+            {
+                s_bl.Call.RemoveObserver(ChooseCallObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error detaching observer: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
 
     }

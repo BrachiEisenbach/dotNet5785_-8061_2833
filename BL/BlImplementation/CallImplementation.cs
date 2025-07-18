@@ -22,49 +22,77 @@ namespace BlImplementation
         /// <returns>A collection of filtered and sorted call details in a list.</returns>
         /// <exception cref="BlDoesNotExistException">Thrown when no calls are found in the system.</exception>
 
-        public IEnumerable<BO.CallInList> GetCallList(Enum? statusFilter, object? valFilter, Enum? typeOfCallSort)
+        public IEnumerable<BO.CallInList> GetCallList(Enum? filterBy, object? filterValue, Enum? sortBy)
         {
             try
             {
-                IEnumerable<DO.Call> calls;
-                lock (AdminManager.BlMutex) //stage 7
-                    calls = _dal.Call.ReadAll().ToList();
-                var riskRange = AdminManager.RiskRange;
+                var calls = _dal.Call.ReadAll().ToList();
+                var assignments = _dal.Assignment.ReadAll().ToList();
+                var volunteers = _dal.Volunteer.ReadAll().ToList();
+                var riskRange = _dal.Config.RiskRange;
 
-                // 1️⃣ קיבוץ – השארת הקריאה האחרונה לכל CallId
-                calls = calls.GroupBy(call => call.Id)
-                             .Select(group => group.OrderByDescending(c => c.OpenTime).First())
-                             .ToList();
+                // קריאה אחרונה לפי CallId
+                var latestCalls = calls
+                    .GroupBy(call => call.Id)
+                    .Select(group => group.OrderByDescending(c => c.OpenTime).First())
+                    .ToList();
 
-                // 2️⃣ סינון לפי פרמטרים (אם הועברו)
-                if (statusFilter is BO.STATUS status && valFilter is BO.STATUS)
+                // הכנה לרשימה לוגית BO
+                var result = latestCalls.Select(call =>
                 {
-                    calls = calls.Where(call => CallManager.CalculateStatus(call, riskRange) == status).ToList();
+                    var callAssignments = assignments.Where(a => a.CallId == call.Id).ToList();
+                    var lastAssignment = callAssignments.OrderByDescending(a => a.EntryTimeForTreatment).FirstOrDefault();
+                    var status = CallManager.CalculateStatus(call, riskRange);
+
+                    return new BO.CallInList
+                    {
+                        Id = lastAssignment != null ? lastAssignment.Id : (int?)null,
+                        CallId = lastAssignment != null ? lastAssignment.CallId : call.Id,
+                        TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                        OpenTime = call.OpenTime,
+                        TimeLeft = (status != BO.STATUS.Closed && call.MaxTimeToFinish.HasValue)
+           ? (call.MaxTimeToFinish.Value - DateTime.Now > TimeSpan.Zero
+               ? call.MaxTimeToFinish.Value - DateTime.Now
+               : TimeSpan.Zero)
+           : (TimeSpan?)null,
+                        NameOfLastVolunteer = lastAssignment != null
+                            ? volunteers.FirstOrDefault(v => v.Id == lastAssignment.VolunteerId)?.FullName
+                            : null,
+                        TimeTaken = (lastAssignment?.EndTimeOfTreatment != null)
+                            ? lastAssignment.EndTimeOfTreatment - call.OpenTime
+                            : null,
+                        Status = status,
+                        SumOfAssigned = callAssignments.Count
+                    };
+                }).ToList();
+
+                // סינון אם נדרש
+                if (filterBy != null && filterValue != null)
+                {
+                    if (filterBy is BO.STATUS && filterValue is BO.STATUS statusVal)
+                        result = result.Where(r => r.Status == statusVal).ToList();
+                    else if (filterBy is BO.TYPEOFCALL && filterValue is BO.TYPEOFCALL typeVal)
+                        result = result.Where(r => r.TypeOfCall == typeVal).ToList();
                 }
-                else if (statusFilter is BO.TYPEOFCALL type && valFilter is BO.TYPEOFCALL)
-                {
-                    calls = calls.Where(call => CallManager.ConvertToBOType(call.TypeOfCall) == type).ToList();
-                }
 
-                // 3️⃣ מיון סופי לפי הפרמטר השלישי (אם הועבר)
-                calls = typeOfCallSort switch
+                // מיון אם נדרש
+                result = sortBy switch
                 {
-                    BO.STATUS => calls.OrderBy(call => CallManager.CalculateStatus(call, riskRange)).ToList(),
-                    BO.TYPEOFCALL => calls.OrderBy(call => CallManager.ConvertToBOType(call.TypeOfCall)).ToList(),
-                    _ => calls.OrderBy(call => call.Id).ToList() // ברירת מחדל: לפי מספר קריאה
+                    BO.STATUS => result.OrderBy(r => r.Status).ToList(),
+                    BO.TYPEOFCALL => result.OrderBy(r => r.TypeOfCall).ToList(),
+                    _ => result.OrderBy(r => r.CallId).ToList()
                 };
 
-                // 4️⃣ המרה לישות הלוגית BO.CallInList
-                return calls.Select(call => new BO.CallInList
-                {
-                    CallId = call.Id,
-                    TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
-                    Status = CallManager.CalculateStatus(call, riskRange),
-                    OpenTime = call.OpenTime
-                });
+                return result;
             }
-            catch (DalDoesNotExistException dalDoesNotExistException) { throw new BlDoesNotExistException("There are no readings.", dalDoesNotExistException); }
-            catch (Exception ex) { throw new BlException("Error while getting the readings in the list"); };
+            catch (DalDoesNotExistException ex)
+            {
+                throw new BlDoesNotExistException("There are no readings.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new BlException("Error while getting the readings in the list", ex);
+            }
         }
 
         /// <summary>
@@ -101,13 +129,13 @@ namespace BlImplementation
 
                 var riskRange = AdminManager.RiskRange;
 
-                return MappingProfile.ConvertToBO(callDO, riskRange);
+                return MappingProfile.ConvertToBO(callDO, callAssignments, riskRange);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
                 throw new BlDoesNotExistException("There are no readings and/or risk time frame.", dalDoesNotExistException);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw new BlException("Error while getting message details.");
             }
@@ -138,19 +166,19 @@ namespace BlImplementation
             if (call.Longitude is < -180 or > 180)
                 throw new BlArgumentException("Longitude must be between -180 and 180.");
 
-            if (call.OpenTime == default)
-                throw new BlArgumentException("The call's start time is incorrect.");
+            
 
             if (call.MaxTimeToFinish is not null && call.MaxTimeToFinish <= call.OpenTime)
                 throw new BlArgumentException("Maximum end time must be later than the call start time");
 
             DO.Call newCall = new DO.Call(
-                Id: call.Id,  
+                Id: call.Id,
                 TypeOfCall: (DO.TYPEOFCALL)call.TypeOfCall,
                 VerbalDescription: call.VerbalDescription,
                 FullAddress: call.FullAddress,
-                Latitude: call.Latitude ?? 0, 
-                Longitude: call.Longitude ?? 0,  
+                Latitude: call.Latitude ?? 0,
+                Longitude: call.Longitude ?? 0,
+                OpenTime: AdminManager.Now,
                 MaxTimeToFinish: call.MaxTimeToFinish
             );
             try
@@ -159,7 +187,10 @@ namespace BlImplementation
                     _dal.Call.Create(newCall);
                 CallManager.Observers.NotifyListUpdated();
             }
-            catch (DalAlreadyExistException dalAlreadyExistException) { throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException); }
+            catch (DalAlreadyExistException dalAlreadyExistException)
+            { 
+                throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException); 
+            }
             catch (Exception ex)
             {
                 throw new BlInvalidOperationException("Error adding the call to the system", ex);

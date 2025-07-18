@@ -23,13 +23,15 @@ namespace PL.Vol
     public partial class VolunteerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private int id;
         public BO.VolunteerInList? SelectesVolunteer { get; set; }
-        public VolunteerListWindow()
+        public VolunteerListWindow(int AdminId)
         {
             InitializeComponent();
             volunteerListObserver();
             this.Loaded += Window_Loaded;
             this.Closed += Window_Closed;
+            this.id = AdminId;
         }
 
         public IEnumerable<BO.VolunteerInList> VolunteerList
@@ -74,11 +76,27 @@ namespace PL.Vol
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Volunteer.AddObserver(volunteerListObserver);
-          
+            try
+            {
+                s_bl.Volunteer.AddObserver(volunteerListObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to attach observer: " + ex.Message);
+            }
         }
+
         private void Window_Closed(object sender, EventArgs e)
-        => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+        {
+            try
+            {
+                s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to remove observer: " + ex.Message);
+            }
+        }
 
 
         private static void OnSelectedCallTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -86,51 +104,77 @@ namespace PL.Vol
             var control = d as VolunteerListWindow;
             if (control != null)
             {
-                control.volunteerListObserver();
+                try
+                {
+                    control.volunteerListObserver();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to update volunteer list by call type: " + ex.Message);
+                }
             }
         }
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
-            {
-                var result = MessageBox.Show(
-                    "Are you sure you want to delete this volunteer?",
-                    "Confirm Delete",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
+            System.Diagnostics.Debug.WriteLine("Delete_click started");
 
-                if (result == MessageBoxResult.Yes)
+            try
+            {
+                if (e.OriginalSource is Button button && button.CommandParameter is int volunteerId)
                 {
-                    try
+                    var result = MessageBox.Show(
+                        "Are you sure you want to delete this volunteer?",
+                        "Confirm Delete",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
                     {
+
                         s_bl.Volunteer.DeleteVolunteerDetails(volunteerId);
                         volunteerListObserver();
                     }
-                    catch (BlDoesNotExistException)
-                    {
-                        MessageBox.Show(
-                            "The volunteer you are trying to delete does not exist.",
-                            "Delete Failed",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show(
-                            "An unexpected error occurred while trying to delete the volunteer. Please try again or contact support.",
-                            "Unexpected Error",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    }
                 }
             }
+            catch (BlDoesNotExistException)
+            {
+                MessageBox.Show(
+                    "The volunteer you are trying to delete does not exist.",
+                    "Delete Failed",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (BlVolunteerInProgressException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("נכנסתי ל catch המתאים");
+                MessageBox.Show(
+                    ex.Message,
+                    "Cannot Delete Volunteer",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Caught Exception Type: {ex.GetType().FullName}");
+                System.Diagnostics.Debug.WriteLine($"Assembly: {ex.GetType().Assembly.FullName}");
+
+                MessageBox.Show(
+                    $"Unexpected error: {ex.GetType().Name}\n{ex.Message}",
+                    "Unexpected Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+
+            System.Diagnostics.Debug.WriteLine("Delete_click ended");
+
+
         }
 
         private void btnAddVolunteer(object sender, RoutedEventArgs e)
         {
             try
             {
-                new VolunteerWindow(0).Show();
+                new VolunteerWindow(id, 0).Show();
             }
             catch (Exception ex)
             {
@@ -144,7 +188,7 @@ namespace PL.Vol
             {
                 if (SelectesVolunteer != null)
                 {
-                    new VolunteerWindow(SelectesVolunteer.Id).Show();
+                    new VolunteerWindow(id,SelectesVolunteer.Id).Show();
                 }
             }
             catch (Exception ex)

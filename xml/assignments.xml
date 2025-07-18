@@ -366,7 +366,7 @@
     <VolunteerId>211414214</VolunteerId>
     <EntryTimeForTreatment>2023-09-30T12:47:37</EntryTimeForTreatment>
     <EndTimeOfTreatment />
-    <TypeOfTreatment>CANCELLATIONHASEXPIRED</TypeOfTreatment>
+    <TypeOfTreatment>SELFCANCELLATION</TypeOfTreatment>
   </Assignment>
   <Assignment>
     <Id>46</Id>
@@ -374,7 +374,7 @@
     <VolunteerId>341660174</VolunteerId>
     <EntryTimeForTreatment>2023-08-30T22:14:48</EntryTimeForTreatment>
     <EndTimeOfTreatment />
-    <TypeOfTreatment>CANCELLATIONHASEXPIRED</TypeOfTreatment>
+    <TypeOfTreatment>SELFCANCELLATION</TypeOfTreatment>
   </Assignment>
   <Assignment>
     <Id>47</Id>
@@ -382,7 +382,7 @@
     <VolunteerId>311475698</VolunteerId>
     <EntryTimeForTreatment>2024-03-07T19:37:52</EntryTimeForTreatment>
     <EndTimeOfTreatment />
-    <TypeOfTreatment>CANCELLATIONHASEXPIRED</TypeOfTreatment>
+    <TypeOfTreatment>CANCELINGANADMINISTRATOR</TypeOfTreatment>
   </Assignment>
   <Assignment>
     <Id>48</Id>
@@ -390,7 +390,7 @@
     <VolunteerId>244831265</VolunteerId>
     <EntryTimeForTreatment>2023-07-05T16:41:02</EntryTimeForTreatment>
     <EndTimeOfTreatment />
-    <TypeOfTreatment>CANCELLATIONHASEXPIRED</TypeOfTreatment>
+    <TypeOfTreatment>CANCELINGANADMINISTRATOR</TypeOfTreatment>
   </Assignment>
   <Assignment>
     <Id>49</Id>
@@ -398,6 +398,6 @@
     <VolunteerId>237351310</VolunteerId>
     <EntryTimeForTreatment>2023-12-08T20:14:08</EntryTimeForTreatment>
     <EndTimeOfTreatment />
-    <TypeOfTreatment>CANCELLATIONHASEXPIRED</TypeOfTreatment>
+    <TypeOfTreatment></TypeOfTreatment>
   </Assignment>
 </ArrayOfAssignments>

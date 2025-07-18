@@ -6,9 +6,9 @@
     <Phone>052-1234567</Phone>
     <Email>john.doe@example.com</Email>
     <Password>password123</Password>
-    <FullAddress>Rothschild Boulevard 1, Tel Aviv</FullAddress>
-    <Latitude>32.0645</Latitude>
-    <Longitude>34.777</Longitude>
+    <FullAddress>Rothschild Boulevard, Tel Aviv</FullAddress>
+    <Latitude>32.0688</Latitude>
+    <Longitude>34.7818</Longitude>
     <Role>ADMIN</Role>
     <Active>false</Active>
     <MaxDistance>3574</MaxDistance>
@@ -20,9 +20,9 @@
     <Phone>053-2345678</Phone>
     <Email>jane.smith@example.com</Email>
     <Password>abc123</Password>
-    <FullAddress>King George Street 20, Tel Aviv</FullAddress>
-    <Latitude>32.054</Latitude>
-    <Longitude>34.765</Longitude>
+    <FullAddress>King George St, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.0667</Latitude>
+    <Longitude>34.773</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>9424</MaxDistance>
@@ -34,9 +34,9 @@
     <Phone>054-3456789</Phone>
     <Email>michael.johnson@example.com</Email>
     <Password>qwerty123</Password>
-    <FullAddress>Herzl Street 10, Tel Aviv</FullAddress>
-    <Latitude>32.0556</Latitude>
-    <Longitude>34.77</Longitude>
+    <FullAddress>Herzl St, Tel Aviv-Jaffa</FullAddress>
+    <Latitude>32.0615</Latitude>
+    <Longitude>34.7715</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>844</MaxDistance>
@@ -48,9 +48,9 @@
     <Phone>055-4567890</Phone>
     <Email>emily.davis@example.com</Email>
     <Password>letmein2024</Password>
-    <FullAddress>Dizengoff Street 50, Tel Aviv</FullAddress>
+    <FullAddress>Dizengoff St, Tel Aviv-Yafo, Israel</FullAddress>
     <Latitude>32.0853</Latitude>
-    <Longitude>34.7818</Longitude>
+    <Longitude>34.7758</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>2598</MaxDistance>
@@ -62,9 +62,9 @@
     <Phone>056-5678901</Phone>
     <Email>chris.brown@example.com</Email>
     <Password>welcome1</Password>
-    <FullAddress>Allenby Street 99, Tel Aviv</FullAddress>
-    <Latitude>32.0647</Latitude>
-    <Longitude>34.769</Longitude>
+    <FullAddress>Allenby St, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.0733</Latitude>
+    <Longitude>34.7695</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>1017</MaxDistance>
@@ -90,9 +90,9 @@
     <Phone>058-7890123</Phone>
     <Email>david.wilson@example.com</Email>
     <Password>iloveyou99</Password>
-    <FullAddress>HaYarkon Street 100, Tel Aviv</FullAddress>
-    <Latitude>32.0729</Latitude>
-    <Longitude>34.762</Longitude>
+    <FullAddress>Hayarkon St, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.085</Latitude>
+    <Longitude>34.7712</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>8054</MaxDistance>
@@ -104,9 +104,9 @@
     <Phone>059-8901234</Phone>
     <Email>sophia.moore@example.com</Email>
     <Password>admin123</Password>
-    <FullAddress>Jaffa Road 30, Jerusalem</FullAddress>
-    <Latitude>31.778</Latitude>
-    <Longitude>35.217</Longitude>
+    <FullAddress>Yafo, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7683</Latitude>
+    <Longitude>35.2137</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>7950</MaxDistance>
@@ -132,9 +132,9 @@
     <Phone>051-8765432</Phone>
     <Email>olivia.lee@example.com</Email>
     <Password>letmein22</Password>
-    <FullAddress>Emek Refaim 45, Jerusalem</FullAddress>
-    <Latitude>31.778</Latitude>
-    <Longitude>35.212</Longitude>
+    <FullAddress>Emek Refaim, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7554</Latitude>
+    <Longitude>35.2281</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>9998</MaxDistance>
@@ -146,9 +146,9 @@
     <Phone>052-7654321</Phone>
     <Email>matthew.harris@example.com</Email>
     <Password>secure2023</Password>
-    <FullAddress>HaChalutz 11, Jerusalem</FullAddress>
-    <Latitude>31.7776</Latitude>
-    <Longitude>35.21</Longitude>
+    <FullAddress>Weizman St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.1913</Latitude>
+    <Longitude>34.8866</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>10080</MaxDistance>
@@ -174,7 +174,7 @@
     <Phone>054-5432109</Phone>
     <Email>james.walker@example.com</Email>
     <Password>password2024</Password>
-    <FullAddress>Ben Gurion Boulevard 12, Haifa</FullAddress>
+    <FullAddress>Sderot Ben Gurion, Haifa, Israel</FullAddress>
     <Latitude>32.794</Latitude>
     <Longitude>34.9896</Longitude>
     <Role>VOLUNTEER</Role>
@@ -188,9 +188,9 @@
     <Phone>055-4321098</Phone>
     <Email>chloe.hall@example.com</Email>
     <Password>mysecret123</Password>
-    <FullAddress>Hertzel 48, Haifa</FullAddress>
-    <Latitude>32.794</Latitude>
-    <Longitude>34.9875</Longitude>
+    <FullAddress>Herzl St, Haifa, Israel</FullAddress>
+    <Latitude>32.7946</Latitude>
+    <Longitude>34.9858</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>6815</MaxDistance>
@@ -202,9 +202,9 @@
     <Phone>056-3210987</Phone>
     <Email>benjamin.young@example.com</Email>
     <Password>access123</Password>
-    <FullAddress>HaNassi Boulevard 109, Haifa</FullAddress>
-    <Latitude>32.814</Latitude>
-    <Longitude>34.993</Longitude>
+    <FullAddress>Hanassi Blvd, Haifa, Israel</FullAddress>
+    <Latitude>32.8054</Latitude>
+    <Longitude>34.9956</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>4287</MaxDistance>
@@ -230,9 +230,9 @@
     <Phone>058-1098765</Phone>
     <Email>ethan.adams@example.com</Email>
     <Password>iloveme</Password>
-    <FullAddress>HaChok 11, Haifa</FullAddress>
-    <Latitude>32.8</Latitude>
-    <Longitude>34.999</Longitude>
+    <FullAddress>Ma'Abarot, Haifa, Israel</FullAddress>
+    <Latitude>32.8223</Latitude>
+    <Longitude>34.9939</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>946</MaxDistance>
@@ -244,9 +244,9 @@
     <Phone>059-0987654</Phone>
     <Email>isabella.king@example.com</Email>
     <Password>mypassword01</Password>
-    <FullAddress>Herzl 15, Netanya</FullAddress>
-    <Latitude>32.3327</Latitude>
-    <Longitude>34.85</Longitude>
+    <FullAddress>Herzl, Netanya, Israel</FullAddress>
+    <Latitude>32.337</Latitude>
+    <Longitude>34.867</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>10126</MaxDistance>
@@ -258,9 +258,9 @@
     <Phone>050-9876543</Phone>
     <Email>aiden.martinez@example.com</Email>
     <Password>adminpassword</Password>
-    <FullAddress>HaDegel 77, Netanya</FullAddress>
-    <Latitude>32.3337</Latitude>
-    <Longitude>34.85</Longitude>
+    <FullAddress>Hadegel St, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.0794</Latitude>
+    <Longitude>34.8116</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>5592</MaxDistance>
@@ -272,9 +272,9 @@
     <Phone>051-8765432</Phone>
     <Email>charlotte.lee@example.com</Email>
     <Password>password!23</Password>
-    <FullAddress>HaAtzmaut 60, Bat Yam</FullAddress>
-    <Latitude>32.0276</Latitude>
-    <Longitude>34.75</Longitude>
+    <FullAddress>Ha'Atsmaut Blvd, Bat Yam, Israel</FullAddress>
+    <Latitude>32.0224</Latitude>
+    <Longitude>34.8125</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>4027</MaxDistance>
@@ -286,9 +286,9 @@
     <Phone>052-7654321</Phone>
     <Email>lucas.perez@example.com</Email>
     <Password>123qwerty</Password>
-    <FullAddress>HaChof 3, Bat Yam</FullAddress>
-    <Latitude>32.031</Latitude>
-    <Longitude>34.745</Longitude>
+    <FullAddress>Ha-Rav Nisanbaum St, Bat Yam, Israel</FullAddress>
+    <Latitude>32.033</Latitude>
+    <Longitude>34.6435</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>11026</MaxDistance>
@@ -300,9 +300,9 @@
     <Phone>053-6543210</Phone>
     <Email>amelia.rodriguez@example.com</Email>
     <Password>letmein2023</Password>
-    <FullAddress>HaNamal 8, Ashdod</FullAddress>
-    <Latitude>31.8034</Latitude>
-    <Longitude>34.65</Longitude>
+    <FullAddress>Hanamal, Ashdod, Israel</FullAddress>
+    <Latitude>31.8011</Latitude>
+    <Longitude>34.6487</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>9665</MaxDistance>
@@ -314,9 +314,9 @@
     <Phone>054-5432109</Phone>
     <Email>henry.green@example.com</Email>
     <Password>strongpass22</Password>
-    <FullAddress>Sderot Menachem Begin 7, Ashdod</FullAddress>
-    <Latitude>31.795</Latitude>
-    <Longitude>34.65</Longitude>
+    <FullAddress>Sderot Menachem Begin, Ashdod, Israel</FullAddress>
+    <Latitude>31.801</Latitude>
+    <Longitude>34.6491</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>1079</MaxDistance>
@@ -328,9 +328,9 @@
     <Phone>055-4321098</Phone>
     <Email>aria.hall@example.com</Email>
     <Password>qwertz123</Password>
-    <FullAddress>Moshe Dayan Boulevard 10, Ashdod</FullAddress>
-    <Latitude>31.794</Latitude>
-    <Longitude>34.655</Longitude>
+    <FullAddress>Moshe Dayan Avenue, Ashdod, Israel</FullAddress>
+    <Latitude>31.803</Latitude>
+    <Longitude>34.5717</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>6825</MaxDistance>
@@ -356,9 +356,9 @@
     <Phone>057-2109876</Phone>
     <Email>ella.carter@example.com</Email>
     <Password>mypassword@2024</Password>
-    <FullAddress>HaGiv'a 60, Ashkelon</FullAddress>
-    <Latitude>31.675</Latitude>
-    <Longitude>34.57</Longitude>
+    <FullAddress>Arye Tagar St, Ashkelon, Israel</FullAddress>
+    <Latitude>31.6685</Latitude>
+    <Longitude>34.9162</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>8633</MaxDistance>
@@ -370,9 +370,9 @@
     <Phone>058-1098765</Phone>
     <Email>david.walker@example.com</Email>
     <Password>passw0rd123</Password>
-    <FullAddress>HaMashbir 14, Hadera</FullAddress>
-    <Latitude>32.4346</Latitude>
-    <Longitude>34.9197</Longitude>
+    <FullAddress>Sderot Rothschild, Hadera, Israel</FullAddress>
+    <Latitude>32.4332</Latitude>
+    <Longitude>34.922</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>3121</MaxDistance>
@@ -384,9 +384,9 @@
     <Phone>059-0987654</Phone>
     <Email>avery.thompson@example.com</Email>
     <Password>iloveyou1234</Password>
-    <FullAddress>HaSela 58, Tirat Carmel</FullAddress>
-    <Latitude>32.709</Latitude>
-    <Longitude>35.073</Longitude>
+    <FullAddress>Hasela St, Atlit, Israel</FullAddress>
+    <Latitude>32.6374</Latitude>
+    <Longitude>34.8944</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>9041</MaxDistance>
@@ -398,9 +398,9 @@
     <Phone>050-9876543</Phone>
     <Email>oliver.collins@example.com</Email>
     <Password>testpassword12</Password>
-    <FullAddress>HaTzanchanim 9, Lod</FullAddress>
-    <Latitude>31.9517</Latitude>
-    <Longitude>34.899</Longitude>
+    <FullAddress>Herzl St, Lod, Israel</FullAddress>
+    <Latitude>31.9515</Latitude>
+    <Longitude>34.8961</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>5244</MaxDistance>
@@ -412,9 +412,9 @@
     <Phone>051-8765432</Phone>
     <Email>sophie.white@example.com</Email>
     <Password>openai123</Password>
-    <FullAddress>Herzel 90, Lod</FullAddress>
-    <Latitude>31.954</Latitude>
-    <Longitude>34.899</Longitude>
+    <FullAddress>Dani Mass St, Lod, Israel</FullAddress>
+    <Latitude>31.9511</Latitude>
+    <Longitude>34.87</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>117</MaxDistance>
@@ -426,9 +426,9 @@
     <Phone>052-7654321</Phone>
     <Email>william.wright@example.com</Email>
     <Password>adminsecure</Password>
-    <FullAddress>HaRishonim 11, Rishon Lezion</FullAddress>
-    <Latitude>31.964</Latitude>
-    <Longitude>34.901</Longitude>
+    <FullAddress>David Remez St, Or Yehuda, Israel</FullAddress>
+    <Latitude>31.9615</Latitude>
+    <Longitude>34.839</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>6127</MaxDistance>
@@ -440,9 +440,9 @@
     <Phone>053-6543210</Phone>
     <Email>megan.nelson@example.com</Email>
     <Password>securepassword01</Password>
-    <FullAddress>Rothschild 100, Rishon Lezion</FullAddress>
-    <Latitude>31.971</Latitude>
-    <Longitude>34.8</Longitude>
+    <FullAddress>Hagdud Haivri St, Ra'anana, Israel</FullAddress>
+    <Latitude>32.185</Latitude>
+    <Longitude>34.8462</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>6303</MaxDistance>
@@ -454,9 +454,9 @@
     <Phone>054-5432109</Phone>
     <Email>jack.brown@example.com</Email>
     <Password>bestpassword!</Password>
-    <FullAddress>HaHistadrut 50, Ramat Gan</FullAddress>
-    <Latitude>32.06</Latitude>
-    <Longitude>34.8</Longitude>
+    <FullAddress>Haahot Haya Oster St Ramat Gan, Ramat Gan, Israel</FullAddress>
+    <Latitude>32.0685</Latitude>
+    <Longitude>34.8408</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>7749</MaxDistance>
@@ -468,9 +468,9 @@
     <Phone>055-4321098</Phone>
     <Email>madison.roberts@example.com</Email>
     <Password>chatrocks</Password>
-    <FullAddress>HaShalom Road 33, Ramat Gan</FullAddress>
-    <Latitude>32.06</Latitude>
-    <Longitude>34.79</Longitude>
+    <FullAddress>Ahuza St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.183</Latitude>
+    <Longitude>34.8522</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>10376</MaxDistance>
@@ -482,9 +482,9 @@
     <Phone>056-3210987</Phone>
     <Email>jacob.carter@example.com</Email>
     <Password>strongpass1</Password>
-    <FullAddress>Menachem Begin Blvd 48, Givatayim</FullAddress>
-    <Latitude>32.073</Latitude>
-    <Longitude>34.789</Longitude>
+    <FullAddress>Keren Hayesod St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.1797</Latitude>
+    <Longitude>34.8555</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>1900</MaxDistance>
@@ -496,9 +496,9 @@
     <Phone>057-2109876</Phone>
     <Email>sophia.brooks@example.com</Email>
     <Password>newpassword2024</Password>
-    <FullAddress>HaShalom Rd 6, Givatayim</FullAddress>
-    <Latitude>32.073</Latitude>
-    <Longitude>34.781</Longitude>
+    <FullAddress>Derech Jaffa, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.0628</Latitude>
+    <Longitude>34.8689</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>6816</MaxDistance>
@@ -510,9 +510,9 @@
     <Phone>058-1098765</Phone>
     <Email>jackson.scott@example.com</Email>
     <Password>password01@</Password>
-    <FullAddress>Begin Road 17, Petah Tikva</FullAddress>
-    <Latitude>32.082</Latitude>
-    <Longitude>34.783</Longitude>
+    <FullAddress>Menachem Begin, Petaẖ Tiqwa, Israel</FullAddress>
+    <Latitude>32.091</Latitude>
+    <Longitude>34.8803</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>6538</MaxDistance>
@@ -552,9 +552,9 @@
     <Phone>051-8765432</Phone>
     <Email>liam.king@example.com</Email>
     <Password>secret1234</Password>
-    <FullAddress>HaNasi Weizman 1, Kfar Saba</FullAddress>
-    <Latitude>32.167</Latitude>
-    <Longitude>34.9</Longitude>
+    <FullAddress>Weizmann St, Kfar Saba, Israel</FullAddress>
+    <Latitude>32.1665</Latitude>
+    <Longitude>34.842</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>9809</MaxDistance>
@@ -566,9 +566,9 @@
     <Phone>052-7654321</Phone>
     <Email>charlotte.walker@example.com</Email>
     <Password>tbot2023</Password>
-    <FullAddress>HaPalmach 40, Raanana</FullAddress>
-    <Latitude>32.183</Latitude>
-    <Longitude>34.87</Longitude>
+    <FullAddress>Ha-Palmakh St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.1915</Latitude>
+    <Longitude>34.8402</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>3697</MaxDistance>
@@ -580,9 +580,51 @@
     <Phone>053-6543210</Phone>
     <Email>daniel.evans@example.com</Email>
     <Password>securechatgpt</Password>
-    <FullAddress>Gefen 22, Be'er Sheva</FullAddress>
+    <FullAddress>Haenergia St, Be'Er Sheva, Israel</FullAddress>
     <Latitude>31.252</Latitude>
-    <Longitude>34.795</Longitude>
+    <Longitude>34.8425</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>true</Active>
+    <MaxDistance>38.88457315942968</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>361224479</Id>
+    <FullName>James White</FullName>
+    <Phone>059-0987654</Phone>
+    <Email>james.white@example.com</Email>
+    <Password>ilovechatgpt123</Password>
+    <FullAddress>Tel Hai St, Qiryat Shemona, Israel</FullAddress>
+    <Latitude>33.2851</Latitude>
+    <Longitude>35.5779</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>true</Active>
+    <MaxDistance>29.100637251600315</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>238432628</Id>
+    <FullName>Natalie Scott</FullName>
+    <Phone>054-0988684</Phone>
+    <Email>natalie.scott@example.com</Email>
+    <Password>admin1password</Password>
+    <FullAddress>Sderot Haatsma'Ut, Kiryat Gat, Israel</FullAddress>
+    <Latitude>31.612</Latitude>
+    <Longitude>34.7918</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>true</Active>
+    <MaxDistance>16.13322387611047</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>397966674</Id>
+    <FullName>Evan Phillips</FullName>
+    <Phone>052-9989654</Phone>
+    <Email>evan.phillips@example.com</Email>
+    <Password>testpass1234</Password>
+    <FullAddress>HaDekel, Netivot, Israel</FullAddress>
+    <Latitude>31.401</Latitude>
+    <Longitude>34.681</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>7642</MaxDistance>
@@ -594,9 +636,9 @@
     <Phone>054-5432109</Phone>
     <Email>ella.green@example.com</Email>
     <Password>pass1234</Password>
-    <FullAddress>HaPalmach 5, Be'er Sheva</FullAddress>
-    <Latitude>31.254</Latitude>
-    <Longitude>34.796</Longitude>
+    <FullAddress>Ha-Palmakh St, Be'Er Sheva, Israel</FullAddress>
+    <Latitude>31.2571</Latitude>
+    <Longitude>35.5318</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>1889</MaxDistance>
@@ -608,9 +650,9 @@
     <Phone>055-4321098</Phone>
     <Email>oliver.evans@example.com</Email>
     <Password>qwertz!234</Password>
-    <FullAddress>HaRav Kook 5, Eilat</FullAddress>
-    <Latitude>29.558</Latitude>
-    <Longitude>34.9519</Longitude>
+    <FullAddress>Harav Kook St, Hertsliya, Israel</FullAddress>
+    <Latitude>32.1653</Latitude>
+    <Longitude>35.5779</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>false</Active>
     <MaxDistance>1699</MaxDistance>
@@ -622,9 +664,9 @@
     <Phone>056-3210987</Phone>
     <Email>harper.lewis@example.com</Email>
     <Password>supersecurepass</Password>
-    <FullAddress>HaBoker 45, Eilat</FullAddress>
-    <Latitude>29.559</Latitude>
-    <Longitude>34.951</Longitude>
+    <FullAddress>Yehuda Halevi St, Hertsliya, Israel</FullAddress>
+    <Latitude>32.1668</Latitude>
+    <Longitude>34.7918</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>3808</MaxDistance>
@@ -636,9 +678,9 @@
     <Phone>057-2109876</Phone>
     <Email>benjamin.lee@example.com</Email>
     <Password>access1234</Password>
-    <FullAddress>HaGalil 3, Safed</FullAddress>
-    <Latitude>32.964</Latitude>
-    <Longitude>35.495</Longitude>
+    <FullAddress>Ha-Galil St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.1918</Latitude>
+    <Longitude>34.681</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
     <MaxDistance>170</MaxDistance>

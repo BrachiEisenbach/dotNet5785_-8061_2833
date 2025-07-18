@@ -26,6 +26,8 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        private int id = 0;
+
         private CallListWindow? _callsWindow;
         private VolunteerListWindow? _volunteersWindow;
 
@@ -129,33 +131,57 @@ namespace PL
             s_bl.Admin.ClockPromotion(BO.TIMEUNIT.YEAR);
         }
 
-        public AdminWindow(int id)
+        public AdminWindow(int AdminId)
         {
-            System.Diagnostics.PresentationTraceSources.Refresh();
-            System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
-                System.Diagnostics.SourceLevels.Error | System.Diagnostics.SourceLevels.Critical;
-
             InitializeComponent();
             this.DataContext = this;
-            this.CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-            UpdateCallStatusCounts();
+            id = AdminId;
+            try
+            {
+                this.CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(AdminId);
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                MessageBox.Show($"Volunteer with ID {AdminId} not found: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
 
+            UpdateCallStatusCounts();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.AddClockObserver(clockObserver);
-            s_bl.Admin.AddConfigObserver(configObserver);
-            Clock = s_bl.Admin.GetClock();
-            RiskRange = s_bl.Admin.GetRiskRange();
-            CurrentTime = s_bl.Admin.GetClock();
-            UpdateCallStatusCounts();
-        }
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            s_bl.Admin.RemoveClockObserver(clockObserver);
-            s_bl.Admin.RemoveConfigObserver(configObserver);
+            try
+            {
+                s_bl.Admin.AddClockObserver(clockObserver);
+                s_bl.Admin.AddConfigObserver(configObserver);
+                Clock = s_bl.Admin.GetClock();
+                RiskRange = s_bl.Admin.GetRiskRange();
+                CurrentTime = s_bl.Admin.GetClock();
+                UpdateCallStatusCounts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during window load: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            try
+            {
+                s_bl.Admin.RemoveClockObserver(clockObserver);
+                s_bl.Admin.RemoveConfigObserver(configObserver);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during window close: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void btnUpdate_RiskRange(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.SetRiskRange(RiskRange);
@@ -170,7 +196,7 @@ namespace PL
         {
             if (_volunteersWindow == null || !_volunteersWindow.IsVisible)
             {
-                _volunteersWindow = new VolunteerListWindow();
+                _volunteersWindow = new VolunteerListWindow(id);
                 _volunteersWindow.Closed += (s, e) => _volunteersWindow = null;
                 _volunteersWindow.Show();
             }
@@ -195,6 +221,7 @@ namespace PL
         }
         private void btnInitialize_Click(object sender, RoutedEventArgs e)
         {
+            try { 
             // Confirmation message to the user
             MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the database?",
                                                       "Initialization Confirmation",
@@ -210,11 +237,20 @@ namespace PL
             s_bl.Admin.InitializeDB();
             UpdateCallStatusCounts();
             Mouse.OverrideCursor = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error initializing DB: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
 
         }
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            {
+            try{
                 MessageBoxResult result = MessageBox.Show("Are you sure you want to reset the database?",
                                                    "Reset Confirmation",
                                                    MessageBoxButton.YesNo,
@@ -230,15 +266,30 @@ namespace PL
                 UpdateCallStatusCounts();
                 Mouse.OverrideCursor = null;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error reset DB: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
 
         }
         private void UpdateCallStatusCounts()
         {
-            var counts = s_bl.Call.GetCallCountsByStatus();
+            try
+            {
+                var counts = s_bl.Call.GetCallCountsByStatus();
 
-            InTreatmentCount = counts.ContainsKey(BO.STATUS.InTreatment) ? counts[BO.STATUS.InTreatment] : 0;
-            OpenCount = counts.ContainsKey(BO.STATUS.Open) ? counts[BO.STATUS.Open] : 0;
-            ExpiredCount = counts.ContainsKey(BO.STATUS.Expired) ? counts[BO.STATUS.Expired] : 0;
+                InTreatmentCount = counts.ContainsKey(BO.STATUS.InTreatment) ? counts[BO.STATUS.InTreatment] : 0;
+                OpenCount = counts.ContainsKey(BO.STATUS.Open) ? counts[BO.STATUS.Open] : 0;
+                ExpiredCount = counts.ContainsKey(BO.STATUS.Expired) ? counts[BO.STATUS.Expired] : 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating call counts: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 

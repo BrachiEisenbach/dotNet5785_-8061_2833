@@ -1,4 +1,6 @@
 ﻿using BO;
+using DalApi;
+using DO;
 using PL.Vol;
 using System;
 using System.Collections.Generic;
@@ -95,22 +97,42 @@ namespace PL.Call
 
         private void CallObserver()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            try
             {
-                if (CurrentCall != null)
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
-                    int id = CurrentCall.Id;
-                    CurrentCall = null;
-                    CurrentCall = s_bl.Call.GetCallDetails(id);
-                }
-            });
+                    if (CurrentCall != null)
+                    {
+                        int id = CurrentCall.Id;
+                        CurrentCall = null;
+                        try
+                        {
+                            CurrentCall = s_bl.Call.GetCallDetails(id);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Failed to refresh call details: " + ex.Message);
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to observe call changes: " + ex.Message);
+            }
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentCall == null)
             {
-                MessageBox.Show("No all data available.");
+                MessageBox.Show("No call data available.");
+                return;
+            }
+
+            if (!IsFormValid(this))
+            {
+                MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
                 return;
             }
 
@@ -118,44 +140,28 @@ namespace PL.Call
             {
                 try
                 {
-                    if (!IsFormValid(this))
-                    {
-                        MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
-                        return;
-                    }
                     s_bl.Call.AddCall(CurrentCall);
-                    MessageBox.Show("Call added successfully");
-
-                    // כאן מפעילים את האירוע לדיווח על שינוי
+                    MessageBox.Show("Call added successfully.");
                     CallsChanged?.Invoke();
-
-                    this.Close(); // סגירת החלון
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Error adding call: " + ex.Message);
                 }
             }
             else
             {
                 try
                 {
-                    if (!IsFormValid(this))
-                    {
-                        MessageBox.Show("יש שגיאות בטופס. נא לבדוק את השדות המסומנים באדום.");
-                        return;
-                    }
                     s_bl.Call.UpdateCallDetails(CurrentCall);
-                    MessageBox.Show("Call updated successfully");
-
-                    // כאן מפעילים את האירוע לדיווח על שינוי
+                    MessageBox.Show("Call updated successfully.");
                     CallsChanged?.Invoke();
-
-                    this.Close(); // סגירת החלון
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Error updating call: " + ex.Message);
                 }
             }
         }
@@ -212,9 +218,16 @@ namespace PL.Call
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            if (CurrentCall != null && CurrentCall.Id != 0)
+            try
             {
-                s_bl.Call.RemoveObserver(CurrentCall.Id, CallObserver);
+                if (CurrentCall != null && CurrentCall.Id != 0)
+                {
+                    s_bl.Call.RemoveObserver(CurrentCall.Id, CallObserver);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error removing call observer: " + ex.Message);
             }
         }
 

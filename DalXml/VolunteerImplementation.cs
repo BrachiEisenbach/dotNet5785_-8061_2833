@@ -1,5 +1,4 @@
-﻿
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System;
@@ -16,12 +15,10 @@ internal class VolunteerImplementation : IVolunteer
         List<Volunteer> volunteers = XMLTools.LoadListFromXMLSerializer<Volunteer>(Config.s_volunteers_xml);
         if (Read(item.Id) != null)
         {
-            throw new DalDoesNotExistException("Volunteer", "Volunteer with does Not exist");
-
+            throw new DalAlreadyExistException("Volunteer", $"Volunteer with ID={item.Id} already exists");
         }
         volunteers.Add(item);
         XMLTools.SaveListToXMLSerializer(volunteers, Config.s_volunteers_xml);
-
     }
 
 
@@ -32,6 +29,7 @@ internal class VolunteerImplementation : IVolunteer
         if (volunteers.RemoveAll(it => it.Id == id) == 0)
             throw new DalDoesNotExistException("Volunteer", $"Volunteer with ID={id} does Not exist");
         XMLTools.SaveListToXMLSerializer(volunteers, Config.s_volunteers_xml);
+    }
 
     }
 
@@ -46,7 +44,6 @@ internal class VolunteerImplementation : IVolunteer
     public Volunteer? Read(int id)
     {
         List<Volunteer> volunteers = XMLTools.LoadListFromXMLSerializer<Volunteer>(Config.s_volunteers_xml);
-
         return volunteers.Find(it => it.Id == id);
     }
 
@@ -56,8 +53,11 @@ internal class VolunteerImplementation : IVolunteer
     {
         List<Volunteer> volunteers = XMLTools.LoadListFromXMLSerializer<Volunteer>(Config.s_volunteers_xml);
 
-        return volunteers.FirstOrDefault(filter)
-               ?? throw new DalDoesNotExistException("Volunteer", "No call matches the given filter");
+        var volunteer = volunteers.FirstOrDefault(filter);
+        if (volunteer == null)
+            throw new DalDoesNotExistException("Volunteer", "No volunteer matches the given filter");
+
+        return volunteer;
     }
 
     [MethodImpl(MethodImplOptions.Synchronized)]
@@ -67,6 +67,7 @@ internal class VolunteerImplementation : IVolunteer
 
         if (filter == null)
             return volunteers;
+
         return volunteers.Where(filter);
     }
 

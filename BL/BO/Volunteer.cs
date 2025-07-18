@@ -24,7 +24,7 @@ namespace BO
         public int AllCallsThatCanceled { get; init; }
         public int AllCallsThatHaveExpired { get; init; }
         public BO.CallInProgress? CallInTreate { get; init; }
-        public BO.TYPEOFCALL? TypeOfCall { get; init; }
+ 
 
         public override string ToString()
         {
@@ -42,6 +42,8 @@ namespace BO
             sb.AppendLine($"Calls Canceled: {AllCallsThatCanceled}");
             sb.AppendLine($"Calls Expired: {AllCallsThatHaveExpired}");
             sb.AppendLine($"Current Call In Treatment: {(CallInTreate != null ? CallInTreate.ToString() : "None")}");
+            
+
             return sb.ToString();
         }
     }

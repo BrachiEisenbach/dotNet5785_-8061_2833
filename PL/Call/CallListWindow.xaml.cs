@@ -29,7 +29,7 @@ namespace PL.Call
         }
 
         public static readonly DependencyProperty CurrentVolunteerProperty =
-            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(ChooseCallWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(CallListWindow), new PropertyMetadata(null));
 
 
         public CallListWindow(int id)
@@ -121,33 +121,34 @@ namespace PL.Call
         /// </summary>
         private void queryCallList()
         {
-            IEnumerable<BO.CallInList> calls;
+            try
+            {
+                IEnumerable<BO.CallInList> calls;
 
-            // אם קיים סינון לפי סטטוס
-            if (StatusFilter != null && Type != BO.TYPEOFCALL.NONE)
-            {
-                // שולחים ל-BL סטטוס כפילטר וגם את אותו סטטוס כערך לסינון,
-                // ואז מסננים לפי סוג הקריאה ידנית, כי BL לא תומך בשני הפילטרים יחד
-                var callsByStatus = s_bl.Call.GetCallList(StatusFilter, StatusFilter, null);
-                calls = callsByStatus.Where(c => c.TypeOfCall == Type);
-            }
-            else if (StatusFilter != null)
-            {
-                // סינון לפי סטטוס בלבד
-                calls = s_bl.Call.GetCallList(StatusFilter, StatusFilter, null);
-            }
-            else if (Type != BO.TYPEOFCALL.NONE)
-            {
-                // סינון לפי סוג קריאה בלבד
-                calls = s_bl.Call.GetCallList(Type, Type, BO.VOLUNTEERFIELDSORT.CALLTYPE);
-            }
-            else
-            {
-                // ללא סינון
-                calls = s_bl.Call.GetCallList(null, null, null);
-            }
+                if (StatusFilter != null && Type != BO.TYPEOFCALL.NONE)
+                {
+                    var callsByStatus = s_bl.Call.GetCallList(StatusFilter, StatusFilter, null);
+                    calls = callsByStatus.Where(c => c.TypeOfCall == Type);
+                }
+                else if (StatusFilter != null)
+                {
+                    calls = s_bl.Call.GetCallList(StatusFilter, StatusFilter, null);
+                }
+                else if (Type != BO.TYPEOFCALL.NONE)
+                {
+                    calls = s_bl.Call.GetCallList(Type, Type, BO.VOLUNTEERFIELDSORT.CALLTYPE);
+                }
+                else
+                {
+                    calls = s_bl.Call.GetCallList(null, null, null);
+                }
 
-            CallList = calls.ToList();
+                CallList = calls.ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load call list: " + ex.Message);
+            }
         }
 
         private static void OnStatusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -222,7 +223,14 @@ namespace PL.Call
         /// </summary>
         private void btnAddCall(object sender, RoutedEventArgs e)
         {
-            new CallWindow(0).Show();
+            try
+            {
+                new CallWindow(0).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to open new call window: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -236,9 +244,16 @@ namespace PL.Call
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Call.AddObserver(CallListObserver);
-            CallWindow.CallsChanged += OnCallsChanged;
-            queryCallList();
+            try
+            {
+                s_bl.Call.AddObserver(CallListObserver);
+                CallWindow.CallsChanged += OnCallsChanged;
+                queryCallList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to initialize call list window: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -246,8 +261,15 @@ namespace PL.Call
         /// </summary>
         private void Window_Closed(object sender, EventArgs e)
         {
-            s_bl.Call.RemoveObserver(CallListObserver);
-            CallWindow.CallsChanged -= OnCallsChanged;
+            try
+            {
+                s_bl.Call.RemoveObserver(CallListObserver);
+                CallWindow.CallsChanged -= OnCallsChanged;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to clean up on window close: " + ex.Message);
+            }
         }
 
         /// <summary>

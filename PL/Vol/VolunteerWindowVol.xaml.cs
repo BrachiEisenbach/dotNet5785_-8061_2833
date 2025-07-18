@@ -1,23 +1,28 @@
-﻿using System;
+﻿using BlApi;
+using BO;
+using PL.Call;
+using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using BlApi;
-using BO;
-using PL.Call;
 namespace PL.Vol
 {
-    public partial class VolunteerWindowVol : Window
+    public partial class VolunteerWindowVol : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         private static readonly IBl s_bl = Factory.Get();
 
-        public Volunteer CurrentVolunteer
+        public BO.Volunteer? CurrentVolunteer
         {
-            get { return (Volunteer)GetValue(CurrentVolunteerProperty); }
+            get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
             set { SetValue(CurrentVolunteerProperty, value); }
         }
         public static readonly DependencyProperty CurrentVolunteerProperty =
-            DependencyProperty.Register("CurrentVolunteer", typeof(Volunteer), typeof(VolunteerWindowVol), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindowVol), new PropertyMetadata(null));
 
         public VolunteerWindowVol(int volunteerId)
         {
@@ -25,9 +30,16 @@ namespace PL.Vol
             try
             {
                 this.CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(volunteerId);
+                if (this.CurrentVolunteer.CallInTreate != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(CurrentVolunteer.CallInTreate.CallId);
+                    System.Diagnostics.Debug.WriteLine(CurrentVolunteer.CallInTreate.VerbalDescription);
+                    System.Diagnostics.Debug.WriteLine(CurrentVolunteer.CallInTreate.FullAddress);
+                }
 
                 this.Loaded += Window_Loaded;
                 this.Closed += Window_Closed;
+                this.DataContext = this;
             }
             catch (BO.BlDoesNotExistException ex)
             {
@@ -52,6 +64,7 @@ namespace PL.Vol
                     var freshData = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
 
                     this.CurrentVolunteer = freshData;
+                    OnPropertyChanged(nameof(CurrentVolunteer));
                 }
             }
             catch (BO.BlDoesNotExistException)
@@ -67,17 +80,31 @@ namespace PL.Vol
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+            try
             {
-                s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerDataObserver);
+                if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+                {
+                    s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerDataObserver);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to observe volunteer changes: " + ex.Message);
             }
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+            try
             {
-                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, VolunteerDataObserver);
+                if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+                {
+                    s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, VolunteerDataObserver);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error while detaching observer: " + ex.Message);
             }
         }
         #endregion
@@ -104,8 +131,10 @@ namespace PL.Vol
             try
             {
                 ChooseCallWindow chooseCallWin = new ChooseCallWindow(CurrentVolunteer.Id);
+                chooseCallWin.Closed += (s, args) => VolunteerDataObserver();
                 chooseCallWin.Show();
-                
+
+
             }
             catch (Exception ex)
             {
@@ -118,8 +147,11 @@ namespace PL.Vol
         {
             try
             {
-                if (CurrentVolunteer.CallInTreate == null) return;
-
+                if (CurrentVolunteer.CallInTreate == null)
+                {
+                    MessageBox.Show("This volunteer has no active call.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
                 int callIdToFinish = CurrentVolunteer.CallInTreate.CallId;
                 s_bl.Call.updateFinishTreat(CurrentVolunteer.Id, callIdToFinish);
                 MessageBox.Show($"Call {callIdToFinish} finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -140,7 +172,11 @@ namespace PL.Vol
         {
             try
             {
-                if (CurrentVolunteer.CallInTreate == null) return;
+                if (CurrentVolunteer.CallInTreate == null)
+                {
+                    MessageBox.Show("This volunteer has no active call.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
 
                 if (MessageBox.Show("Are you sure you want to cancel treatment for this call?", "Confirm Cancellation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
