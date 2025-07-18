@@ -31,7 +31,6 @@ internal class VolunteerImplementation : IVolunteer
         XMLTools.SaveListToXMLSerializer(volunteers, Config.s_volunteers_xml);
     }
 
-    }
 
     [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
@@ -82,3 +81,5 @@ internal class VolunteerImplementation : IVolunteer
         XMLTools.SaveListToXMLSerializer(volunteers, Config.s_volunteers_xml);
     }
 }
+
+    

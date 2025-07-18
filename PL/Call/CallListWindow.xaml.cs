@@ -20,6 +20,7 @@ namespace PL.Call
         /// מופע של השכבה העסקית לקבלת נתונים
         /// </summary>
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private volatile bool _callListObserverWorking = false;
         public int VolunteerId { get; set; }
 
         public BO.Volunteer? CurrentVolunteer
@@ -232,13 +233,31 @@ namespace PL.Call
                 MessageBox.Show("Failed to open new call window: " + ex.Message);
             }
         }
-
         /// <summary>
         /// מתעדכן כאשר יש שינוי ברשימת הקריאות דרך המנגנון Observer
         /// </summary>
         private void CallListObserver()
-            => queryCallList();
-
+        {
+            if (!_callListObserverWorking)
+            {
+                _callListObserverWorking = true;
+                _ = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        queryCallList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to refresh call list: " + ex.Message);
+                    }
+                    finally
+                    {
+                        _callListObserverWorking = false; // כבוי הדגל לאחר סיום העדכון ב-UI Thread
+                    }
+                });
+            }
+        }
         /// <summary>
         /// טען את ה־Observer בעת טעינת החלון
         /// </summary>
@@ -277,7 +296,7 @@ namespace PL.Call
         /// </summary>
         private void OnCallsChanged()
         {
-            Dispatcher.Invoke(queryCallList);
+            CallListObserver();       
         }
     }
 }

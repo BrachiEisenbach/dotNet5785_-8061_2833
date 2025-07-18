@@ -119,7 +119,7 @@ namespace Helpers
             lock (AdminManager.BlMutex) //stage 7
                 assignments = s_dal.Assignment.ReadAll().ToList();
 
-            var assignments = s_dal.Assignment.ReadAll()
+            assignments = s_dal.Assignment.ReadAll()
                 .Where(a => a.CallId == call.Id)
                 .OrderByDescending(a => a.EntryTimeForTreatment)
                 .ToList();

@@ -21,7 +21,7 @@ namespace PL.Call
     public partial class CallsHistoryWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        private volatile bool _closedCallListObserverWorking = false;
 
         public static readonly DependencyProperty SelectedCallTypeProperty =
         DependencyProperty.Register(
@@ -138,18 +138,30 @@ namespace PL.Call
             }
         }
 
-
+        /// <summary>
+        /// מתעדכן כאשר יש שינוי ברשימת הקריאות הסגורות דרך המנגנון Observer
+        /// </summary>
         private void closedCallListObserver()
         {
-            try
+            if (!_closedCallListObserverWorking)
             {
-                queryClosedCallList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to refresh closed calls: " + ex.Message);
+                _closedCallListObserverWorking = true;
+                _ = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        queryClosedCallList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to refresh closed calls: " + ex.Message);
+                    }
+                    finally
+                    {
+                        _closedCallListObserverWorking = false; // כבוי הדגל
+                    }
+                });
             }
         }
-
     }
 }

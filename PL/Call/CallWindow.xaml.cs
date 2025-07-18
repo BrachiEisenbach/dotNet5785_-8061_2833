@@ -26,6 +26,7 @@ namespace PL.Call
     public partial class CallWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private volatile bool _callObserverWorking = false;
 
         public static event Action? CallsChanged;
         public string ButtonText
@@ -97,31 +98,38 @@ namespace PL.Call
 
         private void CallObserver()
         {
-            try
+            if (!_callObserverWorking)
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                _callObserverWorking = true;
+                _ = Dispatcher.BeginInvoke(() =>
                 {
-                    if (CurrentCall != null)
+                    try
                     {
-                        int id = CurrentCall.Id;
-                        CurrentCall = null;
-                        try
+                        if (CurrentCall != null)
                         {
+                            int id = CurrentCall.Id;
+                            // ייתכן שאין צורך לאפס ל-null, פשוט לעדכן
+                            // CurrentCall = null; 
                             CurrentCall = s_bl.Call.GetCallDetails(id);
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Failed to refresh call details: " + ex.Message);
-                        }
+                    }
+                    catch (BlDoesNotExistException ex) // ספציפי יותר
+                    {
+                        // אם הקריאה נמחקה, נסגור את החלון
+                        MessageBox.Show("Call no longer exists: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to refresh call details: " + ex.Message);
+                    }
+                    finally
+                    {
+                        _callObserverWorking = false; // כבוי הדגל
                     }
                 });
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to observe call changes: " + ex.Message);
-            }
         }
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentCall == null)

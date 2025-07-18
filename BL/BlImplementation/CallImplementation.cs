@@ -46,7 +46,7 @@ namespace BlImplementation
 
                     return new BO.CallInList
                     {
-                        Id = lastAssignment != null ? lastAssignment.Id : (int?)null,
+                        Id = (int)(lastAssignment != null ? lastAssignment.Id : (int?)null),
                         CallId = lastAssignment != null ? lastAssignment.CallId : call.Id,
                         TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
                         OpenTime = call.OpenTime,
@@ -129,7 +129,7 @@ namespace BlImplementation
 
                 var riskRange = AdminManager.RiskRange;
 
-                return MappingProfile.ConvertToBO(callDO, callAssignments, riskRange);
+                return MappingProfile.ConvertToBO(callDO, riskRange);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {

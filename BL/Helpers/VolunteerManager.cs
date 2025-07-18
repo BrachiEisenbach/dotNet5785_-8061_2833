@@ -157,9 +157,9 @@ namespace Helpers
         {
             try
             {
-                DO.Assignment? assignment;
+               IEnumerable< DO.Assignment?> assignments;
                 lock (AdminManager.BlMutex) //stage 7
-                    assignment = s_dal.Assignment.ReadAll()
+                    assignments = s_dal.Assignment.ReadAll()
                     .Where(a => a.VolunteerId == volunteerId && !a.EndTimeOfTreatment.HasValue)
                     .OrderByDescending(a => a.EntryTimeForTreatment);
 
@@ -312,7 +312,7 @@ namespace Helpers
             try
             {
                 // שליחת בקשה וקבלת תשובה
-                HttpResponseMessage response = await Client.GetAsync(requestUrl);
+                HttpResponseMessage response = await client.GetAsync(requestUrl);
                 response.EnsureSuccessStatusCode();
 
                 string jsonResult = await response.Content.ReadAsStringAsync();
@@ -393,6 +393,7 @@ namespace Helpers
             Thread.CurrentThread.Name = "Volunteers Simulator";
 
             LinkedList<int> volunteersToUpdate = new();
+            LinkedList<int> callsToUpdate = new();
             List<DO.Volunteer> activeVolunteers;
 
             // שליפת כל המתנדבים הפעילים
@@ -402,6 +403,8 @@ namespace Helpers
             foreach (var volunteer in activeVolunteers)
             {
                 int volunteerId = volunteer.Id;
+                bool assigned = false;
+                int selectedCallId = 0;
 
                 // בדיקה אם יש למתנדב קריאה בטיפול
                 DO.Assignment? currentAssignment;
@@ -448,8 +451,15 @@ namespace Helpers
                                       TypeOfTreatment: null
                                      );
                             s_dal.Assignment.Create(newAssignment);
-                            volunteersToUpdate.AddLast(volunteerId);
+                            assigned = true;
+                            selectedCallId = selectedCall.Id;
+                            //volunteersToUpdate.AddLast(volunteerId);
                         }
+                    }
+                    if (assigned)
+                    {
+                        volunteersToUpdate.AddLast(volunteerId);
+                        callsToUpdate.AddLast(selectedCallId);
                     }
                 }
                 else
@@ -483,8 +493,14 @@ namespace Helpers
             }
 
             // שליחת עדכון לצופים
-            foreach (int id in volunteersToUpdate)
-                Observers.NotifyItemUpdated(id);
+            foreach (var callId in callsToUpdate)
+                Observers.NotifyItemUpdated(callId);
+
+            foreach (var volId in volunteersToUpdate)
+                Observers.NotifyItemUpdated(volId);
+
+            if (callsToUpdate.Count > 0 || volunteersToUpdate.Count > 0)
+                Observers.NotifyListUpdated();
         }
 
     }
