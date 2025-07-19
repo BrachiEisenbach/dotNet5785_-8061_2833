@@ -395,6 +395,22 @@ namespace PL
                 _callsWindow.Activate();
             }
         }
+
+        private void Handle_Silmulator(object sender, RoutedEventArgs e)
+        {
+            IsSimulatorRunning = !IsSimulatorRunning;
+            SimulatorButtonText = IsSimulatorRunning ? "Stop Simulator" : "Start Simulator";
+
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StartSimulator(Interval);
+            }
+            else
+            {
+                s_bl.Admin.StopSimulator();
+
+            }
+        }
     }
 }
 

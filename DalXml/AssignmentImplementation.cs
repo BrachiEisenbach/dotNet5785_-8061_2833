@@ -8,6 +8,7 @@ using System.Xml.Linq;
 
 internal class AssignmentImplementation : IAssignment
 {
+    [MethodImpl(MethodImplOptions.Synchronized)]
     static Assignment getAssignment(XElement a)
     {
         
