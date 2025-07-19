@@ -50,12 +50,12 @@ public static class MappingProfile
     }
 
     // פונקציה המקבלת  riskRange  כפרמטר ואת מערך ההקצאות לקריאה וממירה את יישות קריאה DO ל-BO 
-    public static BO.Call ConvertToBO(DO.Call call, List<CallAssignInList> callAssignments, TimeSpan riskRange)
+    public static BO.Call ConvertToBO(DO.Call call, List<CallAssignInList> callAssignments)
     {
         var boCall = _mapper.Map<BO.Call>(call); // המפר את יתר השדות
 
         // חישוב הסטטוס בנפרד
-        boCall.Status = CallManager.CalculateStatus(call, riskRange); // חישוב סטטוס מחוץ למיפוי
+        boCall.Status = CallManager.CalculateStatus(call); // חישוב סטטוס מחוץ למיפוי
         boCall.listOfCallAssign= callAssignments;
         return boCall;
     }

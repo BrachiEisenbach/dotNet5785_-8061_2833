@@ -9,6 +9,7 @@
         Background="#F7FFF7"
         FontFamily="Segoe UI"
         Loaded="Window_Loaded" Closed="Window_Closed"
+
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Grid Margin="20">

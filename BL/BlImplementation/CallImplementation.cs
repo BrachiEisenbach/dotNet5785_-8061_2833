@@ -42,7 +42,7 @@ namespace BlImplementation
                 {
                     var callAssignments = assignments.Where(a => a.CallId == call.Id).ToList();
                     var lastAssignment = callAssignments.OrderByDescending(a => a.EntryTimeForTreatment).FirstOrDefault();
-                    var status = CallManager.CalculateStatus(call, riskRange);
+                    var status = CallManager.CalculateStatus(call);
 
                     return new BO.CallInList
                     {
@@ -114,7 +114,7 @@ namespace BlImplementation
                 {
                     throw new BlDoesNotExistException($"Call with ID {callId} not found .");
                 }
-                IEnumerable<BO.CallAssignInList> callAssignments;
+                List<BO.CallAssignInList> callAssignments;
                 lock (AdminManager.BlMutex) //stage 7
                     callAssignments = _dal.Assignment.ReadAll()
                               .Where(assign => assign.CallId == callId)
@@ -127,9 +127,8 @@ namespace BlImplementation
                                   TypeOfTreatment = (BO.FINISHTYPE?)assign.TypeOfTreatment
                               }).ToList();
 
-                var riskRange = AdminManager.RiskRange;
 
-                return MappingProfile.ConvertToBO(callDO, riskRange);
+                return MappingProfile.ConvertToBO(callDO, callAssignments);
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
@@ -493,7 +492,7 @@ namespace BlImplementation
                     openCalls = _dal.Call.ReadAll()
                     .Where(call =>
                     {
-                        var status = CallManager.CalculateStatus(call, riskRange);
+                        var status = CallManager.CalculateStatus(call);
                         return status == BO.STATUS.Open || status == BO.STATUS.OpenDangerZone;
                     })
                     .Where(call => !tOfCall.HasValue || CallManager.ConvertToBOType(call.TypeOfCall) == tOfCall.Value);
