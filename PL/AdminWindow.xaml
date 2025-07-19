@@ -50,7 +50,7 @@
                         </WrapPanel>
                     </StackPanel>
 
-                    <!-- Risk Range -->
+                    <!-- Risk Range & Simulator -->
                     <StackPanel Grid.Column="1" Margin="10">
                         <TextBlock Text="Set Risk Range:" FontWeight="SemiBold" Foreground="#388E3C"/>
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
@@ -58,6 +58,16 @@
                             <TextBox Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}" Width="80" Margin="5,0"/>
                             <Button Content="Update" Click="btnUpdate_RiskRange" Width="100" Background="#66BB6A" Foreground="White" Margin="10,0"/>
                         </StackPanel>
+
+                        <!-- סימולטור מתחת ל-Risk Range -->
+                        <Border BorderBrush="LightGreen" BorderThickness="2" Background="LightGray" Margin="0,20,0,0" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="SIMULATOR" FontWeight="Bold" Foreground="Green" FontSize="14" TextAlignment="Center"/>
+                                <Label Content="Clock Interval (in minutes):" Margin="0,10,0,0"/>
+                                <TextBox Text="{Binding Interval}" Width="150" Margin="0,5,0,5"/>
+                                <Button Content="{Binding SimulatorButtonText}" Click="Handle_Silmulator" Width="150" Height="20"  Background="#A5D6A7"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Grid>
 
@@ -65,28 +75,26 @@
                 <Grid Margin="10,235,10,0" VerticalAlignment="Top" Height="118" Grid.RowSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <!-- עמודה שמאלית -->
                         <ColumnDefinition Width="Auto" />
-                        <!-- עמודה ימנית -->
                     </Grid.ColumnDefinitions>
 
                     <!-- שלושת הכפתורים בצד שמאל -->
                     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
                         <Button Click="btnInTreatmentCalls_Click" Height="30" Width="200" Margin="5" Background="#A5D6A7">
                             <TextBlock HorizontalAlignment="Center">
-                <Run Text="InTreatment Calls ("/><Run Text="{Binding InTreatmentCount}"/><Run Text=")"/>
+                                <Run Text="InTreatment Calls ("/><Run Text="{Binding InTreatmentCount}"/><Run Text=")"/>
                             </TextBlock>
                         </Button>
 
                         <Button Click="btnOpenCalls_Click" Height="30" Width="200" Margin="5" Background="#A5D6A7">
                             <TextBlock HorizontalAlignment="Center">
-                <Run Text="Open Calls ("/><Run Text="{Binding OpenCount}"/><Run Text=")"/>
+                                <Run Text="Open Calls ("/><Run Text="{Binding OpenCount}"/><Run Text=")"/>
                             </TextBlock>
                         </Button>
 
                         <Button Click="btnExpired_Click" Height="30" Width="200" Margin="5" Background="#A5D6A7">
                             <TextBlock HorizontalAlignment="Center">
-                <Run Text="Expired Calls ("/><Run Text="{Binding ExpiredCount}"/><Run Text=")"/>
+                                <Run Text="Expired Calls ("/><Run Text="{Binding ExpiredCount}"/><Run Text=")"/>
                             </TextBlock>
                         </Button>
                     </StackPanel>
@@ -104,7 +112,6 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-
             </Grid>
         </Border>
     </Grid>
