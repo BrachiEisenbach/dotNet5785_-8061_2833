@@ -170,7 +170,7 @@ namespace Helpers
                         continue;
 
                     var riskRange = s_dal.Config.RiskRange;
-                    var status = CallManager.CalculateStatus(call, riskRange);
+                    var status = CallManager.CalculateStatus(call);
 
                     // בודק שהסטטוס הוא בדיוק InTreatment (או סטטוס שרוצים)
                     if (status == STATUS.InTreatment)  // נניח שזה enum עם ערכים

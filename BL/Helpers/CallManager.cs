@@ -59,7 +59,7 @@ namespace Helpers
 
             foreach (var call in allCalls)
             {
-                var currentStatus = CalculateStatus(call, riskRange);
+                var currentStatus = CalculateStatus(call);
 
                 if (call.MaxTimeToFinish.HasValue && call.MaxTimeToFinish.Value < now &&
                     (currentStatus == BO.STATUS.Open || currentStatus == BO.STATUS.OpenDangerZone))
@@ -112,8 +112,10 @@ namespace Helpers
 
             Observers.NotifyListUpdated();
         }
-        internal static BO.STATUS CalculateStatus(DO.Call call, TimeSpan riskRange)
+        internal static BO.STATUS CalculateStatus(DO.Call call)
         {
+            TimeSpan riskRange = AdminManager.RiskRange;
+
             DateTime currentTime = DateTime.Now;
             IEnumerable<DO.Assignment> assignments;
             lock (AdminManager.BlMutex) //stage 7
