@@ -26,10 +26,16 @@ namespace BlImplementation
         {
             try
             {
-                var calls = _dal.Call.ReadAll().ToList();
-                var assignments = _dal.Assignment.ReadAll().ToList();
-                var volunteers = _dal.Volunteer.ReadAll().ToList();
-                var riskRange = _dal.Config.RiskRange;
+                IEnumerable<DO.Call> calls;
+                IEnumerable<DO.Assignment> assignments;
+                IEnumerable<DO.Volunteer> volunteers;
+                lock (AdminManager.BlMutex) { 
+
+                    calls = _dal.Call.ReadAll().ToList();
+                assignments = _dal.Assignment.ReadAll().ToList();
+                volunteers = _dal.Volunteer.ReadAll().ToList();
+                }
+                var riskRange = AdminManager.RiskRange;
 
                 // קריאה אחרונה לפי CallId
                 var latestCalls = calls
