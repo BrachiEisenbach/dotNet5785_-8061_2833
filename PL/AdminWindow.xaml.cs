@@ -168,7 +168,6 @@ namespace PL
 
 
 
-
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.ClockPromotion(BO.TIMEUNIT.MINUTE);
