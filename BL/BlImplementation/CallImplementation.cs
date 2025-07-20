@@ -29,11 +29,12 @@ namespace BlImplementation
                 IEnumerable<DO.Call> calls;
                 IEnumerable<DO.Assignment> assignments;
                 IEnumerable<DO.Volunteer> volunteers;
-                lock (AdminManager.BlMutex) { 
+                lock (AdminManager.BlMutex)
+                {
 
                     calls = _dal.Call.ReadAll().ToList();
-                assignments = _dal.Assignment.ReadAll().ToList();
-                volunteers = _dal.Volunteer.ReadAll().ToList();
+                    assignments = _dal.Assignment.ReadAll().ToList();
+                    volunteers = _dal.Volunteer.ReadAll().ToList();
                 }
                 var riskRange = AdminManager.RiskRange;
 
@@ -52,25 +53,25 @@ namespace BlImplementation
 
                     return new BO.CallInList
                     {
-                  
-                      Id = lastAssignment?.Id,
-                      CallId = lastAssignment?.CallId ?? call.Id,
-                      TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
-                      OpenTime = call.OpenTime,
-                      TimeLeft = (status != BO.STATUS.Closed && call.MaxTimeToFinish is DateTime max)
+
+                        Id = lastAssignment?.Id,
+                        CallId = lastAssignment?.CallId ?? call.Id,
+                        TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                        OpenTime = call.OpenTime,
+                        TimeLeft = (status != BO.STATUS.Closed && call.MaxTimeToFinish is DateTime max)
         ? (max - DateTime.Now > TimeSpan.Zero ? max - DateTime.Now : TimeSpan.Zero)
         : (TimeSpan?)null,
-                      NameOfLastVolunteer = lastAssignment != null
+                        NameOfLastVolunteer = lastAssignment != null
         ? volunteers.FirstOrDefault(v => v.Id == lastAssignment.VolunteerId)?.FullName
         : null,
-                      TimeTaken = (lastAssignment?.EndTimeOfTreatment.HasValue == true)
+                        TimeTaken = (lastAssignment?.EndTimeOfTreatment.HasValue == true)
         ? lastAssignment.EndTimeOfTreatment.Value - call.OpenTime
         : null,
-                      Status = status,
-                      SumOfAssigned = callAssignments.Count
-                  };
+                        Status = status,
+                        SumOfAssigned = callAssignments.Count
+                    };
 
-                
+
                 }).ToList();
 
                 // סינון אם נדרש
@@ -613,45 +614,68 @@ namespace BlImplementation
 
         public void updateFinishTreat(int volId, int callId)
         {
-            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+            AdminManager.ThrowOnSimulatorIsRunning(); // שלב 7
+
             try
             {
-                // שלב 1: שליפת ההקצאה המתאימה משכבת הנתונים
+                // שלב 1: שליפת ההקצאה המתאימה
                 DO.Assignment? assignment;
-                lock (AdminManager.BlMutex) //stage 7
-                    assignment = _dal.Assignment.Read(callId)
-                    ?? throw new BO.BlDoesNotExistException("No assignment found with the given ID.");
+                lock (AdminManager.BlMutex)
+                {
+                    assignment = _dal.Assignment
+                        .ReadAll()
+                        .FirstOrDefault(a => a.CallId == callId && a.VolunteerId == volId)
+                        ?? throw new BO.BlDoesNotExistException("No assignment found for this volunteer and call.");
+                }
 
-                // שלב 2: בדיקה שהמתנדב אכן מוקצה לקריאה זו
+                // שלב 2: וידוא שהמתנדב מתאים
                 if (assignment.VolunteerId != volId)
                     throw new BO.BlUnauthorizedException("You do not have permission to end processing on this call.");
 
-                // שלב 3: בדיקה שהקריאה עדיין פתוחה (לא טופלה, לא בוטלה, לא פג תוקפה)
+                // שלב 3: בדיקה אם כבר הסתיים
                 if (assignment.EndTimeOfTreatment != null)
                     throw new BO.BlInvalidOperationException("Cannot finish handling a call that has already been closed.");
 
-                // שלב 4: עדכון הנתונים
+                // שלב 4: שליפת הקריאה הרלוונטית
+                var call = _dal.Call.Read(callId)
+                    ?? throw new BO.BlDoesNotExistException("Call not found for status calculation.");
+
+                var now = AdminManager.Now;
+
+                // שלב 5: קביעת סוג הטיפול לפי הזמן
+                var typeOfTreatment = now <= call.MaxTimeToFinish
+                    ? TYPEOFTREATMENT.TREATE
+                    : TYPEOFTREATMENT.CANCELLATIONHASEXPIRED;
+
+                // שלב 6: עדכון ההקצאה
                 var updatedAssignment = assignment with
                 {
-                    EndTimeOfTreatment = AdminManager.Now,
-                    TypeOfTreatment = TYPEOFTREATMENT.TREATE
+                    EndTimeOfTreatment = now,
+                    TypeOfTreatment = typeOfTreatment
                 };
-                // שלב 5: ניסיון עדכון בשכבת הנתונים
-                lock (AdminManager.BlMutex) //stage 7
-                    _dal.Assignment.Update(assignment);
+
+                lock (AdminManager.BlMutex)
+                {
+                    _dal.Assignment.Update(updatedAssignment);
+                }
+
+                // שלב 7: חישוב סטטוס חדש לפי ההקצאה החדשה
+                //var newStatus = typeOfTreatment == TYPEOFTREATMENT.TREATE
+                //    ? BO.STATUS.Closed
+                //    : BO.STATUS.Expired;
+
+                // שלב 8: ניתן להשתמש ב-newStatus בתצוגה/החזרה, אבל אין עדכון בשכבת הנתונים כי הסטטוס הוא רק ב-BO
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
-                // תרגום חריגת DAL לחריגה של BL
                 throw new BlDoesNotExistException("One of the requested items does not exist.", dalDoesNotExistException);
             }
-
             catch (Exception ex)
             {
-                // אם שכבת הנתונים זרקה חריגה, נעטוף ונשלח חריגה ברמת ה-BO
                 throw new BlException("Error when finishing treatment: " + ex.Message, ex);
             }
         }
+
 
         public void AddObserver(Action listObserver)
         {
