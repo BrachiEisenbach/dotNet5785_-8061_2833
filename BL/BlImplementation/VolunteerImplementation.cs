@@ -1,9 +1,10 @@
 ﻿using BlApi;
-using System.Collections;
-using DalApi;
 using BO;
-using Helpers;
+using DalApi;
 using DO;
+using Helpers;
+using System.Collections;
+using System.Diagnostics;
 
 namespace BlImplementation
 {
@@ -142,7 +143,22 @@ namespace BlImplementation
             {
                 throw new BlException("Error while updating volunteer", ex);
             }
-            _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+            try
+            {
+                _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+                if (!boVolunteer.Latitude.HasValue || !boVolunteer.Longitude.HasValue)
+                    throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+                if (boVolunteer.Latitude is < -90 or > 90)
+                    throw new BlArgumentException("Latitude must be between -90 and 90.");
+                if (boVolunteer.Longitude is < -180 or > 180)
+                    throw new BlArgumentException("Longitude must be between -180 and 180.");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating coordinates for call {boVolunteer.Id}: {ex.Message}");
+            }
 
         }
 
@@ -211,11 +227,6 @@ namespace BlImplementation
             boVolunteer.Latitude = null;
             boVolunteer.Longitude = null;
 
-            if (boVolunteer.Latitude is < -90 or > 90)
-                throw new BlArgumentException("Latitude must be between -90 and 90.");
-            if (boVolunteer.Longitude is < -180 or > 180)
-                throw new BlArgumentException("Longitude must be between -180 and 180.");
-
             DO.Volunteer doVolunteer = new DO.Volunteer(
                 boVolunteer.Id,
                 boVolunteer.FullName,
@@ -245,9 +256,25 @@ namespace BlImplementation
             {
                 throw new BlException("Error while adding volunteer", ex);
             }
-            _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+            try
+            {
+                _ = VolunteerManager.UpdateVolunteerCoordinatesAsync(boVolunteer);
+                if (!boVolunteer.Latitude.HasValue || !boVolunteer.Longitude.HasValue)
+                    throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+                if (boVolunteer.Latitude is < -90 or > 90)
+                    throw new BlArgumentException("Latitude must be between -90 and 90.");
+                if (boVolunteer.Longitude is < -180 or > 180)
+                    throw new BlArgumentException("Longitude must be between -180 and 180.");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating coordinates for call {boVolunteer.Id}: {ex.Message}");
+            }
 
         }
+
 
         /// <summary>
         /// Returns the details of a volunteer by their ID.
