@@ -57,7 +57,6 @@ namespace PL
             set { SetValue(SimulatorButtonTextProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SimulatorButtonText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SimulatorButtonTextProperty =
             DependencyProperty.Register("SimulatorButtonText", typeof(string), typeof(AdminWindow));
 
@@ -147,16 +146,24 @@ namespace PL
             DependencyProperty.Register("ExpiredCount", typeof(int), typeof(AdminWindow));
 
         private void clockObserver()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                SetCurrentValue(ClockProperty, s_bl.Admin.GetClock());
-            });
-        }
 
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    Clock = s_bl.Admin.GetClock();
+                });
+
+        }
         private void configObserver()
         {
-            RiskRange = s_bl.Admin.GetRiskRange();
+
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    RiskRange = s_bl.Admin.GetRiskRange();
+                });
+
         }
 
 
@@ -188,6 +195,8 @@ namespace PL
             InitializeComponent();
             this.DataContext = this;
             id = AdminId;
+            SimulatorButtonText = "Start Simulator";
+
             try
             {
                 this.CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(AdminId);
@@ -202,7 +211,6 @@ namespace PL
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
-            SimulatorButtonText = "Start Simulator";
 
             UpdateCallStatusCounts();
         }
@@ -210,12 +218,10 @@ namespace PL
         {
             try
             {
-                s_bl.Admin.AddClockObserver(clockObserver);
-                s_bl.Admin.AddConfigObserver(configObserver);
                 Clock = s_bl.Admin.GetClock();
                 RiskRange = s_bl.Admin.GetRiskRange();
-                CurrentTime = s_bl.Admin.GetClock();
-                UpdateCallStatusCounts();
+                s_bl.Admin.AddClockObserver(clockObserver);
+                s_bl.Admin.AddConfigObserver(configObserver);
             }
             catch (Exception ex)
             {
@@ -229,6 +235,7 @@ namespace PL
             {
                 s_bl.Admin.RemoveClockObserver(clockObserver);
                 s_bl.Admin.RemoveConfigObserver(configObserver);
+
             }
             catch (Exception ex)
             {
@@ -353,7 +360,7 @@ namespace PL
             // סגירת כל החלונות הפתוחים חוץ מהחלון הראשי
             foreach (Window window in Application.Current.Windows)
             {
-                if (window != this) // 'this' הוא החלון הראשי
+                if (window != this) 
                 {
                     window.Close();
                 }
