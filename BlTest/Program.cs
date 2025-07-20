@@ -768,7 +768,7 @@ namespace BlTest
                             Console.Write("Enter the call ID: ");
                             if (int.TryParse(Console.ReadLine(), out int callId2))
                             {
-                                s_bl.Call.chooseCall(volId4, callId2);
+                                s_bl.Call.ChooseCall(volId4, callId2);
                             }
                             else
                             {

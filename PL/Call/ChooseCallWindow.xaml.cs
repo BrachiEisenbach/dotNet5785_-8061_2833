@@ -119,7 +119,7 @@ namespace PL.Call
                     var result = MessageBox.Show("Are you sure you want to choose this call?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.chooseCall(CurrentVolunteer.Id, callId);
+                        s_bl.Call.ChooseCall(CurrentVolunteer.Id, callId);
                         //ChooseCallObserver(); // רענון הרשימה כך שהקריאה שנבחרה תיעלם
                         MessageBox.Show("Call chosen successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);                        
                         this.Close();

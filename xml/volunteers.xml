@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Volunteer>
-    <Id>305121685</Id>
+    <Id>260595478</Id>
     <FullName>John Doe</FullName>
     <Phone>052-1234567</Phone>
     <Email>john.doe@example.com</Email>
@@ -10,12 +10,12 @@
     <Latitude>32.0688</Latitude>
     <Longitude>34.7818</Longitude>
     <Role>ADMIN</Role>
-    <Active>false</Active>
-    <MaxDistance>3574</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>12.99961178214764</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>371118394</Id>
+    <Id>363360326</Id>
     <FullName>Jane Smith</FullName>
     <Phone>053-2345678</Phone>
     <Email>jane.smith@example.com</Email>
@@ -25,11 +25,11 @@
     <Longitude>34.773</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>9424</MaxDistance>
+    <MaxDistance>23.908608364087364</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>360883250</Id>
+    <Id>242348409</Id>
     <FullName>Michael Johnson</FullName>
     <Phone>054-3456789</Phone>
     <Email>michael.johnson@example.com</Email>
@@ -39,11 +39,11 @@
     <Longitude>34.7715</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>844</MaxDistance>
+    <MaxDistance>36.873932171625576</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>343176789</Id>
+    <Id>347136959</Id>
     <FullName>Emily Davis</FullName>
     <Phone>055-4567890</Phone>
     <Email>emily.davis@example.com</Email>
@@ -52,12 +52,12 @@
     <Latitude>32.0853</Latitude>
     <Longitude>34.7758</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>2598</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>38.470195618616046</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>267151145</Id>
+    <Id>383310487</Id>
     <FullName>Chris Brown</FullName>
     <Phone>056-5678901</Phone>
     <Email>chris.brown@example.com</Email>
@@ -66,40 +66,26 @@
     <Latitude>32.0733</Latitude>
     <Longitude>34.7695</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>1017</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>29.677037829934605</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>232829306</Id>
+    <Id>342392215</Id>
     <FullName>Jessica Taylor</FullName>
     <Phone>057-6789012</Phone>
     <Email>jessica.taylor@example.com</Email>
     <Password>1234abcd</Password>
-    <FullAddress>Shaul HaMelech Blvd 37, Tel Aviv</FullAddress>
-    <Latitude>32.0729</Latitude>
-    <Longitude>34.7815</Longitude>
+    <FullAddress>Shaul Hamelekh, Tel Aviv, Israel</FullAddress>
+    <Latitude>32.0551</Latitude>
+    <Longitude>34.788</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>6387</MaxDistance>
+    <MaxDistance>38.75595783819182</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>300383233</Id>
-    <FullName>David Wilson</FullName>
-    <Phone>058-7890123</Phone>
-    <Email>david.wilson@example.com</Email>
-    <Password>iloveyou99</Password>
-    <FullAddress>Hayarkon St, Tel Aviv-Yafo, Israel</FullAddress>
-    <Latitude>32.085</Latitude>
-    <Longitude>34.7712</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>8054</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>258425125</Id>
+    <Id>314904691</Id>
     <FullName>Sophia Moore</FullName>
     <Phone>059-8901234</Phone>
     <Email>sophia.moore@example.com</Email>
@@ -108,26 +94,26 @@
     <Latitude>31.7683</Latitude>
     <Longitude>35.2137</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>7950</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>17.714938658758207</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>287119813</Id>
+    <Id>342035903</Id>
     <FullName>Daniel Anderson</FullName>
     <Phone>050-9876543</Phone>
     <Email>daniel.anderson@example.com</Email>
     <Password>secretpass</Password>
-    <FullAddress>King David Street 23, Jerusalem</FullAddress>
-    <Latitude>31.7717</Latitude>
-    <Longitude>35.213</Longitude>
+    <FullAddress>King David St, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7774</Latitude>
+    <Longitude>35.2217</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>2001</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>38.07917396578425</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>238729385</Id>
+    <Id>343100357</Id>
     <FullName>Olivia Lee</FullName>
     <Phone>051-8765432</Phone>
     <Email>olivia.lee@example.com</Email>
@@ -136,12 +122,12 @@
     <Latitude>31.7554</Latitude>
     <Longitude>35.2281</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>9998</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>14.96732476494023</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>316022223</Id>
+    <Id>255189877</Id>
     <FullName>Matthew Harris</FullName>
     <Phone>052-7654321</Phone>
     <Email>matthew.harris@example.com</Email>
@@ -150,26 +136,26 @@
     <Latitude>32.1913</Latitude>
     <Longitude>34.8866</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>10080</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>39.40535534395262</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>244113281</Id>
+    <Id>391076012</Id>
     <FullName>Lily Clark</FullName>
     <Phone>053-6543210</Phone>
     <Email>lily.clark@example.com</Email>
     <Password>testpass1</Password>
-    <FullAddress>HaChoref 2, Jerusalem</FullAddress>
-    <Latitude>31.7817</Latitude>
-    <Longitude>35.215</Longitude>
+    <FullAddress>Ezer Weizman St, Hod Hasharon, Israel</FullAddress>
+    <Latitude>32.1654</Latitude>
+    <Longitude>34.9032</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>11211</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>17.2144106184966</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>222962498</Id>
+    <Id>338818058</Id>
     <FullName>James Walker</FullName>
     <Phone>054-5432109</Phone>
     <Email>james.walker@example.com</Email>
@@ -179,11 +165,11 @@
     <Longitude>34.9896</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>10720</MaxDistance>
+    <MaxDistance>25.65818001467008</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>310129382</Id>
+    <Id>237551599</Id>
     <FullName>Chloe Hall</FullName>
     <Phone>055-4321098</Phone>
     <Email>chloe.hall@example.com</Email>
@@ -193,11 +179,11 @@
     <Longitude>34.9858</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>6815</MaxDistance>
+    <MaxDistance>12.560453021171881</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>373415031</Id>
+    <Id>280288989</Id>
     <FullName>Benjamin Young</FullName>
     <Phone>056-3210987</Phone>
     <Email>benjamin.young@example.com</Email>
@@ -206,26 +192,26 @@
     <Latitude>32.8054</Latitude>
     <Longitude>34.9956</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>4287</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>22.21912550404138</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>243011335</Id>
+    <Id>375248718</Id>
     <FullName>Mia Scott</FullName>
     <Phone>057-2109876</Phone>
     <Email>mia.scott@example.com</Email>
     <Password>12345qwerty</Password>
-    <FullAddress>HaKochavim 25, Haifa</FullAddress>
-    <Latitude>32.79</Latitude>
-    <Longitude>34.995</Longitude>
+    <FullAddress>Yerushalayim St, Haifa, Israel</FullAddress>
+    <Latitude>32.809</Latitude>
+    <Longitude>35.0073</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>3500</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>37.04850354351359</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>373389473</Id>
+    <Id>330917915</Id>
     <FullName>Ethan Adams</FullName>
     <Phone>058-1098765</Phone>
     <Email>ethan.adams@example.com</Email>
@@ -234,12 +220,12 @@
     <Latitude>32.8223</Latitude>
     <Longitude>34.9939</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>946</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>16.17488195728769</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>242840277</Id>
+    <Id>358753884</Id>
     <FullName>Isabella King</FullName>
     <Phone>059-0987654</Phone>
     <Email>isabella.king@example.com</Email>
@@ -248,12 +234,12 @@
     <Latitude>32.337</Latitude>
     <Longitude>34.867</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>10126</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>11.591561937768082</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>392887778</Id>
+    <Id>292820953</Id>
     <FullName>Aiden Martinez</FullName>
     <Phone>050-9876543</Phone>
     <Email>aiden.martinez@example.com</Email>
@@ -263,11 +249,11 @@
     <Longitude>34.8116</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>5592</MaxDistance>
+    <MaxDistance>37.92520806919748</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>270350993</Id>
+    <Id>253715050</Id>
     <FullName>Charlotte Lee</FullName>
     <Phone>051-8765432</Phone>
     <Email>charlotte.lee@example.com</Email>
@@ -276,12 +262,12 @@
     <Latitude>32.0224</Latitude>
     <Longitude>34.8125</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>4027</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>15.814665792297783</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>358112687</Id>
+    <Id>313616386</Id>
     <FullName>Lucas Perez</FullName>
     <Phone>052-7654321</Phone>
     <Email>lucas.perez@example.com</Email>
@@ -290,12 +276,12 @@
     <Latitude>32.033</Latitude>
     <Longitude>34.6435</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>11026</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>27.47457918542715</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>236982750</Id>
+    <Id>225100990</Id>
     <FullName>Amelia Rodriguez</FullName>
     <Phone>053-6543210</Phone>
     <Email>amelia.rodriguez@example.com</Email>
@@ -305,11 +291,11 @@
     <Longitude>34.6487</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>9665</MaxDistance>
+    <MaxDistance>13.585683637262807</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>285510073</Id>
+    <Id>203783974</Id>
     <FullName>Henry Green</FullName>
     <Phone>054-5432109</Phone>
     <Email>henry.green@example.com</Email>
@@ -318,40 +304,26 @@
     <Latitude>31.801</Latitude>
     <Longitude>34.6491</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>1079</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>33.812182571268295</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>209170971</Id>
-    <FullName>Aria Hall</FullName>
-    <Phone>055-4321098</Phone>
-    <Email>aria.hall@example.com</Email>
-    <Password>qwertz123</Password>
-    <FullAddress>Moshe Dayan Avenue, Ashdod, Israel</FullAddress>
-    <Latitude>31.803</Latitude>
-    <Longitude>34.5717</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>6825</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>271888559</Id>
+    <Id>270766582</Id>
     <FullName>Samuel Harris</FullName>
     <Phone>056-3210987</Phone>
     <Email>samuel.harris@example.com</Email>
     <Password>abcpassword</Password>
-    <FullAddress>Ben Gurion 11, Ashkelon</FullAddress>
-    <Latitude>31.669</Latitude>
-    <Longitude>34.574</Longitude>
+    <FullAddress>David Ben Gurion Avenue, Ashkelon, Israel</FullAddress>
+    <Latitude>31.6672</Latitude>
+    <Longitude>34.5732</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>4796</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>15.853511215433766</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>256990217</Id>
+    <Id>297502557</Id>
     <FullName>Ella Carter</FullName>
     <Phone>057-2109876</Phone>
     <Email>ella.carter@example.com</Email>
@@ -360,12 +332,12 @@
     <Latitude>31.6685</Latitude>
     <Longitude>34.9162</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>8633</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>23.870275635499166</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>351296550</Id>
+    <Id>385761913</Id>
     <FullName>David Walker</FullName>
     <Phone>058-1098765</Phone>
     <Email>david.walker@example.com</Email>
@@ -375,11 +347,11 @@
     <Longitude>34.922</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>3121</MaxDistance>
+    <MaxDistance>23.135390186486937</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>258698130</Id>
+    <Id>371536192</Id>
     <FullName>Avery Thompson</FullName>
     <Phone>059-0987654</Phone>
     <Email>avery.thompson@example.com</Email>
@@ -389,11 +361,11 @@
     <Longitude>34.8944</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>9041</MaxDistance>
+    <MaxDistance>24.336093394127424</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>206767784</Id>
+    <Id>324290239</Id>
     <FullName>Oliver Collins</FullName>
     <Phone>050-9876543</Phone>
     <Email>oliver.collins@example.com</Email>
@@ -403,11 +375,11 @@
     <Longitude>34.8961</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>5244</MaxDistance>
+    <MaxDistance>20.859802897869358</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>355746884</Id>
+    <Id>388598945</Id>
     <FullName>Sophie White</FullName>
     <Phone>051-8765432</Phone>
     <Email>sophie.white@example.com</Email>
@@ -417,25 +389,11 @@
     <Longitude>34.87</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>117</MaxDistance>
+    <MaxDistance>28.802184107012593</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>223607374</Id>
-    <FullName>William Wright</FullName>
-    <Phone>052-7654321</Phone>
-    <Email>william.wright@example.com</Email>
-    <Password>adminsecure</Password>
-    <FullAddress>David Remez St, Or Yehuda, Israel</FullAddress>
-    <Latitude>31.9615</Latitude>
-    <Longitude>34.839</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>6127</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>279642677</Id>
+    <Id>205501465</Id>
     <FullName>Megan Nelson</FullName>
     <Phone>053-6543210</Phone>
     <Email>megan.nelson@example.com</Email>
@@ -444,12 +402,12 @@
     <Latitude>32.185</Latitude>
     <Longitude>34.8462</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>6303</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>21.640117092719567</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>237915258</Id>
+    <Id>212569179</Id>
     <FullName>Jack Brown</FullName>
     <Phone>054-5432109</Phone>
     <Email>jack.brown@example.com</Email>
@@ -459,11 +417,11 @@
     <Longitude>34.8408</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>7749</MaxDistance>
+    <MaxDistance>39.59044956244492</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>331247688</Id>
+    <Id>273127121</Id>
     <FullName>Madison Roberts</FullName>
     <Phone>055-4321098</Phone>
     <Email>madison.roberts@example.com</Email>
@@ -473,11 +431,11 @@
     <Longitude>34.8522</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>10376</MaxDistance>
+    <MaxDistance>37.81661740622014</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>234754476</Id>
+    <Id>226388079</Id>
     <FullName>Jacob Carter</FullName>
     <Phone>056-3210987</Phone>
     <Email>jacob.carter@example.com</Email>
@@ -487,11 +445,11 @@
     <Longitude>34.8555</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>1900</MaxDistance>
+    <MaxDistance>33.01054856000539</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>362798376</Id>
+    <Id>359539787</Id>
     <FullName>Sophia Brooks</FullName>
     <Phone>057-2109876</Phone>
     <Email>sophia.brooks@example.com</Email>
@@ -501,11 +459,11 @@
     <Longitude>34.8689</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>6816</MaxDistance>
+    <MaxDistance>23.671397736977642</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>390518496</Id>
+    <Id>307176174</Id>
     <FullName>Jackson Scott</FullName>
     <Phone>058-1098765</Phone>
     <Email>jackson.scott@example.com</Email>
@@ -515,123 +473,39 @@
     <Longitude>34.8803</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>6538</MaxDistance>
+    <MaxDistance>18.29024336808802</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>325477352</Id>
+    <Id>279906659</Id>
     <FullName>Grace Turner</FullName>
     <Phone>059-0987654</Phone>
     <Email>grace.turner@example.com</Email>
     <Password>welcome@123</Password>
-    <FullAddress>Katamon 14, Jerusalem</FullAddress>
-    <Latitude>32.09</Latitude>
-    <Longitude>34.784</Longitude>
+    <FullAddress>Hamalbim, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7712</Latitude>
+    <Longitude>34.9445</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>5602</MaxDistance>
+    <MaxDistance>30.86613202815989</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>238502035</Id>
+    <Id>221668598</Id>
     <FullName>Mason Miller</FullName>
     <Phone>050-9876543</Phone>
     <Email>mason.miller@example.com</Email>
     <Password>1234password</Password>
-    <FullAddress>Em Hamoshavot Rd 99, Petah Tikva</FullAddress>
-    <Latitude>32.095</Latitude>
-    <Longitude>34.79</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>7738</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>321246554</Id>
-    <FullName>Liam King</FullName>
-    <Phone>051-8765432</Phone>
-    <Email>liam.king@example.com</Email>
-    <Password>secret1234</Password>
-    <FullAddress>Weizmann St, Kfar Saba, Israel</FullAddress>
-    <Latitude>32.1665</Latitude>
-    <Longitude>34.842</Longitude>
+    <FullAddress>Em Hamoshavot Rd, Petah Tikva, Israel</FullAddress>
+    <Latitude>32.0955</Latitude>
+    <Longitude>34.8324</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>9809</MaxDistance>
+    <MaxDistance>28.29651339579622</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>363955057</Id>
-    <FullName>Charlotte Walker</FullName>
-    <Phone>052-7654321</Phone>
-    <Email>charlotte.walker@example.com</Email>
-    <Password>tbot2023</Password>
-    <FullAddress>Ha-Palmakh St, Ra'Anana, Israel</FullAddress>
-    <Latitude>32.1915</Latitude>
-    <Longitude>34.8402</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>3697</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>211819753</Id>
-    <FullName>Daniel Evans</FullName>
-    <Phone>053-6543210</Phone>
-    <Email>daniel.evans@example.com</Email>
-    <Password>securechatgpt</Password>
-    <FullAddress>Haenergia St, Be'Er Sheva, Israel</FullAddress>
-    <Latitude>31.252</Latitude>
-    <Longitude>34.8425</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>38.88457315942968</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>361224479</Id>
-    <FullName>James White</FullName>
-    <Phone>059-0987654</Phone>
-    <Email>james.white@example.com</Email>
-    <Password>ilovechatgpt123</Password>
-    <FullAddress>Tel Hai St, Qiryat Shemona, Israel</FullAddress>
-    <Latitude>33.2851</Latitude>
-    <Longitude>35.5779</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>29.100637251600315</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>238432628</Id>
-    <FullName>Natalie Scott</FullName>
-    <Phone>054-0988684</Phone>
-    <Email>natalie.scott@example.com</Email>
-    <Password>admin1password</Password>
-    <FullAddress>Sderot Haatsma'Ut, Kiryat Gat, Israel</FullAddress>
-    <Latitude>31.612</Latitude>
-    <Longitude>34.7918</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>16.13322387611047</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>397966674</Id>
-    <FullName>Evan Phillips</FullName>
-    <Phone>052-9989654</Phone>
-    <Email>evan.phillips@example.com</Email>
-    <Password>testpass1234</Password>
-    <FullAddress>HaDekel, Netivot, Israel</FullAddress>
-    <Latitude>31.401</Latitude>
-    <Longitude>34.681</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>7642</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>381124524</Id>
+    <Id>244735599</Id>
     <FullName>Ella Green</FullName>
     <Phone>054-5432109</Phone>
     <Email>ella.green@example.com</Email>
@@ -641,39 +515,11 @@
     <Longitude>35.5318</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>1889</MaxDistance>
+    <MaxDistance>15.247073489974465</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>257615195</Id>
-    <FullName>Oliver Evans</FullName>
-    <Phone>055-4321098</Phone>
-    <Email>oliver.evans@example.com</Email>
-    <Password>qwertz!234</Password>
-    <FullAddress>Harav Kook St, Hertsliya, Israel</FullAddress>
-    <Latitude>32.1653</Latitude>
-    <Longitude>35.5779</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>1699</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>326761104</Id>
-    <FullName>Harper Lewis</FullName>
-    <Phone>056-3210987</Phone>
-    <Email>harper.lewis@example.com</Email>
-    <Password>supersecurepass</Password>
-    <FullAddress>Yehuda Halevi St, Hertsliya, Israel</FullAddress>
-    <Latitude>32.1668</Latitude>
-    <Longitude>34.7918</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>3808</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>211414214</Id>
+    <Id>250923381</Id>
     <FullName>Benjamin Lee</FullName>
     <Phone>057-2109876</Phone>
     <Email>benjamin.lee@example.com</Email>
@@ -683,63 +529,175 @@
     <Longitude>34.681</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>170</MaxDistance>
+    <MaxDistance>38.69686316784765</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>341660174</Id>
-    <FullName>Victoria Allen</FullName>
-    <Phone>058-1098765</Phone>
-    <Email>victoria.allen@example.com</Email>
-    <Password>strong2024pass</Password>
-    <FullAddress>HaYam 7, Tiberias</FullAddress>
-    <Latitude>32.794</Latitude>
-    <Longitude>35.532</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>3034</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>311475698</Id>
-    <FullName>James White</FullName>
-    <Phone>059-0987654</Phone>
-    <Email>james.white@example.com</Email>
-    <Password>ilovechatgpt123</Password>
-    <FullAddress>HaZionut 3, Kiryat Shmona</FullAddress>
-    <Latitude>33.204</Latitude>
-    <Longitude>35.57</Longitude>
-    <Role>VOLUNTEER</Role>
-    <Active>true</Active>
-    <MaxDistance>2594</MaxDistance>
-    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
-  </Volunteer>
-  <Volunteer>
-    <Id>244831265</Id>
+    <Id>359108171</Id>
     <FullName>Natalie Scott</FullName>
     <Phone>054-0988684</Phone>
     <Email>natalie.scott@example.com</Email>
     <Password>admin1password</Password>
-    <FullAddress>HaHistadrut 80, Kiryat Gat</FullAddress>
-    <Latitude>31.608</Latitude>
-    <Longitude>34.76</Longitude>
+    <FullAddress>Sderot Haatsma'Ut, Kiryat Gat, Israel</FullAddress>
+    <Latitude>31.612</Latitude>
+    <Longitude>34.7918</Longitude>
     <Role>VOLUNTEER</Role>
-    <Active>false</Active>
-    <MaxDistance>6643</MaxDistance>
+    <Active>true</Active>
+    <MaxDistance>11.81313096764908</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
   <Volunteer>
-    <Id>237351310</Id>
+    <Id>280954979</Id>
     <FullName>Evan Phillips</FullName>
     <Phone>052-9989654</Phone>
     <Email>evan.phillips@example.com</Email>
     <Password>testpass1234</Password>
-    <FullAddress>HaDekel 8, Netivot</FullAddress>
-    <Latitude>31.422</Latitude>
-    <Longitude>34.618</Longitude>
+    <FullAddress>HaDekel, Netivot, Israel</FullAddress>
+    <Latitude>31.401</Latitude>
+    <Longitude>34.681</Longitude>
     <Role>VOLUNTEER</Role>
     <Active>true</Active>
-    <MaxDistance>9737</MaxDistance>
+    <MaxDistance>10.83940064129507</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>274331894</Id>
+    <FullName>David Wilson</FullName>
+    <Phone>058-7890123</Phone>
+    <Email>david.wilson@example.com</Email>
+    <Password>iloveyou99</Password>
+    <FullAddress>Hayarkon St, Tel Aviv-Yafo, Israel</FullAddress>
+    <Latitude>32.085</Latitude>
+    <Longitude>34.7712</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>20.190689394133496</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>363925095</Id>
+    <FullName>Aria Hall</FullName>
+    <Phone>055-4321098</Phone>
+    <Email>aria.hall@example.com</Email>
+    <Password>qwertz123</Password>
+    <FullAddress>Moshe Dayan Avenue, Ashdod, Israel</FullAddress>
+    <Latitude>31.803</Latitude>
+    <Longitude>34.5717</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>23.379313721146545</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>241727784</Id>
+    <FullName>William Wright</FullName>
+    <Phone>052-7654321</Phone>
+    <Email>william.wright@example.com</Email>
+    <Password>adminsecure</Password>
+    <FullAddress>David Remez St, Or Yehuda, Israel</FullAddress>
+    <Latitude>31.9615</Latitude>
+    <Longitude>34.839</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>25.127585503779393</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>246509200</Id>
+    <FullName>Liam King</FullName>
+    <Phone>051-8765432</Phone>
+    <Email>liam.king@example.com</Email>
+    <Password>secret1234</Password>
+    <FullAddress>Weizmann St, Kfar Saba, Israel</FullAddress>
+    <Latitude>32.1665</Latitude>
+    <Longitude>34.842</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>23.067535221080128</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>271851367</Id>
+    <FullName>Charlotte Walker</FullName>
+    <Phone>052-7654321</Phone>
+    <Email>charlotte.walker@example.com</Email>
+    <Password>tbot2023</Password>
+    <FullAddress>Ha-Palmakh St, Ra'Anana, Israel</FullAddress>
+    <Latitude>32.1915</Latitude>
+    <Longitude>34.8402</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>13.738673417740479</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>297166896</Id>
+    <FullName>Daniel Evans</FullName>
+    <Phone>053-6543210</Phone>
+    <Email>daniel.evans@example.com</Email>
+    <Password>securechatgpt</Password>
+    <FullAddress>Haenergia St, Be'Er Sheva, Israel</FullAddress>
+    <Latitude>31.252</Latitude>
+    <Longitude>34.8425</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>20.521364034905517</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>256009423</Id>
+    <FullName>Oliver Evans</FullName>
+    <Phone>055-4321098</Phone>
+    <Email>oliver.evans@example.com</Email>
+    <Password>qwertz!234</Password>
+    <FullAddress>Harav Kook St, Hertsliya, Israel</FullAddress>
+    <Latitude>32.1653</Latitude>
+    <Longitude>35.5779</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>14.602725357950806</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>371826921</Id>
+    <FullName>Harper Lewis</FullName>
+    <Phone>056-3210987</Phone>
+    <Email>harper.lewis@example.com</Email>
+    <Password>supersecurepass</Password>
+    <FullAddress>Yehuda Halevi St, Hertsliya, Israel</FullAddress>
+    <Latitude>32.1668</Latitude>
+    <Longitude>34.7918</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>10.624509489376981</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>291952817</Id>
+    <FullName>Victoria Allen</FullName>
+    <Phone>058-1098765</Phone>
+    <Email>victoria.allen@example.com</Email>
+    <Password>strong2024pass</Password>
+    <FullAddress>Hayam, Tiberias, Israel</FullAddress>
+    <Latitude>32.7921</Latitude>
+    <Longitude>35.5318</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>24.985682306605675</MaxDistance>
+    <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
+  </Volunteer>
+  <Volunteer>
+    <Id>233116003</Id>
+    <FullName>James White</FullName>
+    <Phone>059-0987654</Phone>
+    <Email>james.white@example.com</Email>
+    <Password>ilovechatgpt123</Password>
+    <FullAddress>Tel Hai St, Qiryat Shemona, Israel</FullAddress>
+    <Latitude>33.2851</Latitude>
+    <Longitude>35.5779</Longitude>
+    <Role>VOLUNTEER</Role>
+    <Active>false</Active>
+    <MaxDistance>36.835800610972626</MaxDistance>
     <TypeOfDistance>AERIALDISTANCE</TypeOfDistance>
   </Volunteer>
 </ArrayOfVolunteer>

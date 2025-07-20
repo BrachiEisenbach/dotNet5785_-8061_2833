@@ -22,6 +22,6 @@ namespace BlApi
         public IEnumerable<BO.OpenCallInList> GetOpenCallInList(int volId, BO.TYPEOFCALL? tOfCall, BO.OpenCallInListField? sortBy);
         public void updateFinishTreat(int volId, int callId);
         public void cancelTreat(int volId, int assiId);
-        public void chooseCall(int volId, int callId);
+        public void ChooseCall(int volId, int callId);
     }
 }

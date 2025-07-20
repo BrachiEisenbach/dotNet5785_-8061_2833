@@ -5,6 +5,7 @@
 
 namespace DalTest;
 using DalApi;
+using Dal;
 using DO;
 using System;
 using System.Collections;
@@ -316,6 +317,9 @@ public static class Initialization
             // Increment the index for the next iteration.
             i++;
         }
+        System.Diagnostics.Debug.WriteLine(i);
+
+
     }
     /// <summary>
     /// This method generates arrays representing the call type, call descriptions, full addresses, coordinates (latitude and longitude),
@@ -783,7 +787,8 @@ new DateTime(2025, 07, 25, 13, 55, 00),
             );
             s_dal!.Call.Create(newC);
         }
-
+        System.Diagnostics.Debug.WriteLine(MaxTimeToFinishOfCalls.Length);  
+        System.Diagnostics.Debug.WriteLine(OpenTimeOfCalls.Length);
 
     }
     /// <summary>
@@ -972,6 +977,11 @@ null,
         List<Assignment> assignments = new List<Assignment>();
 
         int callIndex = 0;
+        System.Diagnostics.Debug.WriteLine(ArrayOfEntryTimeForTreatment.Length);
+        System.Diagnostics.Debug.WriteLine(ArrayOfEndTimeOfTreatment.Length);
+        System.Diagnostics.Debug.WriteLine(allCalls.Count);
+        System.Diagnostics.Debug.WriteLine(allVolunteers.Count);
+        System.Diagnostics.Debug.WriteLine(lightVolunteers.Count);
 
         // מתנדבים Light – הקצאה אחת בלבד
         for (int i = 0; i < lightVolunteers.Count && callIndex < allCalls.Count; i++)
@@ -987,7 +997,7 @@ null,
         }
 
         // מתנדבים Active – 2 או 3 קריאות, מקסימום אחת בטיפול
-        for (int i = 0; i < activeVolunteers.Count && callIndex < allCalls.Count - 15; i++)
+        for (int i = 0; i < activeVolunteers.Count && callIndex < allCalls.Count - 16; i++)
         {
             var volunteerId = activeVolunteers[i].Id;
             int numCalls = rnd.Next(2, 4);
@@ -998,7 +1008,7 @@ null,
                 !a.EndTimeOfTreatment.HasValue &&
                 a.TypeOfTreatment == null);
 
-            while (assignedCalls < numCalls && callIndex < allCalls.Count - 15)
+            while (assignedCalls < numCalls && callIndex < allCalls.Count - 16)
             {
                 var call = allCalls[callIndex];
 
@@ -1052,6 +1062,14 @@ null,
     //public static void Do(IDal dal)//stage 2
     public static void Do()
     {
+
+        //XMLTools.SaveListToXMLSerializer(new List<DO.Volunteer>(), "volunteers.xml");
+        //XMLTools.SaveListToXMLSerializer(new List<DO.Call>(), "calls.xml");
+        //XMLTools.SaveListToXMLSerializer(new List<DO.Assignment>(), "assignments.xml");
+        //XMLTools.SetConfigIntVal("data-config.xml", "NextCallId", 1);
+        //XMLTools.SetConfigIntVal("data-config.xml", "NextAssignmentId", 1);
+
+
         //s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
         //s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
         //s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");//stage 1
