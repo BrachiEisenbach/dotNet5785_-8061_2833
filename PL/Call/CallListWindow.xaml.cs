@@ -209,7 +209,7 @@ namespace PL.Call
                 try
                 {
 
-                    s_bl.Call.cancelTreat(volId, id);
+                    s_bl.Call.CancelTreat(volId, id);
                     CallListObserver();
                 }
                 catch (Exception ex)

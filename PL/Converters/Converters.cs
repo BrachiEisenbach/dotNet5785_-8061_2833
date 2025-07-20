@@ -246,32 +246,23 @@ namespace PL.Converters
         }
     }
 
-    //public class AddOrUpdateToIsEnabledConverter : IValueConverter
-    //{
-    //    public string Mode { get; set; } // "AddOnly", "UpdateOnly", "Both", "None"
+    public class BooleanToInverseBooleanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;  // הפוך את הבוליאן
+            return false;
+        }
 
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        if (value is bool isUpdateMode)
-    //        {
-    //            switch (Mode)
-    //            {
-    //                case "AddOnly":
-    //                    return !isUpdateMode;
-    //                case "UpdateOnly":
-    //                    return isUpdateMode;
-    //                case "Both":
-    //                    return true;
-    //                case "None":
-    //                    return false;
-    //            }
-    //        }
-    //        return false;
-    //    }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;
+            return false;
+        }
+    }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-    //        throw new NotImplementedException();
-    //}
 
     public class TimeSpanToStringConverter : IValueConverter
     {

@@ -14,12 +14,9 @@ namespace Helpers
     internal static class CallManager
     {
         internal static ObserverManager Observers = new(); //stage 5 
-
-        //public static BO.Call GetCallFromDO(DO.Call doCall)
-        //{
-        //    return MappingProfile.ConvertToBO(doCall, s_dal.Config.RiskRange);
-        //}
-
+        /// <summary>
+        /// ממירה בין אובייקט BO ל DO
+        /// </summary>
         public static DO.Call GetCallFromBO(BO.Call boCall)
         {
             return MappingProfile.ConvertToDO(boCall);
@@ -112,6 +109,11 @@ namespace Helpers
 
             Observers.NotifyListUpdated();
         }
+
+
+        /// <summary>
+        ///פו המחשבת סטטוס לקריאה
+        /// </summary>
         internal static BO.STATUS CalculateStatus(DO.Call call)
         {
             TimeSpan riskRange = AdminManager.RiskRange;
@@ -178,6 +180,10 @@ namespace Helpers
 
             return BO.STATUS.Open;
         }
+
+        /// <summary>
+        /// ממירה בין ENUM של DO ל BO
+        /// </summary>
         internal static BO.FINISHTYPE? ConvertToBOFinishType(DO.TYPEOFTREATMENT? typeOfTreatment)
         {
             return typeOfTreatment switch
@@ -188,27 +194,6 @@ namespace Helpers
                 _ => null  // במקרה של ערך לא מוכר, מחזירים null
             };
         }
-
-
-        //public static void PrintLocationDebugInfo(DO.Volunteer vol, DO.Call call)
-        //{
-        //    Console.WriteLine($"--- DEBUG DISTANCE CHECK ---");
-        //    Console.WriteLine($"Volunteer Address: {vol.FullAddress}");
-        //    Console.WriteLine($"→ Latitude: {vol.Latitude}, Longitude: {vol.Longitude}");
-
-        //    Console.WriteLine($"Call Address: {call.FullAddress}");
-        //    Console.WriteLine($"→ Latitude: {call.Latitude}, Longitude: {call.Longitude}");
-
-        //    var distance = GetDistance(vol, call);
-        //    Console.WriteLine($"Calculated Distance: {distance} km");
-        //}
-
-
-
-        private const string ApiKey = "67ebc190aaf5b144782334hkg4d1b14";
-        private static readonly HttpClient Client = new HttpClient();
-
-
 
 
         /// <summary>
@@ -252,6 +237,9 @@ namespace Helpers
             return distance;
         }
 
+
+
+
         /// <summary>
         /// פונקציה להמרת מעלות לרדיאנים.
         /// </summary>
@@ -290,8 +278,7 @@ namespace Helpers
             }
             catch (Exception ex)
             {
-                // כאן אפשר לתעד שגיאות או לסמן את הישות בממשק כאדומה
-                // לדוגמה: call.HasCoordinateError = true;
+                throw new BlException( ex.Message, ex);
             }
         }
 

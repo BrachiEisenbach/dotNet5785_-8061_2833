@@ -348,24 +348,43 @@ namespace BlImplementation
                 throw new BlException("Error while accepting volunteers on the list", ex);
             }
         }
+        /// <summary>
+        /// מוסיף מתבונן כללי לרשימת המתבוננים במערכת המתנדבים.
+        /// </summary>
+        /// <param name="listObserver">פעולה שתופעל כאשר יתרחש עדכון כללי במערכת המתנדבים.</param>
         public void AddObserver(Action listObserver)
         {
             VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
         }
 
+        /// <summary>
+        /// מוסיף מתבונן ספציפי למתנדב לפי מזהה.
+        /// </summary>
+        /// <param name="id">מזהה המתנדב שאליו המתבונן קשור.</param>
+        /// <param name="observer">הפעולה שתופעל בעת עדכון המתנדב הספציפי.</param>
         public void AddObserver(int id, Action observer)
         {
             VolunteerManager.Observers.AddObserver(id, observer);
         }
 
+        /// <summary>
+        /// מסיר מתבונן כללי מהרשימה במערכת המתנדבים.
+        /// </summary>
+        /// <param name="listObserver">המתבונן הכללי שיש להסיר.</param>
         public void RemoveObserver(Action listObserver)
         {
             VolunteerManager.Observers.RemoveListObserver(listObserver);
         }
 
+        /// <summary>
+        /// מסיר מתבונן ספציפי למתנדב לפי מזהה.
+        /// </summary>
+        /// <param name="id">מזהה המתנדב שאליו המתבונן קשור.</param>
+        /// <param name="observer">המתבונן שיש להסיר.</param>
         public void RemoveObserver(int id, Action observer)
         {
             VolunteerManager.Observers.RemoveObserver(id, observer);
         }
+
     }
 }

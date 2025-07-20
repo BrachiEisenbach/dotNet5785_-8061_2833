@@ -166,7 +166,7 @@ namespace PL.Vol
                     return;
                 }
                 int callIdToFinish = CurrentVolunteer.CallInTreate.CallId;
-                s_bl.Call.updateFinishTreat(CurrentVolunteer.Id, callIdToFinish);
+                s_bl.Call.UpdateFinishTreat(CurrentVolunteer.Id, callIdToFinish);
                 MessageBox.Show($"Call {callIdToFinish} finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 VolunteerDataObserver();
             }
@@ -196,7 +196,7 @@ namespace PL.Vol
                     int callIdToCancel = CurrentVolunteer.CallInTreate.CallId;
 
                     int assiIdToCancel = CurrentVolunteer.CallInTreate.Id;
-                    s_bl.Call.cancelTreat(CurrentVolunteer.Id, assiIdToCancel);
+                    s_bl.Call.CancelTreat(CurrentVolunteer.Id, assiIdToCancel);
                     MessageBox.Show($"Treatment for call {callIdToCancel} has been canceled.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     VolunteerDataObserver();               
                 }

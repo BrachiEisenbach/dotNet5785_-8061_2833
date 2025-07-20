@@ -103,14 +103,22 @@ internal static TimeSpan  RiskRange
     private static volatile bool s_stop = false;
 
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    /// <summary>
+    /// בודק אם סימולטור רץ כרגע, ואם כן זורק חריגה כדי למנוע ביצוע פעולה לא חוקית.
+    /// </summary>
+    /// <exception cref="BO.BLTemporaryNotAvailableException">נזרק כאשר הסימולטור רץ.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)] // מונע גישה מקבילה כדי למנוע מצבים של Race Condition
     public static void ThrowOnSimulatorIsRunning()
     {
         if (s_thread is not null)
             throw new BO.BLTemporaryNotAvailableException("Cannot perform the operation since Simulator is running");
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    /// <summary>
+    /// מפעיל את הסימולטור עם מרווח זמן נתון (בדקות).
+    /// </summary>
+    /// <param name="interval">המרווח בדקות לעדכון השעון בסימולטור.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static void Start(int interval)
     {
         if (s_thread is null)
@@ -122,13 +130,16 @@ internal static TimeSpan  RiskRange
         }
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    /// <summary>
+    /// מפסיק את ריצת הסימולטור.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static void Stop()
     {
         if (s_thread is not null)
         {
             s_stop = true;
-            s_thread.Interrupt(); //awake a sleeping thread
+            s_thread.Interrupt(); // מעיר את ה-thread אם הוא ישן
             s_thread.Name = "ClockRunner stopped";
             s_thread = null;
         }
@@ -136,26 +147,30 @@ internal static TimeSpan  RiskRange
 
     private static Task? _simulateTask = null;
 
+    /// <summary>
+    /// לולאת ריצה של הסימולטור, מעדכנת את השעון ומריצה סימולציה של מתנדבים וקריאות.
+    /// </summary>
     private static void clockRunner()
     {
         while (!s_stop)
         {
+            // מעדכן את השעון על ידי הוספת אינטרבל לדקות לשעה הנוכחית
             UpdateClock(Now.AddMinutes(s_interval));
 
-            //TO_DO:
-            //Add calls here to any logic simulation that was required in stage 7
-            //for example: course registration simulation
-        if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-            _simulateTask = Task.Run(() => VolunteerManager.SimulateVolunteerAndCallLifecycle());
-
-            //etc...
+            // אם המשימה לא קיימת או שהסתיימה, מתחיל סימולציה חדשה
+            if (_simulateTask is null || _simulateTask.IsCompleted) // stage 7
+                _simulateTask = Task.Run(() => VolunteerManager.SimulateVolunteerAndCallLifecycle());
 
             try
             {
-                Thread.Sleep(1000); // 1 second
+                Thread.Sleep(1000); // מחכה שנייה לפני החזרה ללולאה
             }
-            catch (ThreadInterruptedException) { }
+            catch (ThreadInterruptedException)
+            {
+                // טיפול בהפרעות שינה של ה-thread, פשוט ממשיכים
+            }
         }
     }
+
     #endregion Stage 7 base
 }

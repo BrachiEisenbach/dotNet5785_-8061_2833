@@ -17,7 +17,9 @@ namespace Helpers
         private static IDal s_dal = Factory.Get; //stage 4
 
         internal static ObserverManager Observers = new(); //stage 5 
-
+        /// <summary>
+        /// ממירה בין אובייקט DO ל BO
+        /// </summary>
         public static BO.Volunteer GetVolunteerFromDO(DO.Volunteer doVolunteer)
         {
             var boVolunteer = MappingProfile.ConvertToBO(doVolunteer);
@@ -47,7 +49,9 @@ namespace Helpers
               
             };
         }
-
+        /// <summary>
+        /// ממירה בין אובייקט BO ל DO
+        /// </summary>
         public static DO.Volunteer GetVolunteerFromBO(BO.Volunteer boVolunteer)
         {
             return MappingProfile.ConvertToDO(boVolunteer);
@@ -244,19 +248,6 @@ namespace Helpers
                 TypeOfCall = volunteer.CallInTreate?.TypeOfCall ?? BO.TYPEOFCALL.NONE
             };
         }
-
-        //פו המקבלת שתי כתובות ומחשבת להן אורך ורוחב ואז שולחת אותן לחישוב המרחק בינהן
-        //public static double GetDistanceBetweenAddresses(string address1, string address2)
-        //{
-        //    System.Diagnostics.Debug.WriteLine($"Trying to fetch coordinates for:'{{address1}}' and '{{address2}}'");
-        //    var coord1 = FetchCoordinates(address1);
-
-        //    var coord2 = FetchCoordinates(address2);
-
-        //    return CalculateHaversineDistance(coord1.Latitude, coord1.Longitude, coord2.Latitude, coord2.Longitude);
-        //}
-
-
         public static async Task<double> CalculateDistanceBetweenAddressesAsync(string address1, string address2)
         {
             var coord1 = await FetchCoordinates(address1);
@@ -287,11 +278,6 @@ namespace Helpers
             return EarthRadius * c;
         }
 
-
-
-
-        //private const string ApiKey = "6873bc416eea5543811152dmhaff213";
-        //private static readonly HttpClient Client = new HttpClient();
 
         /// <summary>
         /// מקבלת כתובת ומחזירה את הקואורדינטות (קו רוחב וקו אורך) שלה באמצעות API.
@@ -339,7 +325,9 @@ namespace Helpers
                 throw;
             }
         }
-
+        /// <summary>
+        /// מודל התגובה של Nominatim המייצג את קואורדינטות ה-Latitude וה-Longitude המוחזרות מה-API.
+        /// </summary>
         private class NominatimResponse
         {
             [JsonPropertyName("lat")]
@@ -349,7 +337,10 @@ namespace Helpers
             public string Lon { get; set; }
         }
 
-
+        /// <summary>
+        /// פונקציה אסינכרונית שמעדכנת את הקואורדינטות של מתנדב לפי כתובת מלאה.
+        /// </summary>
+        /// <param name="volunteer">המתנדב לעדכון</param>
         public static async Task UpdateVolunteerCoordinatesAsync(BO.Volunteer volunteer)
         {
             try
@@ -387,7 +378,10 @@ namespace Helpers
 
         private static Random s_rand = new Random();
 
-
+        /// <summary>
+        /// סימולציה שמריצה מחזור חיים למתנדבים ולקריאות שלהם.
+        /// מבצעת הקצאת קריאות חדשות למתנדבים עם סיכוי של 20% אם אין להם קריאה פעילה.
+        /// </summary>
         internal static void SimulateVolunteerAndCallLifecycle()
         {
             Thread.CurrentThread.Name = "Volunteers Simulator";
@@ -473,22 +467,6 @@ namespace Helpers
                     TimeSpan expectedTime = TimeSpan.FromMinutes(distance / 10 + s_rand.Next(5, 15));
                     TimeSpan actualTime = AdminManager.Now - currentAssignment.EntryTimeForTreatment;
 
-                    //if (actualTime >= expectedTime)
-                    //{
-                    //    // סיום טיפול
-                    //    lock (AdminManager.BlMutex)
-                    //        s_dal.Call.(volunteerId, call.Id);
-                    //    volunteersToUpdate.AddLast(volunteerId);
-                    //}
-                    //else if (s_rand.NextDouble() <= 0.1)
-                    //{
-                    //    // ביטול טיפול
-                    //    lock (AdminManager.BlMutex)
-                    //        //s_dal.Call.CanselTreat(volunteerId, call.Id);
-                    //        cancelTreat(volunteerId, call.Id);
-
-                    //    volunteersToUpdate.AddLast(volunteerId);
-                    //}
                 }
             }
 

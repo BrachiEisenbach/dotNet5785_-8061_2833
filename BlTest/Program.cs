@@ -729,7 +729,7 @@ namespace BlTest
                             Console.Write("Enter the assignment ID: ");
                             if (int.TryParse(Console.ReadLine(), out int assignmentId))
                             {
-                                s_bl.Call.updateFinishTreat(volId, assignmentId);
+                                s_bl.Call.UpdateFinishTreat(volId, assignmentId);
                             }
                             else
                             {
@@ -748,7 +748,7 @@ namespace BlTest
                             Console.Write("Enter the assignment ID: ");
                             if (int.TryParse(Console.ReadLine(), out int assignmentId))
                             {
-                                s_bl.Call.cancelTreat(patientId, assignmentId);
+                                s_bl.Call.CancelTreat(patientId, assignmentId);
                             }
                             else
                             {

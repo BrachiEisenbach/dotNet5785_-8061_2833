@@ -17,12 +17,88 @@
         <converters:IsNullToIsEnabledConverter x:Key="IsNullToIsEnabledConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityInverted"/>
 
+            <!-- צבעים -->
+            <Color x:Key="PrimaryGreenColor">#A5D6A7</Color>
+            <Color x:Key="DarkGreenColor">#388E3C</Color>
+            <Color x:Key="LightGreenBackground">#E8F5E9</Color>
+            <Color x:Key="LightBorderColor">#C8E6C9</Color>
+
+            <!-- מברשות -->
+            <SolidColorBrush x:Key="PrimaryGreenBrush" Color="{StaticResource PrimaryGreenColor}"/>
+            <SolidColorBrush x:Key="DarkGreenBrush" Color="{StaticResource DarkGreenColor}"/>
+            <SolidColorBrush x:Key="LightGreenBackgroundBrush" Color="{StaticResource LightGreenBackground}"/>
+            <SolidColorBrush x:Key="LightBorderBrush" Color="{StaticResource LightBorderColor}"/>
+
+            <!-- רקע כללי -->
+            <Style TargetType="Window">
+                <Setter Property="Background" Value="{StaticResource LightGreenBackgroundBrush}"/>
+            </Style>
+
+            <!-- GroupBox -->
+            <Style TargetType="GroupBox">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="BorderBrush" Value="{StaticResource LightBorderBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkGreenBrush}"/>
+            </Style>
+
+            <!-- Label -->
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="{StaticResource DarkGreenBrush}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+            </Style>
+
         <Style TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,2"/>
+        </Style>
+
+        <!-- ComboBox -->
+            <Style TargetType="ComboBox">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderBrush" Value="{StaticResource LightBorderBrush}"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Padding" Value="3"/>
+            </Style>
+
+            <!-- CheckBox -->
+            <Style TargetType="CheckBox">
+                <Setter Property="Foreground" Value="{StaticResource DarkGreenBrush}"/>
+            </Style>
+
+            <!-- Button -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGreenBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkGreenBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
             <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="BorderThickness" Value="1.5"/>
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter Property="BorderBrush" Value="DarkGray"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -284,6 +360,7 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
+
             <Button Content="Calls History" Click="btnHistory_click" Width="150" Margin="5"/>
         </StackPanel>
     </Grid>

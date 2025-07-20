@@ -17,6 +17,7 @@ namespace BlImplementation
 
         public void SetRiskRange(TimeSpan riskRange)
         {
+            AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
             AdminManager.RiskRange = riskRange;
             Debug.WriteLine("The riskRange was seted");
 
@@ -35,7 +36,7 @@ namespace BlImplementation
                 return riskRange;
             }
             return TimeSpan.Zero;
-        } 
+        }
 
         /// <summary>
         /// Retrieves the current time from the system clock.
@@ -98,31 +99,64 @@ namespace BlImplementation
         }
 
         #region Stage 5
-        public void AddClockObserver(Action clockObserver) =>
-        AdminManager.ClockUpdatedObservers += clockObserver;
-        public void RemoveClockObserver(Action clockObserver) =>
-        AdminManager.ClockUpdatedObservers -= clockObserver;
-        public void AddConfigObserver(Action configObserver) =>
-       AdminManager.ConfigUpdatedObservers += configObserver;
-        public void RemoveConfigObserver(Action configObserver) =>
-        AdminManager.ConfigUpdatedObservers -= configObserver;
 
+        /// <summary>
+        /// מוסיף מתבונן (Observer) שמופעל כאשר השעון מתעדכן.
+        /// </summary>
+        /// <param name="clockObserver">פעולה שתופעל בעת עדכון השעון.</param>
+        public void AddClockObserver(Action clockObserver) =>
+            AdminManager.ClockUpdatedObservers += clockObserver;
+
+        /// <summary>
+        /// מסיר מתבונן (Observer) הקשור לעדכון השעון.
+        /// </summary>
+        /// <param name="clockObserver">המתבונן שיש להסיר.</param>
+        public void RemoveClockObserver(Action clockObserver) =>
+            AdminManager.ClockUpdatedObservers -= clockObserver;
+
+        /// <summary>
+        /// מוסיף מתבונן (Observer) שמופעל כאשר קונפיגורציית המערכת מתעדכנת.
+        /// </summary>
+        /// <param name="configObserver">פעולה שתופעל בעת עדכון הקונפיגורציה.</param>
+        public void AddConfigObserver(Action configObserver) =>
+            AdminManager.ConfigUpdatedObservers += configObserver;
+
+        /// <summary>
+        /// מסיר מתבונן (Observer) הקשור לעדכון הקונפיגורציה.
+        /// </summary>
+        /// <param name="configObserver">המתבונן שיש להסיר.</param>
+        public void RemoveConfigObserver(Action configObserver) =>
+            AdminManager.ConfigUpdatedObservers -= configObserver;
+
+        /// <summary>
+        /// מגדיר את השעה הנוכחית במערכת.
+        /// לפני ההגדרה, מבוצעת בדיקה שמוודאת שהסימולטור אינו רץ.
+        /// מוסיף מתבונן שיבצע את העדכון בזמן המתאים.
+        /// </summary>
+        /// <param name="currentTime">תאריך ושעה לעדכון.</param>
         public void SetClock(DateTime currentTime)
         {
-            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+            AdminManager.ThrowOnSimulatorIsRunning(); // בודק אם הסימולטור רץ ומזריק חריגה במידה וכן
             AddClockObserver(() => AdminManager.UpdateClock(currentTime));
         }
 
-
         #endregion Stage 5
 
-        public void StartSimulator(int interval) //stage 7
-        { 
-            AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
-            AdminManager.Start(interval); //stage 7
+        /// <summary>
+        /// מפעיל את הסימולטור עם מרווח זמן מוגדר (במילישניות).
+        /// לפני ההפעלה, מתבצעת בדיקה שהסימולטור אינו רץ.
+        /// </summary>
+        /// <param name="interval">מרווח זמן בין פעולות הסימולטור.</param>
+        public void StartSimulator(int interval)
+        {
+            AdminManager.ThrowOnSimulatorIsRunning(); // בודק אם הסימולטור כבר רץ ומונע הפעלה כפולה
+            AdminManager.Start(interval); // מפעיל את הסימולטור עם הפרמטר שנשלח
         }
 
-        public void StopSimulator() => AdminManager.Stop(); //stage 7
+        /// <summary>
+        /// מפסיק את ריצת הסימולטור.
+        /// </summary>
+        public void StopSimulator() => AdminManager.Stop();
     }
 
 }

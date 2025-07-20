@@ -220,7 +220,7 @@ namespace BlImplementation
         /// <exception cref="BlUnauthorizedException">Thrown when the volunteer doesn't have permission to cancel the treatment.</exception>
         /// <exception cref="BlInvalidOperationException">Thrown when it's not possible to cancel the treatment (e.g., already completed or expired).</exception>
 
-        public void cancelTreat(int volId, int assiId)
+        public void CancelTreat(int volId, int assiId)
         {
             AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
@@ -612,7 +612,7 @@ namespace BlImplementation
         /// <param name="volId">The ID of the volunteer who is finishing the treatment.</param>
         /// <param name="callId">The ID of the call being treated.</param>
 
-        public void updateFinishTreat(int volId, int callId)
+        public void UpdateFinishTreat(int volId, int callId)
         {
             AdminManager.ThrowOnSimulatorIsRunning(); // שלב 7
 
@@ -658,13 +658,6 @@ namespace BlImplementation
                 {
                     _dal.Assignment.Update(updatedAssignment);
                 }
-
-                // שלב 7: חישוב סטטוס חדש לפי ההקצאה החדשה
-                //var newStatus = typeOfTreatment == TYPEOFTREATMENT.TREATE
-                //    ? BO.STATUS.Closed
-                //    : BO.STATUS.Expired;
-
-                // שלב 8: ניתן להשתמש ב-newStatus בתצוגה/החזרה, אבל אין עדכון בשכבת הנתונים כי הסטטוס הוא רק ב-BO
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
             {
@@ -677,26 +670,43 @@ namespace BlImplementation
         }
 
 
+        /// <summary>
+        /// מוסיף מתבונן כללי לרשימת המתבוננים במערכת.
+        /// </summary>
+        /// <param name="listObserver">פעולה שתופעל כאשר יתרחש עדכון כללי.</param>
         public void AddObserver(Action listObserver)
         {
             CallManager.Observers.AddListObserver(listObserver);
         }
 
+        /// <summary>
+        /// מוסיף מתבונן ספציפי לקריאה מסוימת לפי מזהה.
+        /// </summary>
+        /// <param name="id">מזהה הקריאה (Call ID) שאליה מתבונן זה קשור.</param>
+        /// <param name="observer">הפעולה שתופעל כאשר יתרחש עדכון בקריאה זו.</param>
         public void AddObserver(int id, Action observer)
         {
             CallManager.Observers.AddObserver(id, observer);
         }
 
+        /// <summary>
+        /// מסיר מתבונן כללי מהרשימה.
+        /// </summary>
+        /// <param name="listObserver">המתבונן שיש להסיר.</param>
         public void RemoveObserver(Action listObserver)
         {
             CallManager.Observers.RemoveListObserver(listObserver);
         }
 
+        /// <summary>
+        /// מסיר מתבונן ספציפי מקריאה מסוימת לפי מזהה.
+        /// </summary>
+        /// <param name="id">מזהה הקריאה (Call ID) שאליה המתבונן קשור.</param>
+        /// <param name="observer">המתבונן שיש להסיר.</param>
         public void RemoveObserver(int id, Action observer)
         {
             CallManager.Observers.RemoveObserver(id, observer);
         }
-
     }
 }
 

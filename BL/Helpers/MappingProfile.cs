@@ -7,7 +7,10 @@ using System.Diagnostics;
 public static class MappingProfile
 {
     private static readonly IMapper _mapper;
-    private static readonly IDal s_dal = Factory.Get;
+    /// <summary>
+    /// Static constructor that initializes the AutoMapper configuration.
+    /// מגדיר את המיפוי בין מחלקות Data Object (DO) ל-Business Object (BO) ולהפך.
+    /// </summary>
     static MappingProfile()
     {
         try
