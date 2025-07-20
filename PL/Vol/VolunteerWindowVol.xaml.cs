@@ -143,9 +143,9 @@ namespace PL.Vol
         {
             try
             {
-                ChooseCallWindow chooseCallWin = new ChooseCallWindow(CurrentVolunteer.Id);
-                chooseCallWin.Closed += (s, args) => VolunteerDataObserver();
-                chooseCallWin.Show();
+                ChooseCallWindow ChooseCallWin = new ChooseCallWindow(CurrentVolunteer.Id);
+                ChooseCallWin.Closed += (s, args) => VolunteerDataObserver();
+                ChooseCallWin.Show();
 
 
             }

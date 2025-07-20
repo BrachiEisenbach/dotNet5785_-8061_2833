@@ -52,24 +52,25 @@ namespace BlImplementation
 
                     return new BO.CallInList
                     {
-                        Id = (int)(lastAssignment != null ? lastAssignment.Id : (int?)null),
-                        CallId = lastAssignment != null ? lastAssignment.CallId : call.Id,
-                        TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
-                        OpenTime = call.OpenTime,
-                        TimeLeft = (status != BO.STATUS.Closed && call.MaxTimeToFinish.HasValue)
-           ? (call.MaxTimeToFinish.Value - DateTime.Now > TimeSpan.Zero
-               ? call.MaxTimeToFinish.Value - DateTime.Now
-               : TimeSpan.Zero)
-           : (TimeSpan?)null,
-                        NameOfLastVolunteer = lastAssignment != null
-                            ? volunteers.FirstOrDefault(v => v.Id == lastAssignment.VolunteerId)?.FullName
-                            : null,
-                        TimeTaken = (lastAssignment?.EndTimeOfTreatment != null)
-                            ? lastAssignment.EndTimeOfTreatment - call.OpenTime
-                            : null,
-                        Status = status,
-                        SumOfAssigned = callAssignments.Count
-                    };
+                  
+                      Id = lastAssignment?.Id,
+                      CallId = lastAssignment?.CallId ?? call.Id,
+                      TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                      OpenTime = call.OpenTime,
+                      TimeLeft = (status != BO.STATUS.Closed && call.MaxTimeToFinish is DateTime max)
+        ? (max - DateTime.Now > TimeSpan.Zero ? max - DateTime.Now : TimeSpan.Zero)
+        : (TimeSpan?)null,
+                      NameOfLastVolunteer = lastAssignment != null
+        ? volunteers.FirstOrDefault(v => v.Id == lastAssignment.VolunteerId)?.FullName
+        : null,
+                      TimeTaken = (lastAssignment?.EndTimeOfTreatment.HasValue == true)
+        ? lastAssignment.EndTimeOfTreatment.Value - call.OpenTime
+        : null,
+                      Status = status,
+                      SumOfAssigned = callAssignments.Count
+                  };
+
+                
                 }).ToList();
 
                 // סינון אם נדרש
@@ -110,7 +111,7 @@ namespace BlImplementation
 
         public BO.Call GetCallDetails(int callId)
         {
-            
+
             try
             {
                 DO.Call? callDO;
@@ -140,7 +141,7 @@ namespace BlImplementation
             {
                 throw new BlDoesNotExistException("There are no readings and/or risk time frame.", dalDoesNotExistException);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw new BlException("Error while getting message details.");
             }
@@ -171,7 +172,7 @@ namespace BlImplementation
             if (call.Longitude is < -180 or > 180)
                 throw new BlArgumentException("Longitude must be between -180 and 180.");
 
-            
+
 
             if (call.MaxTimeToFinish is not null && call.MaxTimeToFinish <= call.OpenTime)
                 throw new BlArgumentException("Maximum end time must be later than the call start time");
@@ -193,8 +194,8 @@ namespace BlImplementation
                 CallManager.Observers.NotifyListUpdated();
             }
             catch (DalAlreadyExistException dalAlreadyExistException)
-            { 
-                throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException); 
+            {
+                throw new BlAlreadyExistException("A call already exists.", dalAlreadyExistException);
             }
             catch (Exception ex)
             {
@@ -279,7 +280,7 @@ namespace BlImplementation
         /// </summary>
         /// <param name="volId">The ID of the volunteer who is being assigned to the call.</param>
         /// <param name="callId">The ID of the call to be assigned to the volunteer.</param>
-        public void chooseCall(int volId, int callId)
+        public void ChooseCall(int volId, int callId)
         {
             AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
             try
@@ -310,7 +311,7 @@ namespace BlImplementation
 
                 // 5. יצירת הקצאה חדשה
                 var newAssignment = new DO.Assignment(
-                    Id:0,
+                    Id: 0,
                     CallId: callId,
                     VolunteerId: volId,
                     EntryTimeForTreatment: AdminManager.Now,
@@ -320,6 +321,7 @@ namespace BlImplementation
                 // 6. שמירת ההקצאה החדשה
                 lock (AdminManager.BlMutex) //stage 7
                     _dal.Assignment.Create(newAssignment);
+                System.Diagnostics.Debug.WriteLine(newAssignment);
                 CallManager.Observers.NotifyListUpdated();
 
             }
@@ -351,7 +353,7 @@ namespace BlImplementation
             {
                 //  שליפת הקריאה מהמאגר
                 var call = GetCallDetails(callId);
-                if(call==null)
+                if (call == null)
                     throw new BlDoesNotExistException($"Call with ID {callId} not found.");
                 if (call.Status != STATUS.Open)
                     throw new BlInvalidOperationException("A call that is not in open status cannot be deleted.");
@@ -362,10 +364,10 @@ namespace BlImplementation
                     assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
                 if (assignments.Any())
                     throw new BlInvalidOperationException("A call previously assigned to volunteers cannot be deleted.");
-                
+
                 lock (AdminManager.BlMutex) //stage 7
                     _dal.Call.Delete(callId);
-                 
+
                 CallManager.Observers.NotifyListUpdated();
             }
             catch (DalDoesNotExistException dalDoesNotExistException)
@@ -443,7 +445,7 @@ namespace BlImplementation
                     })
                     .Where(c => c != null) // סינון קריאות ריקות
                     .ToList();
-                if(closedCalls== null)
+                if (closedCalls == null)
                     throw new BlDoesNotExistException($"No closed calls found for volunteer with ID {volId}.");
                 // סינון לפי סוג קריאה אם נדרש
                 if (tOfCall.HasValue)
@@ -609,7 +611,6 @@ namespace BlImplementation
                     throw new BO.BlInvalidOperationException("Cannot finish handling a call that has already been closed.");
 
                 // שלב 4: עדכון הנתונים
-
                 var updatedAssignment = assignment with
                 {
                     EndTimeOfTreatment = AdminManager.Now,
@@ -634,7 +635,7 @@ namespace BlImplementation
 
         public void AddObserver(Action listObserver)
         {
-            CallManager.Observers.AddListObserver(listObserver); 
+            CallManager.Observers.AddListObserver(listObserver);
         }
 
         public void AddObserver(int id, Action observer)
