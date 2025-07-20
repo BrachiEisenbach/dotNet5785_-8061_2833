@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /PL/Vol/‏‏VolunteerListWindow.xaml.cs
+/PL/AdminWindow.xaml.cs
