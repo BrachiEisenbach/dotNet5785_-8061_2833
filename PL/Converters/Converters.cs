@@ -245,25 +245,6 @@ namespace PL.Converters
             throw new NotImplementedException(); // המרה הפוכה אינה נחוצה במקרה זה
         }
     }
-
-    public class BooleanToInverseBooleanConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool b)
-                return !b;  // הפוך את הבוליאן
-            return false;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool b)
-                return !b;
-            return false;
-        }
-    }
-
-
     public class TimeSpanToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
