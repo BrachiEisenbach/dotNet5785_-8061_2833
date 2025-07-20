@@ -164,16 +164,6 @@ namespace BlImplementation
 
             call.Latitude = null;
             call.Longitude = null;
-            if (!call.Latitude.HasValue || !call.Longitude.HasValue)
-                throw new BlArgumentException("Latitude and Longitude must be provided.");
-
-            if (call.Latitude is < -90 or > 90)
-                throw new BlArgumentException("Latitude must be between -90 and 90.");
-            if (call.Longitude is < -180 or > 180)
-                throw new BlArgumentException("Longitude must be between -180 and 180.");
-
-
-
             if (call.MaxTimeToFinish is not null && call.MaxTimeToFinish <= call.OpenTime)
                 throw new BlArgumentException("Maximum end time must be later than the call start time");
 
@@ -201,7 +191,22 @@ namespace BlImplementation
             {
                 throw new BlInvalidOperationException("Error adding the call to the system", ex);
             }
-            _ = CallManager.UpdateCoordinatesAsync(call);
+            try
+            {
+                _ = CallManager.UpdateCoordinatesAsync(call);
+                if (!call.Latitude.HasValue || !call.Longitude.HasValue)
+                    throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+                if (call.Latitude is < -90 or > 90)
+                    throw new BlArgumentException("Latitude must be between -90 and 90.");
+                if (call.Longitude is < -180 or > 180)
+                    throw new BlArgumentException("Longitude must be between -180 and 180.");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating coordinates for call {call.Id}: {ex.Message}");
+            }
         }
 
 
@@ -581,7 +586,22 @@ namespace BlImplementation
             {
                 throw new BlException("Error while updating reading", ex);
             }
-            _ = CallManager.UpdateCoordinatesAsync(call);
+            try
+            {
+                _ = CallManager.UpdateCoordinatesAsync(call);
+                if (!call.Latitude.HasValue || !call.Longitude.HasValue)
+                    throw new BlArgumentException("Latitude and Longitude must be provided.");
+
+                if (call.Latitude is < -90 or > 90)
+                    throw new BlArgumentException("Latitude must be between -90 and 90.");
+                if (call.Longitude is < -180 or > 180)
+                    throw new BlArgumentException("Longitude must be between -180 and 180.");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating coordinates for call {call.Id}: {ex.Message}");
+            }
         }
 
 
