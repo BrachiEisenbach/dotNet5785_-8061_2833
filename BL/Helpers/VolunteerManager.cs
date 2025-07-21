@@ -228,8 +228,12 @@ namespace Helpers
             else
             {
                 IEnumerable<DO.Volunteer> volunteers;
-                lock (AdminManager.BlMutex) //stage 7
+                lock (AdminManager.BlMutex)
+                {  //stage 7
                     volunteers = s_dal.Volunteer.ReadAll();
+                    System.Diagnostics.Debug.WriteLine("done null active"+ volunteers);
+                }
+
                 return volunteers;
             }
         }

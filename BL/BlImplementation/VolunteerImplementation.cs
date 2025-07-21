@@ -320,10 +320,12 @@ namespace BlImplementation
             try
             {
                 var DOvolunteers = VolunteerManager.GetIsActiveVolunteers(isActive);
-                var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
+                System.Diagnostics.Debug.WriteLine("done");
 
+                var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
+                System.Diagnostics.Debug.WriteLine("done");
                 var VolunteersInList = BOvolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
-                   
+                System.Diagnostics.Debug.WriteLine("done");
 
 
                 IEnumerable<BO.VolunteerInList> sortedVolunteersInList = sort switch
@@ -345,6 +347,7 @@ namespace BlImplementation
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error in GetVolunteerInList: {ex.Message}");
                 throw new BlException("Error while accepting volunteers on the list", ex);
             }
         }

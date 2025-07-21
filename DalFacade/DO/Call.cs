@@ -15,8 +15,7 @@ namespace DO;
 /// <param name="MaxTimeToFinish">
 /// The maximum time allowed to finish handling the call. Optional; <c>null</c> if not set.
 /// </param>
-public record Call
-       
+public record Call    
 (
     int Id,
     TYPEOFCALL TypeOfCall,
