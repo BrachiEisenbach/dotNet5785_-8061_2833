@@ -320,12 +320,12 @@ namespace BlImplementation
             try
             {
                 var DOvolunteers = VolunteerManager.GetIsActiveVolunteers(isActive);
-                System.Diagnostics.Debug.WriteLine("done");
+                System.Diagnostics.Debug.WriteLine("done GetIsActiveVolunteers");
 
                 var BOvolunteers = DOvolunteers.Select(vol => VolunteerManager.GetVolunteerFromDO(vol)).ToList();
-                System.Diagnostics.Debug.WriteLine("done");
+                System.Diagnostics.Debug.WriteLine("done GetVolunteerFromDO");
                 var VolunteersInList = BOvolunteers.Select(vol => VolunteerManager.ConvertToBOVolunteerInList(vol));
-                System.Diagnostics.Debug.WriteLine("done");
+                System.Diagnostics.Debug.WriteLine("done ConvertToBOVolunteerInList");
 
 
                 IEnumerable<BO.VolunteerInList> sortedVolunteersInList = sort switch

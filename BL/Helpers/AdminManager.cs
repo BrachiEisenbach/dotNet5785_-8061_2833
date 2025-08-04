@@ -53,33 +53,54 @@ internal static TimeSpan  RiskRange
             AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed for update the PL 
         }
     }
-
     private static Task? _periodicTask = null;
 
     /// <summary>
     /// Method to perform application's clock from any BL class as may be required
     /// </summary>
     /// <param name="newClock">updated clock value</param>
-    internal static void UpdateClock(DateTime newClock) //stage 4-7
-    {
-        var oldClock = s_dal.Config.Clock; //stage 4
-        s_dal.Config.Clock = newClock; //stage 4
+   
+        private static DateTime? _initialClockTime = null;
+        
+        private static bool _calledAfterTenYears = false; // דגל – שלא יקרה פעמיים
 
-        //TO_DO:
-        //Add calls here to any logic method that should be called periodically,
-        //after each clock update
-        //for example, Periodic students' updates:
-        //Go through all students to update properties that are affected by the clock update
-        //(students becomes not active after 5 years etc.)
+        internal static void UpdateClock(DateTime newClock)
+        {
+            var oldClock = s_dal.Config.Clock;
 
-        //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
-        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => CallManager.UpdateExpiredOpenCalls(oldClock, newClock)); 
-        //etc ...
+            if (_initialClockTime is null)
+            {
+                _initialClockTime = oldClock;
+                Console.WriteLine($"[DEBUG] Initial clock time set to {_initialClockTime}");
+            }
 
-        //Calling all the observers of clock update
-        ClockUpdatedObservers?.Invoke(); //prepared for stage 5
-    }
+            s_dal.Config.Clock = newClock;
+
+            double yearsPassed = (newClock - _initialClockTime.Value).TotalDays / 365.25;
+            Console.WriteLine($"[DEBUG] Years passed since start: {yearsPassed:F2}");
+
+            // אם עברו 10 שנים ועדיין לא זומנה המשימה – זימון
+            if (!_calledAfterTenYears && yearsPassed >= 10)
+            {
+                Console.WriteLine("[DEBUG] 10 years passed – calling UpdateExpiredOpenCalls");
+                _calledAfterTenYears = true;
+
+                Task.Run(() => CallManager.UpdateExpiredOpenCalls(oldClock, newClock));
+            Console.WriteLine($"[DEBUG] oldClock: {oldClock}, newClock: {newClock}");
+
+        }
+
+        // התנאי הקיים שלך
+        if (_periodicTask is null || _periodicTask.IsCompleted)
+            {
+                Console.WriteLine("[DEBUG] _periodicTask is null or completed – assigning new task");
+                _periodicTask = Task.Run(() => CallManager.UpdateExpiredOpenCalls(oldClock, newClock));
+            }
+
+            ClockUpdatedObservers?.Invoke();
+        }
+    
+
     #endregion Stage 4
 
     #region Stage 7 base

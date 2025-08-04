@@ -71,12 +71,11 @@ namespace Helpers
         {
             if (Enum.TryParse<BO.ROLE>(doType.ToString(), ignoreCase: true, out var boRole))
             {
-                System.Diagnostics.Debug.WriteLine($"success to parse role: {doType}");
                 return boRole;
             }
 
 
-            System.Diagnostics.Debug.WriteLine($"Failed to parse role: {doType}");
+
             throw new ArgumentException($"No matching BO.ROLE for {doType}");
         }
 
@@ -86,12 +85,10 @@ namespace Helpers
         {
             if (Enum.TryParse<BO.TYPEOFDISTANCE>(doType.ToString(), out var boType))
             {
-                System.Diagnostics.Debug.WriteLine($"success to parse type d: {doType}");
                 return boType;
             }
 
 
-            System.Diagnostics.Debug.WriteLine($"Failed to parse type d: {doType}");
             throw new ArgumentException($"No matching BO.TYPEOFDISTANCE for {doType}");
         }
 
@@ -109,12 +106,8 @@ namespace Helpers
         {
             if (Enum.TryParse(finishType.ToString(), out DO.TYPEOFTREATMENT result))
             {
-                System.Diagnostics.Debug.WriteLine($"success to parse type f: {result}");
                 return result;
             }
-
-
-            System.Diagnostics.Debug.WriteLine($"Failed to parse type f: {result}");
             throw new ArgumentException($"No matching DO.TYPEOFTREATMENT for {finishType}");
         }
 
@@ -166,36 +159,37 @@ namespace Helpers
                     assignments = s_dal.Assignment.ReadAll()
                     .Where(a => a.VolunteerId == volunteerId && !a.EndTimeOfTreatment.HasValue)
                     .OrderByDescending(a => a.EntryTimeForTreatment);
-
-                foreach (var assignment in assignments)
-                {
-                    var call = s_dal.Call.Read(assignment.CallId);
-                    if (call == null)
-                        continue;
-
-                    var riskRange = s_dal.Config.RiskRange;
-                    var status = CallManager.CalculateStatus(call);
-
-                    // בודק שהסטטוס הוא בדיוק InTreatment (או סטטוס שרוצים)
-                    if (status == STATUS.InTreatment)  // נניח שזה enum עם ערכים
+                lock (AdminManager.BlMutex) {  //stage 7
+                    foreach (var assignment in assignments)
                     {
-                        var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
-                        var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
-                        var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
+                        var call = s_dal.Call.Read(assignment.CallId);
+                        if (call == null)
+                            continue;
 
-                        return new BO.CallInProgress
+                        var riskRange = AdminManager.RiskRange;
+                        var status = CallManager.CalculateStatus(call);
+
+                        // בודק שהסטטוס הוא בדיוק InTreatment (או סטטוס שרוצים)
+                        if (status == STATUS.InTreatment)  // נניח שזה enum עם ערכים
                         {
-                            Id = assignment.Id,
-                            CallId = assignment.CallId,
-                            TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
-                            VerbalDescription = call.VerbalDescription,
-                            FullAddress = call.FullAddress,
-                            OpenTime = call.OpenTime,
-                            MaxTimeToFinish = call.MaxTimeToFinish,
-                            EnterTime = assignment.EntryTimeForTreatment,
-                            Distance = CalculateHaversineDistance(call.Latitude, call.Longitude, volLatitude, volLongitude),
-                            Status = status
-                        };
+                            var vol = s_dal.Volunteer.Read(volunteerId) ?? throw new BlDoesNotExistException($"The Volunteer with ID={volunteerId} does not exist");
+                            var volLatitude = vol.Latitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Latitude");
+                            var volLongitude = vol.Longitude ?? throw new BlArgumentException($"The Volunteer with ID={volunteerId} havn't Longitude");
+
+                            return new BO.CallInProgress
+                            {
+                                Id = assignment.Id,
+                                CallId = assignment.CallId,
+                                TypeOfCall = CallManager.ConvertToBOType(call.TypeOfCall),
+                                VerbalDescription = call.VerbalDescription,
+                                FullAddress = call.FullAddress,
+                                OpenTime = call.OpenTime,
+                                MaxTimeToFinish = call.MaxTimeToFinish,
+                                EnterTime = assignment.EntryTimeForTreatment,
+                                Distance = CalculateHaversineDistance(call.Latitude, call.Longitude, volLatitude, volLongitude),
+                                Status = status
+                            };
+                        }
                     }
                 }
 
@@ -231,7 +225,7 @@ namespace Helpers
                 lock (AdminManager.BlMutex)
                 {  //stage 7
                     volunteers = s_dal.Volunteer.ReadAll();
-                    System.Diagnostics.Debug.WriteLine("done null active"+ volunteers);
+                    System.Diagnostics.Debug.WriteLine("done null active "+ volunteers);
                 }
 
                 return volunteers;
